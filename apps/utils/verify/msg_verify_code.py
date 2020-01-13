@@ -73,6 +73,7 @@ def create_code_send(account, account_type):
         data = {"title": subject,
                 "body": email_code_html_body(_str),
                 "other_info": "",
+                "site_url": get_config("site_config", "SITE_URL")
                 }
         html = get_email_html(data)
 

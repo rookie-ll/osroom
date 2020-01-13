@@ -19,28 +19,8 @@
           {% endfor %}
       </ul>
       <!--//友情链接-->
-      <div class="visible-lg visible-md">
-          {{_('欢迎使用')}}
-          <a style="color:#f1c27e" href="http://www.osroom.com" target="_blank">
-              <img src="/theme/osr-theme-w/static/sys_imgs/osroom-logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
-              OSROOM
-          </a>. {{_('版本')}} {{g.site_global.site_config.sys_version}}
-          Licensed under <a class="osr-color-secondary" href="http://opensource.org/licenses/BSD-2-Clause" target="_blank"
-                            style="color:#dde2e6;">
-          BSD license
-        </a>.
-        <a href="https://github.com/osroom/osroom" target="_blank" style="color:#dde2e6;">
-          <i class="fa fa-github"></i> GitHub.
-        </a>
-      </div>
-
-      <div class="visible-sm visible-xs">
-          <a style="color:#f1c27e" href="http://www.osroom.com" target="_blank" style="color:#dde2e6;">
-              <img src="/theme/osr-theme-w/static/sys_imgs/osroom-logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
-              OSROOM
-          </a>{{_('提供')}}. BSD license.
-        <a href="https://github.com/osroom/osroom" target="_blank" style="color:#dde2e6;">
-          <i class="fa fa-github"></i> GitHub.
-        </a>
-      </div>
+      <div>
+      {{ g.site_global.site_config.FOOTER_CONTENT | safe }}
+  </div>
+  </div>
 </footer>

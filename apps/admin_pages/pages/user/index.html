@@ -22,6 +22,13 @@
                                 <option v-for="sta,k in status_list" v-if="sta!=status" :value ="sta">{[k]}</option>
                             </select>
                         </div>
+                        &nbsp;&nbsp;
+                        <div class="input-group btn-group btn-group-sm">
+                                <a v-bind:href="'/osr-admin/user/add-user?fs='+status+'&fp='+page"  class="btn osr-btn btn-success">
+                                    <span class="fa fa-plus"></span> {{_("添加用户")}}
+                                </a>
+                        </div>
+
                         <div class="input-group pull-right">
                             <input type="text" v-on:keypress="get_users(status, 1, keyword)" v-model="keyword" class="form-control osr-input input-sm" style="width: 150px;" placeholder="{{_('搜索')}}">
                             <div class="btn-group">
@@ -34,12 +41,12 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="checkbox checkbox-danger">
-                                      <input id="check_all" v-on:click="osr_check_all(users.datas, checkAll, set)" type="checkbox"
-                                            v-model="checkAll" unchecked>
-                                      <label for="check_all"></label>
-                                    </div>
+                              <th>
+                                <div class="checkbox checkbox-danger">
+                                  <input id="check_all" v-on:click="osr_check_all(users.datas, checkAll, set)" type="checkbox"
+                                        v-model="checkAll" unchecked>
+                                  <label for="check_all"></label>
+                                </div>
                               </th>
                               <th >{{_("头像")}}</th>
                               <th >{{_("昵称")}}</th>
@@ -79,7 +86,8 @@
                                   <span class="fa fa-close" style="color:#dd514c;"></span>
                               </td>
                               <td v-else>{[user.custom_domain]}</td>
-                              <td>{[user.email]}</td>
+                              <td v-if="user.email"> {[user.email]}</td>
+                              <td v-else>{{_("无")}}</td>
                               <td v-if="user.mphone_num && user.mphone_num.length>7">
                                   {[user.mphone_num.slice(0,3)]}****{[user.mphone_num.slice(-4)]}
                               </td>

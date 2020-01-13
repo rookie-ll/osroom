@@ -8,6 +8,7 @@ from flask_babel import gettext
 from flask_login import current_user
 
 from apps.core.flask.reqparse import arg_verify
+from apps.modules.permission.process.permission import permissions
 from apps.utils.format.number import get_num_digits
 from apps.utils.format.obj_format import objid_to_str, json_to_pyseq
 from apps.utils.paging.paging import datas_paging
@@ -38,6 +39,12 @@ def roles():
     data_cnt = rs.count(True)
     roles = list(rs.skip(pre * (page - 1)).limit(pre))
     roles = sorted(roles, key=lambda x: x["permissions"])
+    pers = permissions()
+    for i, role in enumerate(roles):
+        roles[i]["permission_names"] = []
+        for per in pers["permissions"]:
+            if int(role["permissions"]) & int(per[1]):
+                roles[i]["permission_names"].append(per[0])
     data["roles"] = datas_paging(
         pre=pre,
         page_num=page,
@@ -130,28 +137,68 @@ def edit_role():
     user_role = mdbs["user"].db.role.find_one(
         {"_id": ObjectId(current_user.role_id)})
     # 如果当前用户的权限最高位 小于 要修改成的这个角色权重的最高位,是不可以的
-    if get_num_digits(user_role["permissions"]) <= get_num_digits(permissions):
-
+    if get_num_digits(user_role["permissions"]) < get_num_digits(permissions):
+        return data
+    elif get_num_digits(user_role["permissions"]) == get_num_digits(permissions):
+        role = {
+            "name": name,
+            "instructions": instructions,
+        }
+        r = mdbs["user"].db.role.update_one(
+            {"_id": ObjectId(rid)}, {"$set": role})
+        if not r.modified_count:
+            data = {
+                'msg': gettext("No changes"),
+                'msg_type': "w",
+                "custom_status": 201}
+        else:
+            data = {
+                "msg": gettext("The highest permission of the current user is equal to that of the selected permission."
+                               " You can only modify the name and profile."),
+                "msg_type": "s",
+                "custom_status": 201
+            }
         return data
 
     old_role = mdbs["user"].db.role.find_one({"_id": ObjectId(rid)})
     # 如果当前用户的权限最高位 小于 要修改角色的权限,也是不可以
-    if old_role and get_num_digits(
-            old_role["permissions"]) >= get_num_digits(
-            user_role["permissions"]):
+    if old_role and get_num_digits(old_role["permissions"]) >= get_num_digits(user_role["permissions"]):
         return data
 
-    role = {"name": name,
+    elif old_role and get_num_digits(old_role["permissions"]) == get_num_digits(user_role["permissions"]):
+        role = {
+            "name": name,
+            "instructions": instructions,
+        }
+        r = mdbs["user"].db.role.update_one(
+            {"_id": ObjectId(rid)}, {"$set": role})
+        if not r.modified_count:
+            data = {
+                'msg': gettext("No changes"),
+                'msg_type': "w",
+                "custom_status": 201}
+        else:
+            data = {
+                "msg": gettext("The highest permission of the current user is equal to that of the role to be modified."
+                               "Only the name and introduction can be modified."),
+                "msg_type": "s",
+                "custom_status": 201
+            }
+        return data
+
+    else:
+        role = {
+            "name": name,
             "instructions": instructions,
             'permissions': permissions,
-            "default": default}
+            "default": default
+        }
 
     data = {
         'msg': gettext("Save success"),
         'msg_type': "s",
         "custom_status": 201}
-    if not mdbs["user"].db.role.find_one(
-            {"name": name, "_id": {"$ne": ObjectId(rid)}}):
+    if not mdbs["user"].db.role.find_one({"name": name, "_id": {"$ne": ObjectId(rid)}}):
         if default:
             if not mdbs["user"].db.role.find_one(
                     {"default": {"$in": [1, True]}, "_id": {"$ne": ObjectId(rid)}}):

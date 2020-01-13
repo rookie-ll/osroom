@@ -9,11 +9,10 @@ from apps.configs.sys_config import METHOD_WARNING
 from apps.core.blueprint import api
 from apps.core.flask.permission import permission_required
 from apps.core.flask.response import response_format
-from apps.modules.user.process.adm_user import user, users, user_restore, user_activation, user_edit, user_del
+from apps.modules.user.process.adm_user import user, users, user_restore, user_activation, user_edit, user_del, add_user
 
 
-
-@api.route('/admin/user', methods=['GET', 'PUT', 'DELETE'])
+@api.route('/admin/user', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @osr_login_required
 @permission_required()
 def api_adm_user():
@@ -27,6 +26,14 @@ def api_adm_user():
         page:<int>,第几页，默认第1页
         pre:<int>, 每页查询多少条
         keyword:<str>, Search keywords, 搜索的时候使用
+    POST:
+        添加用户
+        email：<email>, 非必须
+        mobile_phone_number：<num>, 非必须
+        username:<str>
+        password:<str>
+        password2:<str>
+
     PUT:
         1.编辑用户
         id:<str>, user id
@@ -51,7 +58,8 @@ def api_adm_user():
             data = user()
         else:
             data = users()
-
+    elif request.c_method == "POST":
+        data = add_user()
     elif request.c_method == "PUT":
         if request.argget.all('op') == "restore":
             data = user_restore()

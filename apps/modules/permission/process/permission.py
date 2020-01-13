@@ -45,8 +45,8 @@ def permissions_details():
     """
 
     data = {}
-    page = int(request.argget.all('page', 1))
-    pre = int(request.argget.all('pre', 10))
+    page = str_to_num(request.argget.all('page', 1))
+    pre = str_to_num(request.argget.all('pre', 10))
     rs = mdbs["user"].db.permission.find({})
     data_cnt = rs.count(True)
     roles = list(rs.skip(pre * (page - 1)).limit(pre))
@@ -170,18 +170,37 @@ def edit_per():
             " without permission to modify"),
         "msg_type": "w",
         "custom_status": 401}
-    user_role = mdbs["user"].db.role.find_one(
-        {"_id": ObjectId(current_user.role_id)})
+    user_role = mdbs["user"].db.role.find_one({"_id": ObjectId(current_user.role_id)})
     # 如果当前用户的权限最高位 小于 要修改成的这个角色权重的最高位,是不可以的
     permissions = int(math.pow(2, position - 1))
-    if get_num_digits(user_role["permissions"]) <= get_num_digits(permissions):
+    if get_num_digits(user_role["permissions"]) < get_num_digits(permissions):
         return data
-
-    per = {"name": name,
-           "explain": explain,
-           'value': permissions,
-           "is_default": default}
-
+    elif get_num_digits(user_role["permissions"]) == get_num_digits(permissions):
+        per = {
+            "name": name,
+            "explain": explain
+        }
+        r = mdbs["user"].db.permission.update_one({"_id": ObjectId(tid)}, {"$set": per})
+        if not r.modified_count:
+            data = {
+                'msg': gettext("The highest permission of the current user is"
+                               " equal to the highest permission to be modified,"
+                               " and only the name and introduction can be modified"),
+                'msg_type': "s",
+                "custom_status": 201}
+        else:
+            data = {
+                'msg': gettext("No changes"),
+                'msg_type': "w",
+                "custom_status": 201}
+        return data
+    else:
+        per = {
+            "name": name,
+            "explain": explain,
+            'value': permissions,
+            "is_default": default
+        }
     if mdbs["user"].db.permission.find_one(
             {"name": name, "_id": {"$ne": ObjectId(tid)}}):
         data = {
@@ -190,14 +209,20 @@ def edit_per():
             "custom_status": 403}
 
     elif mdbs["user"].db.permission.find_one({"value": permissions, "_id": {"$ne": ObjectId(tid)}}):
-        data = {'msg': gettext('Location has been used'),
-                'msg_type': "w", "custom_status": 403}
+        data = {
+            'msg': gettext('Location has been used'),
+            'msg_type': "w",
+            "custom_status": 403
+        }
     else:
-        old_per = mdbs["user"].db.permission.find_one({"_id": ObjectId(tid),
-                                                       "value":{"$exists": True}})
+        old_per = mdbs["user"].db.permission.find_one(
+            {
+                "_id": ObjectId(tid),
+                "value": {"$exists": True}
+            }
+        )
         if old_per:
             old_per_value = old_per["value"]
-
             r = mdbs["user"].db.permission.update_one({"_id": ObjectId(tid)}, {"$set": per})
             if not r.modified_count:
                 data = {
@@ -217,8 +242,7 @@ def edit_per():
                 cache.delete(key=GET_DEFAULT_SYS_PER_CACHE_KEY, db_type="redis")
                 cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
                 data = {
-                    'msg': gettext(
-                        "The update is successful. {}".format(msg_updated_rolename)),
+                    'msg': gettext("The update is successful. {}".format(msg_updated_rolename)),
                     'msg_type': "s",
                     "custom_status": 201}
         else:
@@ -244,17 +268,18 @@ def delete_per():
         tid = ObjectId(tid)
         # 权限检查
         old_per = mdbs["user"].db.permission.find_one({"_id": tid})
+        print(old_per)
         # 如果当前用户的权限最高位 小于 要删除角色的权限,也是不可以
         if old_per and get_num_digits(
                 old_per["value"]) >= get_num_digits(
                 user_role["permissions"]):
             unauth_del_pers.append(old_per["name"])
             continue
-        if old_per["name"] in PRESERVE_PERS or old_per["default"]:
+        if old_per["name"] in PRESERVE_PERS or ("is_default" in old_per and old_per["is_default"]):
             preserve.append(old_per["name"])
             continue
         need_remove.append(tid)
-        need_remove_per_value.append(old_per["permissions"])
+        need_remove_per_value.append(old_per["value"])
 
     # Delete
     msg_updated_rolename = ""
@@ -309,8 +334,8 @@ def update_role_and_api_per(old_per_value, new_per_value=0):
     updated_rolename = []
     roles = mdbs["user"].db.role.find()
     for role in roles:
-        if role["permissions"] & old_per_value and not (
-                role["permissions"] & get_permission("ROOT")):
+        if int(role["permissions"]) & int(old_per_value) and not (
+                int(role["permissions"]) & int(get_permission("ROOT"))):
             role_new_per = (role["permissions"] - old_per_value) | new_per_value
             mdbs["user"].db.role.update_many({"_id": role["_id"]}, {
                                       "$set": {"permissions": role_new_per}})

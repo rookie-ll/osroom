@@ -163,7 +163,7 @@ body {
     height: 56px;
 }
 .osr-navbar .osr-navbar-left a.active{
-    color:#27c24c;
+    color:#ecbb6d !important;
 }
 .osr-navbar .osr-navbar-right{
     padding: 5px 0px 0px 0px;

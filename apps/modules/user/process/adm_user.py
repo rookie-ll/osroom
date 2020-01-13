@@ -6,13 +6,136 @@ from bson.objectid import ObjectId
 from flask import request
 from flask_babel import gettext
 from flask_login import current_user
+from werkzeug.security import generate_password_hash
+
 from apps.core.flask.reqparse import arg_verify
-from apps.modules.user.process.get_or_update_user import get_one_user, update_one_user, clean_get_one_user_cache
+from apps.core.template.get_template import get_email_html
+from apps.core.utils.get_config import get_config
+from apps.modules.user.models.user import user_model
+from apps.modules.user.process.get_or_update_user import get_one_user, update_one_user, clean_get_one_user_cache, \
+    insert_one_user
 from apps.utils.format.number import get_num_digits
 from apps.utils.format.obj_format import json_to_pyseq, str_to_num
 from apps.utils.paging.paging import datas_paging
 from apps.app import mdbs, cache
+from apps.utils.send_msg.send_email import send_email
+from apps.utils.send_msg.send_message import send_mobile_msg
 from apps.utils.upload.get_filepath import get_avatar_url
+from apps.utils.validation.str_format import short_str_verifi, password_format_ver, mobile_phone_format_ver, \
+    email_format_ver
+from apps.utils.verify.msg_verify_code import verify_code
+
+
+def add_user():
+
+    email = request.argget.all('email')
+    mobile_phone_number = str_to_num(request.argget.all('mobile_phone_number', 0))
+    username = request.argget.all('username', '').strip()
+    password = request.argget.all('password', '').strip()
+    password2 = request.argget.all('password2', '').strip()
+
+    data = {}
+    # 用户名格式验证
+    s1, r1 = short_str_verifi(username, project="username")
+    # 密码格式验证
+    s2, r2 = password_format_ver(password)
+    if not s1:
+        data = {'msg': r1, 'msg_type': "e", "custom_status": 422}
+    elif mdbs["user"].db.user.find_one({"username": username}):
+        # 是否存在用户名
+        data = {
+            'msg': gettext("Name has been used"),
+            'msg_type': "w",
+            "custom_status": 403}
+    elif not s2:
+        data = {'msg': r2, 'msg_type': "e", "custom_status": 400}
+        return data
+    elif password2 != password:
+        # 检验两次密码
+        data = {
+            'msg': gettext("The two passwords don't match"),
+            'msg_type': "e",
+            "custom_status": 400}
+    if data:
+        return data
+
+    if email:
+        # 邮件注册
+        # 邮箱格式验证
+        s, r = email_format_ver(email)
+        if not s:
+            data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+        elif mdbs["user"].db.user.find_one({"email": email}):
+            # 邮箱是否注册过
+            data = {
+                'msg': gettext("This email has been registered in the site oh, please login directly."),
+                'msg_type': "w",
+                "custom_status": 403}
+        if data:
+            return data
+
+    elif mobile_phone_number:
+        # 手机注册
+        s, r = mobile_phone_format_ver(mobile_phone_number)
+        if not s:
+            data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+        elif mdbs["user"].db.user.find_one({"mphone_num": mobile_phone_number}):
+            # 手机是否注册过
+            data = {
+                'msg': gettext("This number has been registered in the site oh, please login directly."),
+                'msg_type': "w",
+                "custom_status": 403}
+
+        if data:
+            return data
+
+    if not data:
+        # 用户基本信息
+        role_id = mdbs["user"].db.role.find_one(
+            {"default": {"$in": [True, 1]}})["_id"]
+        if not email:
+            email = None
+        if not mobile_phone_number:
+            mobile_phone_number = None
+        user = user_model(username=username,
+                          email=email,
+                          mphone_num=mobile_phone_number,
+                          password=password,
+                          custom_domain=-1,
+                          role_id=str(role_id),
+                          active=True,
+                          is_adm_add_user=True)
+        r = insert_one_user(updata=user)
+        if r.inserted_id:
+            if email:
+                # 发送邮件
+                subject = gettext("Registration success notification")
+                body = gettext("""Welcome to register <b>{}</b>.<br><a>{}</a> registered the account successfully.""").format(
+                    get_config("site_config", "APP_NAME"), email)
+                data = {"title": subject,
+                        "body": body,
+                        "other_info": gettext("End"),
+                        "site_url": get_config("site_config", "SITE_URL")
+                        }
+                html = get_email_html(data)
+
+                msg = {
+                    "subject": subject,
+                    "recipients": [email],
+                    "html_msg": html
+                }
+                send_email(msg=msg, ctype="nt")
+
+            elif mobile_phone_number:
+                # 发送短信
+                content = gettext("[{}] Successful registration account.").format(
+                    get_config("site_config", "APP_NAME")
+                )
+                send_mobile_msg(mobile_phone_number, content)
+
+            data = {'msg': gettext('Added successfully'),
+                    'msg_type': 's', "custom_status": 201}
+    return data
 
 
 def user():
@@ -115,6 +238,8 @@ def user_edit():
     """
     tid = request.argget.all('id')
     role_id = request.argget.all('role_id')
+    email = request.argget.all('email')
+    password = request.argget.all('password')
     active = str_to_num(request.argget.all('active', 0))
 
     s, r = arg_verify(
@@ -127,9 +252,13 @@ def user_edit():
         'msg': gettext("Update success"),
         'msg_type': "s",
         "custom_status": 201}
+
+    if not email:
+        email = None
     update_data = {
         'role_id': role_id,
         'active': active,
+        "email": email
     }
     user = get_one_user(user_id=str(tid))
     if user:
@@ -148,6 +277,31 @@ def user_edit():
                 "custom_status": 401}
             return data
 
+    if email:
+        # 邮件注册
+        # 邮箱格式验证
+        s, r = email_format_ver(email)
+        if not s:
+            data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+        elif mdbs["user"].db.user.find_one({"email": email, "_id": {"$ne": ObjectId(tid)}}):
+            # 邮箱是否注册过
+            data = {
+                'msg': gettext("This email has been registered in the site oh, please login directly."),
+                'msg_type': "w",
+                "custom_status": 403}
+        if data:
+            return data
+
+    if password:
+        # 密码格式验证
+        s, r = password_format_ver(password)
+        if not s:
+            data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+            return data
+        
+    if password:
+        password = generate_password_hash(password)
+        update_data["password"] = password
     r = update_one_user(user_id=str(tid), updata={"$set": update_data})
     if not r.modified_count:
         data = {

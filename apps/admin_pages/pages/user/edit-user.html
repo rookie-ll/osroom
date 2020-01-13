@@ -23,14 +23,28 @@
                       <label>{{_("用户名")}}</label>&nbsp;{[user.username]}
                   </div>
                   <div class="form-group">
-                      <label>{{_("电子邮箱")}}</label>&nbsp;{[user.email]}
+                      <label>{{_("电子邮箱")}}</label>
+                      <input name="email" id="email" class="form-control osr-input input-sm" type="email" v-model="user.email"
+                             data-bv-emailAddress-message="{{_('邮箱地址不合法')}}" style="max-width: 300px"
+                             placeholder="添加电子邮箱"  >
+                 </div>
+                  <div class="form-group" v-if="!edit_password">
+                      <a v-on:click="edit_pass()">{{_("修改密码")}}</a>
                   </div>
+                  <div class="form-group" v-else>
+                      <label>{{_("密码修改")}}</label>
+                  <input name="password" id="password" class="form-control osr-input input-sm" type="password" v-model="password"
+                         minlength="8" placeholder="{{_('将会覆盖原密码')}}"
+                         data-bv-notempty-message="{{_('至少8个字符')}}"
+                         data-bv-stringLength-message="{{_('至少8个字符')}}" required/>
+                 </div>
+
                   <div v-if="user.mphone_num" class="form-group">
                       <label>{{_("手机号码")}}</label>&nbsp;{[user.mphone_num.slice(0,3)]}****{[user.mphone_num.slice(-5,-1)]}
                   </div>
 
                   <div class="form-group form-inline">
-                    <label>{{_("用户角色")}}</label>
+                    <label>{{_("用户角色")}}</label><br>
                       <select id="role" name="role"  class="form-control osr-form-control osr-form-control input-sm m-b-10">
                          <option v-if="role._id===user.role_id" selected = "selected" v-for="role in roles.datas" v-bind:value =role._id>{[role.name]}</option>
                          <option v-if="role._id!==user.role_id" v-for="role in roles.datas" v-bind:value =role._id>{[role.name]}</option>
@@ -62,6 +76,8 @@
       delimiters:['{[', ']}'],
       data:{roles:"",
             user:"",
+            password:"",
+            edit_password:false,
             role_id:"",
             active:"",
             purl:"/api/admin/user"
@@ -70,6 +86,17 @@
 
     // 页面一加载完就自动执行
     $(document).ready(function(){
+        (function($) {
+            if ($.AMUI && $.AMUI.validator) {
+            // 增加多个正则
+            $.AMUI.validator.patterns = $.extend($.AMUI.validator.patterns, {
+                 osrEmail:/^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/,
+                 osrPassword:/^(?!(?:\d+|[a-zA-Z]+)$)[\da-zA-Z]{8,}$/
+            });
+            // 增加单个正则
+            //$.AMUI.validator.patterns.osrEmail = /^[a-zA-Z0-9_\-\.]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        }
+        })(window.jQuery);
 
       var user_id = $("#user_id").attr("content");
       if (user_id){
@@ -88,7 +115,9 @@
             vue.roles = r.data.roles;
         });
     });
-
+    function edit_pass() {
+        vue.edit_password = !vue.edit_password;
+    }
     //当点击提交按钮,提交用于填入的数据到api
     function save(){
         var role_id = $("#role").val();
@@ -101,6 +130,8 @@
         var d = {
                  id:vue.user._id,
                  role_id:role_id,
+                 email: vue.user.email,
+                 password: vue.password,
                  active:active
                  };
         // 提交数据

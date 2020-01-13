@@ -13,6 +13,7 @@ from apps.app import mdbs
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from apps.core.utils.get_config import get_config
 from apps.configs.sys_config import FONT_PATH, STATIC_PATH
+from apps.utils.verify.captcha import ImageCaptcha
 
 
 class CreateImgCode(object):
@@ -157,49 +158,68 @@ def create_img_code(interference=0):
     # 每次生成验证码的同时,我们删除本地过期验证码
     vercode_del(expiration_time=get_config("verify_code", "EXPIRATION"))
 
-    max_in = get_config("verify_code", "MAX_IMG_CODE_INTERFERENCE")
-    min_in = get_config("verify_code", "MIN_IMG_CODE_INTERFERENCE")
-    if interference < 10:
-
-        if min_in < 10:
-            min_in = 10
-        if min_in > max_in:
-            temp_max_in = max_in
-            max_in = min_in
-            min_in = temp_max_in
-        else:
-            min_in = 10
-            max_in = 30
-        interference = random.randint(min_in, max_in)
-
-    # 验证码尺寸
-    width = 60 * 4
-    height = 60
-    pic = CreateImgCode(width, height, 'white')
-    pic.create_pic()
-    pic.create_point(interference * 50)
-    pic.create_line(interference * 3)
-
-    # 生成随机码写入
     _str = ""
     for t in range(4):
         c = random_char()
         _str = "{}{}".format(_str, c)
-    pic.create_text(FONT_PATH, 24, _str)
 
-    # 扭曲
-    # pic.istortion_shift()
+    # 使用ImageCaptcha验证码生成程序
+    image = ImageCaptcha()
+    image.generate(_str)
 
     # 保存路径
     local_dirname = get_config("verify_code", "IMG_CODE_DIR")
     save_dir = "{}/{}".format(STATIC_PATH, local_dirname).replace("//", "/")
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
-    code_img = '{}__{}.jpg'.format(time.time(), uuid1())
+    code_img = '{}__{}.png'.format(time.time(), uuid1())
     save_img = '{}/{}'.format(save_dir, code_img)
+    image.write(_str, save_img)
 
-    # 保存
-    pic.img.save(save_img, 'jpeg')
+    # osroom 验证码程序
+    # max_in = get_config("verify_code", "MAX_IMG_CODE_INTERFERENCE")
+    # min_in = get_config("verify_code", "MIN_IMG_CODE_INTERFERENCE")
+    # if interference < 10:
+    #
+    #     if min_in < 10:
+    #         min_in = 10
+    #     if min_in > max_in:
+    #         temp_max_in = max_in
+    #         max_in = min_in
+    #         min_in = temp_max_in
+    #     else:
+    #         min_in = 10
+    #         max_in = 30
+    #     interference = random.randint(min_in, max_in)
+    #
+    # # 验证码尺寸
+    # width = 60 * 4
+    # height = 60
+    # pic = CreateImgCode(width, height, 'white')
+    # pic.create_pic()
+    # pic.create_point(interference * 50)
+    # pic.create_line(interference * 3)
+
+    # 生成随机码写入
+    # _str = ""
+    # for t in range(4):
+    #     c = random_char()
+    #     _str = "{}{}".format(_str, c)
+    # pic.create_text(FONT_PATH, 24, _str)
+    #
+    # # 扭曲
+    # # pic.istortion_shift()
+    #
+    # 保存路径
+    # local_dirname = get_config("verify_code", "IMG_CODE_DIR")
+    # save_dir = "{}/{}".format(STATIC_PATH, local_dirname).replace("//", "/")
+    # if not os.path.exists(save_dir):
+    #     os.makedirs(save_dir)
+    # code_img = '{}__{}.jpg'.format(time.time(), uuid1())
+    # save_img = '{}/{}'.format(save_dir, code_img)
+    #
+    # # 保存
+    # pic.img.save(save_img, 'jpeg')
 
     # 检图床插件
     data = plugin_manager.call_plug(hook_name="file_storage",

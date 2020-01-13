@@ -181,6 +181,7 @@ def login_log(user, client):
             data = {"title": subject,
                     "body": body,
                     "other_info": gettext("End"),
+                    "site_url": get_config("site_config", "SITE_URL")
                     }
             html = get_email_html(data)
 

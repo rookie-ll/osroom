@@ -142,7 +142,7 @@
         vue.page = page;
         d = {
             page: page,
-            pre: 3
+            pre: 10
         }
         var result = osrHttp("GET","/api/admin/role", d, args={not_prompt:true});
         result.then(function (r) {
@@ -151,17 +151,9 @@
                             current_page=vue.roles.current_page);
             //获取全部
             var result2 = osrHttp("GET","/api/admin/permission", {}, args={not_prompt:true});
-            result2.then(function (pers) {
-                $.each(vue.roles.datas, function(index, value, array) {
-                    vue.roles.datas[index].permission_names = [];
-                    $.each(pers.data.permissions, function(i, v, a) {
-                        if (value.permissions & v[1]){
-                            vue.roles.datas[index].permission_names.push(v[0]);
-                        }
-                    });
-                });
-                vue.$forceUpdate();
-            });
+            //result2.then(function (pers) {
+            //    vue.$forceUpdate();
+            //});
 
         });
 

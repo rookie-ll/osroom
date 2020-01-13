@@ -536,10 +536,7 @@ CONFIG = {
         "__sort__": 6,
         "DEFAULT_AVATAR": {
             "sort": 99,
-            "value": [
-                "/static/admin/sys_imgs/avatar_default_1.png",
-                "/static/admin/sys_imgs/avatar_default_2.png"
-            ],
+            "value": "/static/sys_imgs/avatar_default.png",
             "type": "string",
             "info": "新注册用户默认头像的URL"
         },
@@ -596,29 +593,17 @@ CONFIG = {
                     "aliases": "文章地图"
 
                 },
-                "阿里云": {
-                    "level": 1,
-                    "url": "www.aliyun.com",
-                    "icon_url": "",
-                    "aliases": "阿里云"
-                },
                 "码云": {
                     "level": 1,
-                    "url": "www.aliyun.com",
+                    "url": "https://gitee.com/osroom/osroom",
                     "icon_url": "",
                     "aliases": "码云"
                 },
                 "Github": {
                     "level": 1,
-                    "url": "www.aliyun.com",
+                    "url": "https://github.com/osroom/osroom",
                     "icon_url": "",
                     "aliases": "Github"
-                },
-                "七牛云": {
-                    "level": 1,
-                    "url": "www.aliyun.com",
-                    "icon_url": "",
-                    "aliases": "七牛云"
                 }
             },
             "type": "dict",
@@ -686,12 +671,25 @@ CONFIG = {
             "type": "string",
             "info": "APP(Web)管理端Title前缀"
         },
-        "TITLE_PREFIX_ADM": {
-            "sort": 7,
-            "value": "",
+        "FOOTER_CONTENT": {
+            "sort": 11,
+            "value": """ <div>
+                  {{_('欢迎使用')}}
+                  <a style="color:#f1c27e" href="http://www.osroom.com" target="_blank">
+                  <img src="/static/sys_imgs/osroom-logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
+                      OSROOM
+                  </a>. {{_('版本')}} {{g.site_global.site_config.sys_version}}
+            
+                      Licensed under <a class="osr-color-secondary" href="http://opensource.org/licenses/BSD-2-Clause" target="_blank">
+                      BSD license
+                    </a>.
+                    <a href="https://github.com/osroom/osroom" target="_blank" >
+                      <i class="am-icon-github"></i> GitHub.
+                    </a>
+            </div> """,
             "type": "string",
-            "info": "APP(Web)管理端Title前缀"
-        }
+            "info": "页面底部展示代码"
+        },
     },
     "system": {
         "MAX_CONTENT_LENGTH": {
