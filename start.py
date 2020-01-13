@@ -57,7 +57,7 @@ if not r:
     sys.exit(-1)
 del CONFIG["py_venv"]
 
-compatible_processing(mdbs=mdbs)
+compatible_processing(mdbs=mdbs, stage=1)
 init_datas(mdbs=mdbs)
 for mdb in mdbs.values():
     mdb.close()
@@ -73,6 +73,7 @@ from apps.sys_startup_info import start_info
 start_info()
 init_core_module(app)
 module_import(MODULES)
+compatible_processing(mdbs=mdbs, stage=2)
 manager = Manager(app)
 if "--debug" not in sys.argv and "-D" not in sys.argv:
     print(" * Signal:(SIGCHLD, SIG_IGN).Prevent child processes from becoming [Defunct processes]."

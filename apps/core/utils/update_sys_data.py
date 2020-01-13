@@ -8,7 +8,9 @@ import shutil
 import time
 from collections import OrderedDict
 from copy import deepcopy
-from apps.configs.sys_config import APPS_PATH
+
+from apps.app import cache
+from apps.configs.sys_config import APPS_PATH, SUPER_PER, GET_DEFAULT_SYS_PER_CACHE_KEY, GET_ALL_PERS_CACHE_KEY
 from apps.core.logger.web_logging import web_start_log
 from init_datas import INIT_DATAS
 
@@ -149,51 +151,93 @@ def init_theme_data(mdbs):
         mdbs["sys"].dbs["theme_display_setting"].insert_one(tempdata)
 
 
-def compatible_processing(mdbs):
+def compatible_processing(mdbs, stage=1):
     """
     兼容上一个版本
     :return:
     """
-    # 当前主题设置加上主题名称
-    theme = mdbs["sys"].dbs["sys_config"].find_one({"project": "theme", "key": "CURRENT_THEME_NAME"})
-    if theme:
-        theme_name = theme["value"]
-        mdbs["sys"].dbs["theme_display_setting"].update_many({"theme_name": {"$exists": False}},
-                                                         {"$set": {"theme_name": theme_name}})
 
-        # 主题设置的数据分类信息转移
-        categorys = mdbs["web"].db.category.find({"type": {"$regex": ".+_theme$"}})
-        for category in categorys:
-            category["type"] = category["type"].replace("_theme", "")
-            category["theme_name"] = theme_name
-            r = mdbs["web"].db.theme_category.insert_one(category)
-            if r.inserted_id:
-                mdbs["web"].db.category.delete_one({"_id": category["_id"]})
+    if stage == 1:
+        # 当前主题设置加上主题名称
+        theme = mdbs["sys"].dbs["sys_config"].find_one({"project": "theme", "key": "CURRENT_THEME_NAME"})
+        if theme:
+            theme_name = theme["value"]
+            mdbs["sys"].dbs["theme_display_setting"].update_many({"theme_name": {"$exists": False}},
+                                                             {"$set": {"theme_name": theme_name}})
 
-        '''
-        v2.0之后新功能: 兼容 2.0Beta, v2.0
-        '''
-        # 判断是第一次部署网站还是升级版本
-        its_not_first = mdbs["user"].dbs["permission"].find_one({})
-        if its_not_first and not mdbs["sys"].dbs["theme_nav_setting"].find_one({}):
-            # 将导航设置迁移到主题导航设置专属模块数据库
-            r = mdbs["sys"].dbs["sys_config"].find(
-                {"project": "theme_global_conf", "key": "TOP_NAV"}
-            ).sort([("update_time", -1)]).limit(1)
-            if r.count(True):
-                for i, v in r[0]["value"].items():
-                    display_name = v["nav"]
-                    updata = {
-                        "order": 1,
-                        "display_name": display_name,
-                        "theme_name": theme_name,
-                        "language": "zh_CN"
-                    }
-                    del v["nav"]
-                    updata["json_data"] = v
-                    mdbs["sys"].dbs["theme_nav_setting"].update_one(
-                        {"theme_name": theme_name, "display_name": display_name},
-                        {"$set": updata},
-                        upsert=True
+            # 主题设置的数据分类信息转移
+            categorys = mdbs["web"].db.category.find({"type": {"$regex": ".+_theme$"}})
+            for category in categorys:
+                category["type"] = category["type"].replace("_theme", "")
+                category["theme_name"] = theme_name
+                r = mdbs["web"].db.theme_category.insert_one(category)
+                if r.inserted_id:
+                    mdbs["web"].db.category.delete_one({"_id": category["_id"]})
+
+            '''
+            v2.0之后新功能: 兼容 2.0Beta, v2.0
+            '''
+            # 判断是第一次部署网站还是升级版本
+            its_not_first = mdbs["user"].dbs["permission"].find_one({})
+            if its_not_first and not mdbs["sys"].dbs["theme_nav_setting"].find_one({}):
+                # 将导航设置迁移到主题导航设置专属模块数据库
+                r = mdbs["sys"].dbs["sys_config"].find(
+                    {"project": "theme_global_conf", "key": "TOP_NAV"}
+                ).sort([("update_time", -1)]).limit(1)
+                if r.count(True):
+                    for i, v in r[0]["value"].items():
+                        display_name = v["nav"]
+                        updata = {
+                            "order": 1,
+                            "display_name": display_name,
+                            "theme_name": theme_name,
+                            "language": "zh_CN"
+                        }
+                        del v["nav"]
+                        updata["json_data"] = v
+                        mdbs["sys"].dbs["theme_nav_setting"].update_one(
+                            {"theme_name": theme_name, "display_name": display_name},
+                            {"$set": updata},
+                            upsert=True
+                        )
+    elif stage == 2:
+        # 2020/1/23 version v2.2
+        # 更新最高权限
+        is_updated = False
+        pers = mdbs["user"].dbs["permission"].find({})
+        cnt = pers.count(True)
+        if cnt:
+            pers = pers.sort([("value", -1)])
+            per = pers[0]
+            root = 0b10000000000000000000000000000000000000000000000000000
+            if per["value"] < root:
+                mdbs["user"].dbs["permission"].update_one(
+                    {"_id": per["_id"]},
+                    {"$set": {"value": root}}
+                )
+                is_updated = True
+            if cnt > 1:
+                per = pers[1]
+                admin = 0b1000000000000000000000000000000000000000000000000000
+                if per["value"] < admin:
+                    mdbs["user"].dbs["permission"].update_one(
+                        {"_id": per["_id"]},
+                        {"$set": {"value": admin}}
                     )
+                    is_updated = True
 
+        # 更新root角色
+        roles = mdbs["user"].dbs["role"].find({})
+        if roles.count(True):
+            role = roles.sort([("permissions", -1)])[0]
+            if role["permissions"] < SUPER_PER:
+                mdbs["user"].dbs["role"].update_one(
+                    {"_id": role["_id"]},
+                    {"$set": {"permissions": SUPER_PER}}
+                )
+                is_updated = True
+        if is_updated:
+            cache.delete(key=GET_DEFAULT_SYS_PER_CACHE_KEY, db_type="redis")
+            cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
+            cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
+            cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)

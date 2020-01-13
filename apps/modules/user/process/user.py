@@ -106,7 +106,8 @@ class User(UserMixin):
     def is_staff(self):
 
         role = mdbs["user"].db.role.find_one({"_id": self.role_id})
-
+        print(self.user_info)
+        print(self.role_id, role)
         return role and int(role['permissions']) & int(get_permission("STAFF"))
 
     @property

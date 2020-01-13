@@ -8,6 +8,7 @@
 |   Version  |   Status  |  Other   |
 | --- | --- | --- |
 |   [dev](https://github.com/osroom/osroom)    |  开发...   |    v1.x.x更新到dev版本时需要重新配置数据库文件
+|   [v2.2](https://github.com/osroom/osroom/tree/v2.2)    |     | v1.x.x更新到v2.2版本时需要重新配置数据库文件
 |   [v2.1](https://github.com/osroom/osroom/tree/v2.1)    |     | v1.x.x更新到v2.1版本时需要重新配置数据库文件
 |   [v2.0](https://github.com/osroom/osroom/tree/v2.0)    |     | v1.x.x更新到v2.0版本时需要重新配置数据库文件
 |   [v2.0 Beta](https://github.com/osroom/osroom/tree/v2.0beta)    |     | v1.x.x更新到v2.0beta版本时需要重新配置数据库文件
