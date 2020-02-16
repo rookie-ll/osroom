@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2019 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-16 17:34+0800\n"
+"POT-Creation-Date: 2020-02-16 20:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -846,21 +846,6 @@ msgstr ""
 msgid "回到顶部"
 msgstr ""
 
-#: apps/themes/osr-style/pages/based/footer.html:21
-#: apps/themes/osr-theme-w/pages/based/footer.html:23
-msgid "欢迎使用"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/footer.html:25
-#: apps/themes/osr-theme-w/pages/based/footer.html:27
-msgid "版本"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/footer.html:39
-#: apps/themes/osr-theme-w/pages/based/footer.html:41
-msgid "提供"
-msgstr ""
-
 #: apps/themes/osr-style/pages/based/js_tr.html:2
 #: apps/themes/osr-theme-w/pages/based/js_tr.html:2
 msgid "删除成功"
@@ -1191,13 +1176,23 @@ msgstr ""
 msgid "您当前使用的是富文本编辑器"
 msgstr ""
 
-#: apps/themes/osr-style/pages/module/email/send-temp.html:76
-#: apps/themes/osr-theme-w/pages/module/email/send-temp.html:76
-msgid "谢谢"
+#: apps/themes/osr-style/pages/module/email/_based.html:71
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:71
+msgid "你好! "
 msgstr ""
 
-#: apps/themes/osr-style/pages/module/email/send-temp.html:84
-#: apps/themes/osr-theme-w/pages/module/email/send-temp.html:85
+#: apps/themes/osr-style/pages/module/email/_based.html:82
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:82
+msgid "谢谢!"
+msgstr ""
+
+#: apps/themes/osr-style/pages/module/email/_based.html:84
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:84
+msgid "团队"
+msgstr ""
+
+#: apps/themes/osr-style/pages/module/email/_based.html:93
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:93
 msgid "系统邮件, 请勿回复"
 msgstr ""
 

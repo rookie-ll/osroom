@@ -1,8 +1,9 @@
 [uwsgi]
-# uwsgi 启动时所使用的地址与端口
-socket = 127.0.0.1:6001
+# 启动时所使用的地址与端口
+socket = 127.0.0.1:6001  # @CanModified
+
 # 指向网站目录
-chdir=/home/work/project/osroom
+chdir=/home/work/project/osroom  # @ToDo
 # python 启动程序文件
 wsgi-file = start.py
 
@@ -12,20 +13,20 @@ master = true
 enable-threads = true
 
 # 启动的线程
-processes = 4
+processes = 4 # @CanModified
 vacuum = true
 die-on-term = true
-harakiri = 30
+harakiri = 30 # @CanModified
 
 # 每一个工作进程都生成以后才加载应用程序
 lazy = true
 disable-logging = true
 
 # 状态检测地址
-stats = 127.0.0.1:9191
+stats = 127.0.0.1:9191 # @CanModified
 # pid
-pidfile = /tmp/osroom_demo_uwsgi.pid
+pidfile = /tmp/osroom_demo_uwsgi.pid # @CanModified
 
 # 异步配置, 不需要异步请删除一下2个参数
-gevent = 15
-gevent-early-monkey-patch = true
+gevent = 15 # @CanModified
+gevent-early-monkey-patch = true # @CanModified

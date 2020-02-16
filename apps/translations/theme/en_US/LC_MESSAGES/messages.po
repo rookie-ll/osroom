@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-16 17:34+0800\n"
+"POT-Creation-Date: 2020-02-16 20:14+0800\n"
 "PO-Revision-Date: 2018-01-04 20:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -847,21 +847,6 @@ msgstr "Sign out"
 msgid "回到顶部"
 msgstr "To top"
 
-#: apps/themes/osr-style/pages/based/footer.html:21
-#: apps/themes/osr-theme-w/pages/based/footer.html:23
-msgid "欢迎使用"
-msgstr "Welcome to use"
-
-#: apps/themes/osr-style/pages/based/footer.html:25
-#: apps/themes/osr-theme-w/pages/based/footer.html:27
-msgid "版本"
-msgstr "Version"
-
-#: apps/themes/osr-style/pages/based/footer.html:39
-#: apps/themes/osr-theme-w/pages/based/footer.html:41
-msgid "提供"
-msgstr "Provide"
-
 #: apps/themes/osr-style/pages/based/js_tr.html:2
 #: apps/themes/osr-theme-w/pages/based/js_tr.html:2
 msgid "删除成功"
@@ -1195,13 +1180,23 @@ msgstr "Upload up to 5 pictures at a time"
 msgid "您当前使用的是富文本编辑器"
 msgstr "You are currently using a rich text editor"
 
-#: apps/themes/osr-style/pages/module/email/send-temp.html:76
-#: apps/themes/osr-theme-w/pages/module/email/send-temp.html:76
-msgid "谢谢"
+#: apps/themes/osr-style/pages/module/email/_based.html:71
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:71
+msgid "你好! "
+msgstr "Hi "
+
+#: apps/themes/osr-style/pages/module/email/_based.html:82
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:82
+msgid "谢谢!"
 msgstr "Thanks,"
 
-#: apps/themes/osr-style/pages/module/email/send-temp.html:84
-#: apps/themes/osr-theme-w/pages/module/email/send-temp.html:85
+#: apps/themes/osr-style/pages/module/email/_based.html:84
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:84
+msgid "团队"
+msgstr "teams"
+
+#: apps/themes/osr-style/pages/module/email/_based.html:93
+#: apps/themes/osr-theme-w/pages/module/email/_based.html:93
 msgid "系统邮件, 请勿回复"
 msgstr "System mail, please do not reply"
 
@@ -1739,4 +1734,16 @@ msgstr "Remove"
 
 #~ msgid "摄影"
 #~ msgstr "Photography"
+
+#~ msgid "欢迎使用"
+#~ msgstr "Welcome to use"
+
+#~ msgid "版本"
+#~ msgstr "Version"
+
+#~ msgid "提供"
+#~ msgstr "Provide"
+
+#~ msgid "谢谢"
+#~ msgstr "Thanks,"
 
