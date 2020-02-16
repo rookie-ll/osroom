@@ -125,13 +125,16 @@ def p_sign_up(
             if email:
                 # 发送邮件
                 subject = gettext("Registration success notification")
-                body = gettext("""Welcome to register <b>{}</b>.<br><a>{}</a> registered the account successfully.""").format(
-                    get_config("site_config", "APP_NAME"), email)
-                data = {"title": subject,
-                        "body": body,
-                        "other_info": gettext("End"),
-                        "site_url": get_config("site_config", "SITE_URL")
-                        }
+                body = [
+                    gettext("Welcome to register {}.").format(get_config("site_config", "APP_NAME")),
+                    gettext("{} registered the account successfully.").format(email)
+                ]
+                data = {
+                    "title": subject,
+                    "username": username,
+                    "body": body,
+                    "site_url": get_config("site_config", "SITE_URL")
+                }
                 html = get_email_html(data)
 
                 msg = {

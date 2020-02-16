@@ -29,6 +29,7 @@ c.两边都存在的key, 则value使用数据库的
 '''
 # Danger: If True, the database configuration data will be overwritten
 # 危险:如果为True, 则会把该文件配置覆盖掉数据库中保存的配置
+SYS_CONFIG_VERSION = 2
 OVERWRITE_DB = False
 CONFIG = {
     "user_model": {
@@ -586,7 +587,7 @@ CONFIG = {
         "FRIEND_LINK": {
             "sort": 11,
             "value": {
-                "": {
+                "文章地图": {
                     "level": 2,
                     "url": "/st-html/posts/1",
                     "icon_url": "",

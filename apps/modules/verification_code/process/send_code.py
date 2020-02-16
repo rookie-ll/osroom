@@ -33,7 +33,7 @@ def send_code():
                       only=["email", "mobile_phone"])
     if not s:
         return r
-
+    username = ""
     if account_type == "email":
         s, r = arg_verify(reqargs=[(gettext("Email"), account)], required=True)
         if not s:
@@ -45,18 +45,23 @@ def send_code():
             return data
 
         if exist_account:
-            if not get_one_user(email=account):
+            temp_user = get_one_user(email=account)
+            if not temp_user:
                 data = {
                     'msg': gettext("This account is not registered on this platform"),
                     'msg_type': "w",
                     "custom_status": 400}
                 return data
-
+            username = temp_user["username"]
         r, s = call_verification(code_url_obj, code)
         if not r:
             return s
 
-        data = create_code_send(account=account, account_type=account_type)
+        data = create_code_send(
+            account=account,
+            account_type=account_type,
+            username=username
+        )
 
     elif account_type == "mobile_phone":
         s, r = arg_verify(
@@ -73,17 +78,19 @@ def send_code():
 
         if exist_account:
             user_query = {"mphone_num": account}
-            if not get_one_user(mphone_num=account):
+            temp_user = get_one_user(mphone_num=account)
+            if not temp_user:
                 data = {
                     'msg': gettext("This account is not registered on this platform"),
                     'msg_type': "w",
                     "custom_status": 400}
                 return data
+            username = temp_user["username"]
 
         r, s = call_verification(code_url_obj, code)
         if not r:
             return s
-        data = create_code_send(account=account, account_type=account_type)
+        data = create_code_send(account=account, account_type=account_type, username=username)
 
     return data
 

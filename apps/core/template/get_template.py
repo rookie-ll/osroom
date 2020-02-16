@@ -13,7 +13,7 @@ from apps.core.utils.get_config import get_config
 from apps.utils.format.time_format import time_to_utcdate
 
 
-def get_email_html(data):
+def get_email_html(data, template_path=None):
     """
     获取发送邮件使用的html模板
     :param data: 需要再模板中使用的数据, 使用Jinjia2
@@ -36,10 +36,15 @@ def get_email_html(data):
         time_stamp=time.time(),
         tformat="%Y-%m-%d %H:%M:%S")
 
-    path = "{}/pages/module/email/send-temp.html".format(
-        # get_config("theme", "CURRENT_THEME_NAME")
-        g.get_config("theme", "CURRENT_THEME_NAME")
-    )
+    if template_path:
+        path = "{}/{}".format(
+            g.get_config("theme", "CURRENT_THEME_NAME"),
+            template_path
+        )
+    else:
+        path = "{}/pages/module/email/send-temp.html".format(
+            g.get_config("theme", "CURRENT_THEME_NAME")
+        )
     absolute_path = os.path.abspath(
         "{}/{}".format(theme_view.template_folder, path))
     if os.path.isfile(absolute_path):

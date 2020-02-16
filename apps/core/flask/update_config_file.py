@@ -2,15 +2,14 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
-import json
 import time
 import regex as re
 from copy import deepcopy
 from apps.core.logger.web_logging import web_start_log
 from apps.utils.format.time_format import time_to_utcdate
 from apps.utils.host.get_info import get_host_info
-from apps.configs.sys_config import PROJECT_PATH
-from apps.configs.config import __readme__, OVERWRITE_DB, CONFIG
+from apps.configs.config import OVERWRITE_DB, CONFIG, SYS_CONFIG_VERSION
+
 now_time = time.time()
 host_info = get_host_info()
 
@@ -29,13 +28,31 @@ def update_config_file(mdbs, *args, **kwargs):
     if not version_info:
         now_version = time_to_utcdate(time_stamp=now_time,
                                       tformat="%Y_%m_%d_%H_%M_%S")
-        version_uses = {"new_version": now_version,
-                        "used_versions": [now_version],
-                        "update_time": now_time}
+        version_uses = {
+            "new_version": now_version,
+            "used_versions": [now_version],
+            "update_time": now_time
+        }
         mdbs["sys"].db.sys_config.insert_one(version_uses)
+        sys_version_of_config = SYS_CONFIG_VERSION
+        last_update_time = now_time
         web_start_log.info("Initialize the sys_config version info")
     else:
         now_version = version_info["new_version"]
+        last_update_time = version_info["update_time"]
+        if "sys_version_of_config" in version_info:
+            sys_version_of_config = version_info["sys_version_of_config"]
+        else:
+            sys_version_of_config = SYS_CONFIG_VERSION
+            mdbs["sys"].db.sys_config.update_one(
+                {
+                    "new_version": {"$exists": True}
+                },
+                {
+                    "$set": {
+                        "sys_version_of_config": SYS_CONFIG_VERSION
+                    }
+                })
 
     if version_info and not overwrite_db:
         # 查询当前主机web的的配置版本
@@ -79,6 +96,17 @@ def update_config_file(mdbs, *args, **kwargs):
                 return False
         else:
             # 数据库最新版配置和本地配置合并:以本地配置的key为准,多余的删除
+            # 数据库最新版配置和本地配置合并:以本地配置的key为准,多余的删除
+            ago_time = now_time - 3600 * 24
+            if sys_version_of_config >= SYS_CONFIG_VERSION and last_update_time > ago_time:
+                # 系统正在使用的SYS_CONFIG_VERSION版本和当前机器CONFIG的一样，或更高
+                # And: 配置24小时内已有更新
+                # So: 这次不更新
+                msg = " * [sys configs] Not updated. The system is using the same or higher configuration version.\n" \
+                      "   And it was executed within 24 hours.\n"
+                print("\033[33m{}\033[0m".format(msg))
+                return True
+
             now_version = version_info["new_version"]
             confs = mdbs["sys"].db.sys_config.find({"conf_version": now_version})
             if confs.count(True):
@@ -193,8 +221,19 @@ def push_to_db(mdbs, local_config=None, now_version=None):
 
     # 更新版本信息
     # 将当前版本纳入used_versions, 以便之后管理端修改配置时自动生成新版本
-    mdbs["sys"].db.sys_config.update_one({"new_version": {"$exists": True}, "used_versions": {"$ne": now_version}},
-                                     {"$addToSet": {"used_versions": now_version}})
+    mdbs["sys"].db.sys_config.update_one(
+        {"new_version": {"$exists": True}, "used_versions": {"$ne": now_version}},
+        {
+         "$addToSet": {"used_versions": now_version}
+        })
+    mdbs["sys"].db.sys_config.update_one(
+        {"new_version": {"$exists": True}},
+        {
+            "$set": {
+                "update_time": time.time(),
+                "sys_version_of_config": SYS_CONFIG_VERSION
+            }
+        })
 
     # 更新主机信息
     host_version = mdbs["sys"].db.sys_host.find_one({"type": "web", "host_info.local_ip": host_info["local_ip"]})

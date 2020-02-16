@@ -2,10 +2,12 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
+import time
+
 from apps.core.db.config_mdb import DatabaseConfig
 from apps.core.logger.logger_server import LogServerUDP
 from apps.core.logger.web_logging import web_start_log, WebLogger
-from apps.configs.config import CONFIG
+from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
 from apps.utils.format.obj_format import ConfDictToClass
 from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session
 from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, SESSION_PROTECTION, \
@@ -17,12 +19,13 @@ from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTOR
 """
 
 
-def init_core_module(app):
+def init_core_module(app, *args, **kwargs):
     """
     初始化核心模块
     :param app:
     :return:
     """
+    is_debug = kwargs.get("is_debug")
     # app config
     web_start_log.info("Initialize the core module")
 
@@ -42,13 +45,26 @@ def init_core_module(app):
     app.config["CACHE_MONGODB_DB"] = mdbs["sys"].name
     cache.init_app(app)
 
-    # 清除配置CONFIG的cache
-    with app.app_context():
-        msg = " * Clean configuration cache successfully"
-        cache.delete(CONFIG_CACHE_KEY)
-        cache.delete(PLUG_IN_CONFIG_CACHE_KEY)
-        web_start_log.info(msg)
-        print(msg)
+    # Clear CONFIG cache
+    version_info = mdbs["sys"].db.sys_config.find_one({"new_version": {"$exists": True}})
+    ago_time = time.time() - 3600 * 24
+    ago_time_30m = time.time()-1800
+    if version_info["sys_version_of_config"] >= SYS_CONFIG_VERSION \
+            and version_info["update_time"] > ago_time \
+            and version_info["update_time"]<ago_time_30m:
+        # 系统正在使用的SYS_CONFIG_VERSION版本和当前机器CONFIG的一样，或更高
+        # And: 配置24小时内已有更新
+        # So: 这次不更新
+        msg = " * [sys configs cache]  Not clean cache. The system is using the same or higher configuration version.\n" \
+              "   And it was executed within 24 hours."
+        print("\033[33m{}\033[0m".format(msg))
+    else:
+        with app.app_context():
+            msg = " * Clean configuration cache successfully"
+            cache.delete(CONFIG_CACHE_KEY)
+            cache.delete(PLUG_IN_CONFIG_CACHE_KEY)
+            web_start_log.info(msg)
+            print(msg)
 
     # 异常错误信息
     app.config["PRESERVE_CONTEXT_ON_EXCEPTION"] = PRESERVE_CONTEXT_ON_EXCEPTION
@@ -115,7 +131,10 @@ def init_core_module(app):
     app.register_blueprint(theme_view)
     app.register_blueprint(static_html_view)
     app.register_blueprint(static)
-    push_url_to_db(app)
+    if not is_debug:
+        st = time.time()
+        push_url_to_db(app)
+        print(" * Routing updates saved in the database. It tasks time {} sec".format(int(time.time() - st)))
 
     # 请求处理
     request_process = OsrRequestProcess()

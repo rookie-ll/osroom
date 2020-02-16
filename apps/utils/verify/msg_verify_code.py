@@ -27,7 +27,7 @@ def _rndChar(i=2):
     return chr(an)
 
 
-def create_code_send(account, account_type):
+def create_code_send(account, account_type, username=""):
     """
     创建email和message验证码
     :param account:
@@ -66,16 +66,23 @@ def create_code_send(account, account_type):
             'str': _str,
             'time': time.time(),
             'to_email': account,
-            "type": "msg"}
+            "type": "msg"
+        }
         mdbs["web"].db.verify_code.insert_one(_code)
 
         subject = gettext("Verification code")
-        data = {"title": subject,
-                "body": email_code_html_body(_str),
-                "other_info": "",
-                "site_url": get_config("site_config", "SITE_URL")
-                }
-        html = get_email_html(data)
+        body = [
+            gettext("This is the temporary security code you applied for."),
+            gettext("If you didn't operate it, please ignore it.")
+        ]
+        data = {
+            "title": subject,
+            "username": username,
+            "body": body,
+            "code": _str,
+            "site_url": get_config("site_config", "SITE_URL")
+        }
+        html = get_email_html(data, template_path="pages/module/email/send-code.html")
 
         msg = {
             "subject": subject,
@@ -109,23 +116,6 @@ def create_code_send(account, account_type):
             return {"msg": r, "msg_type": "w", "custom_status": 400}
 
         return {"msg": r, "msg_type": "w", "custom_status": 201}
-
-
-def email_code_html_body(code):
-    """
-    邮箱验证码正文的html拼接
-    :return:
-    """
-
-    body = """
-        <span>{}:</span><br>
-        <span style="color: #69B922; font-size: 20px;text-align: center;">
-                {}
-        </span><br>
-        <span>{}</span><br>
-        """.format(gettext('Your verification code is'), code, gettext(
-        'If you do not send it, please ignore it.Please do not tell the verification code to others'))
-    return body
 
 
 def verify_code(code, email="", tel_number=""):
