@@ -128,8 +128,7 @@ def get_global_media(dbname, collname):
             },
             {
                 "_id": 1
-            },
-            regular_escape=False
+            }
         )
 
         category_ids = []
@@ -139,7 +138,7 @@ def get_global_media(dbname, collname):
         sort = [("time", -1)]
 
         q["category_id"] = {"$in": category_ids}
-        medias = mdb.dbs[collname].find(q,  regular_escape=False)
+        medias = mdb.dbs[collname].find(q)
 
         data_cnt = medias.count(True)
         medias = list(medias.sort(sort).skip(pre * (page - 1)).limit(pre))

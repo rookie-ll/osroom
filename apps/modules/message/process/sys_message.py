@@ -86,7 +86,11 @@ def delete_sys_message():
             continue
         # 查找出图片对应的key
         img_obj = mdbs["sys"].db.sys_msg_img.find_one(
-            {"imgs.key": {"$regex": key}})
+            {
+                "imgs.key": {"$regex": key}
+            },
+            regular_escape=False
+        )
         if img_obj:
             for img in img_obj["imgs"]:
                 # 删除
