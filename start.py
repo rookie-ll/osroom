@@ -131,6 +131,21 @@ if is_debug:
           "(Do not need to comment out)")
     signal(SIGCHLD, SIG_IGN)
 
+print(" * Celery worker...")
+try:
+    shcmd = """ps -ef | grep celery_worker.celery | awk '{print $2}' | xargs kill -9"""
+    r = os.system(shcmd)
+except Exception as e:
+    print(e)
+shcmd = "celery -A celery_worker.celery beat -l info --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
+    logfile="{}/celery.log".format(LOG_PATH)
+)
+os.system(shcmd)
+shcmd = "celery worker -A celery_worker.celery --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
+    logfile="{}/celery.log".format(LOG_PATH)
+)
+os.system(shcmd)
+
 
 @manager.command
 def add_user():
@@ -161,12 +176,12 @@ if __name__ == '__main__':
         print(" * Using --debug, the system will not check Python dependencies")
 
         # Debug模式异步模块启动
+        print(" * Celery worker...")
         try:
             shcmd = """ps -ef | grep celery_worker.celery | awk '{print $2}' | xargs kill -9"""
             r = os.system(shcmd)
         except Exception as e:
             print(e)
-        print(" * Celery worker...")
         shcmd = "celery -A celery_worker.celery beat -l info --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
             logfile="{}/celery.log".format(LOG_PATH)
         )
