@@ -9,3 +9,10 @@ try:
     print("Kill uwsgi.")
 except Exception as e:
     print(e)
+
+try:
+    shcmd = """ps -ef | grep celery_worker.celery | grep -v color=auto | awk '{print $2}' | xargs kill -9"""
+    r = os.system(shcmd)
+    print("Kill celery_worker.celery.")
+except Exception as e:
+    print(e)

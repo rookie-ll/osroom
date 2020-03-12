@@ -163,6 +163,7 @@ def add_user(mdbs):
     print('Username: {}\nEmail: {}\nUser role: {}\nPassword: {}'.format(
         username, email, role["name"], hidden_password))
     print('End')
+    sys.exit()
 
 
 def update_pylib(venv_path=True, latest=False):

@@ -2,6 +2,7 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
+import os
 import sys
 from signal import signal, SIGCHLD, SIG_IGN
 from pymongo.errors import OperationFailure
@@ -35,11 +36,11 @@ if is_debug:
 # 网站还未启动的时候, 临时连接数据库, 更新collections & 更新系统配置
 from apps.core.utils.update_sys_data import update_mdb_collections, init_datas, compatible_processing, \
     update_mdbcolls_json_file
-from apps.core.db.mongodb import PyMongo
+from apps.core.db.mongodb import MyMongo
 database = DatabaseConfig()
 mdbs = {}
 for k, mdb_acc in DB_CONFIG["mongodb"].items():
-    mdbs[k] = PyMongo()
+    mdbs[k] = MyMongo()
 
 """
 # 初始化mdbs给以下程序在网站启动前使用
@@ -87,13 +88,13 @@ init_datas(mdbs=mdbs)
 for mdb in mdbs.values():
     mdb.close()
 
-
 # 启动网站
 from flask_script import Manager
 from apps.app import app
 from apps.core.flask.module_import import module_import
 from apps.init_core_module import init_core_module
-from apps.configs.sys_config import MODULES
+from apps.configs.sys_config import MODULES, LOG_PATH
+
 init_core_module(app, is_debug=is_debug)
 module_import(MODULES)
 compatible_processing(mdbs=mdbs, stage=2)
@@ -131,5 +132,21 @@ if __name__ == '__main__':
         update_pylib()
     else:
         print(" * Using --debug, the system will not check Python dependencies")
+
+        # Debug模式异步模块启动
+        try:
+            shcmd = """ps -ef | grep celery_worker.celery | awk '{print $2}' | xargs kill -9"""
+            r = os.system(shcmd)
+        except Exception as e:
+            print(e)
+        print(" * Celery worker...")
+        shcmd = "celery -A celery_worker.celery beat -l info --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
+            logfile="{}/celery.log".format(LOG_PATH)
+        )
+        os.system(shcmd)
+        shcmd = "celery worker -A celery_worker.celery --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
+            logfile="{}/celery.log".format(LOG_PATH)
+        )
+        os.system(shcmd)
 
     manager.run()

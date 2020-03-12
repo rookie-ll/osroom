@@ -32,8 +32,7 @@ class Cache:
         self.config = app.config.copy()
         self.config.setdefault('CACHE_DEFAULT_TIMEOUT', 300)
         self.config.setdefault('CACHE_REDIS', None)
-        self.config.setdefault('CACHE_MONGODB', None)
-        self.config.setdefault('CACHE_MONGODB_DB', "osr_sys")
+        self.config.setdefault('CACHE_MONGODB_DBS', None)
         self.config.setdefault('CACHE_MONGODB_COLLECT', "osr_cache")
         self.config.setdefault('CACHE_KEY_PREFIX', 'osr-cache:')
         self.config.setdefault('CACHE_TYPE', 'redis')
@@ -45,9 +44,8 @@ class Cache:
         else:
             raise Exception('Missing configuration "CACHE_REDIS"')
 
-        if self.config["CACHE_MONGODB"]:
-            self.mdb_coll = self.config["CACHE_MONGODB"][self.config["CACHE_MONGODB_DB"]
-                                                         ][self.config["CACHE_MONGODB_COLLECT"]]
+        if self.config["CACHE_MONGODB_DBS"]:
+            self.mdb_coll = self.config["CACHE_MONGODB_DBS"][self.config["CACHE_MONGODB_COLLECT"]]
         else:
             raise Exception('Missing configuration "CACHE_MONGODB"')
 
@@ -129,7 +127,10 @@ class Cache:
 
                 cache_key = tkey.lstrip("_")
             else:
-                cache_key = "{}_{}".format(tkey, request.path)
+                if request:
+                    cache_key = "{}_{}".format(tkey, request.path)
+                else:
+                    cache_key = ""
             cache_key = "{}_{}".format(key_prefix, cache_key)
             if key_base64:
                 cache_key = base64.b64encode(cache_key.encode()).decode()
@@ -252,7 +253,7 @@ class Cache:
                 q = {"key": {"$regex": key}}
             else:
                 q = {"key": key}
-            self.mdb_coll.delete_many(q)
+            self.mdb_coll.delete_many(q, regular_escape=False)
 
     def delete_autokey(
             self,

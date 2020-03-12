@@ -9,7 +9,7 @@ from apps.core.logger.logger_server import LogServerUDP
 from apps.core.logger.web_logging import web_start_log, WebLogger
 from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
 from apps.utils.format.obj_format import ConfDictToClass
-from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session
+from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session, celery
 from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, SESSION_PROTECTION, \
     SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, CSRF_ENABLED, WTF_CSRF_CHECK_DEFAULT, \
     WTF_CSRF_METHODS, SESSION_USE_SIGNER, PRESERVE_CONTEXT_ON_EXCEPTION, PLUG_IN_CONFIG_CACHE_KEY
@@ -41,8 +41,7 @@ def init_core_module(app, *args, **kwargs):
     # 缓存
     app.config.from_object(ConfDictToClass(CONFIG["cache"], key="value"))
     app.config["CACHE_REDIS"] = redis
-    app.config["CACHE_MONGODB"] = mdbs["sys"].connection
-    app.config["CACHE_MONGODB_DB"] = mdbs["sys"].name
+    app.config["CACHE_MONGODB_DBS"] = mdbs["sys"].dbs
     cache.init_app(app)
 
     # Clear CONFIG cache
@@ -136,6 +135,7 @@ def init_core_module(app, *args, **kwargs):
         push_url_to_db(app)
         print(" * Routing updates saved in the database. It tasks time {} sec".format(int(time.time() - st)))
 
+    celery.conf.update(app.config)
     # 请求处理
     request_process = OsrRequestProcess()
     request_process.init_request_process(app=app)

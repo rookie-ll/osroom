@@ -268,7 +268,6 @@ def delete_per():
         tid = ObjectId(tid)
         # 权限检查
         old_per = mdbs["user"].db.permission.find_one({"_id": tid})
-        print(old_per)
         # 如果当前用户的权限最高位 小于 要删除角色的权限,也是不可以
         if old_per and get_num_digits(
                 old_per["value"]) >= get_num_digits(
