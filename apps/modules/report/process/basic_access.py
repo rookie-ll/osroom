@@ -5,6 +5,8 @@
 import time
 from apps.app import mdbs, cache
 from apps.core.utils.get_config import get_config
+
+
 @cache.cached(key_base64=False, db_type="mongodb")
 def get_post_access():
     """

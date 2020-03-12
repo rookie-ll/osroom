@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  v1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-16 20:24+0800\n"
+"POT-Creation-Date: 2020-03-12 20:39+0800\n"
 "PO-Revision-Date: 2018-05-01 13:31+0800\n"
 "Last-Translator: AllenWoo\n"
 "Language: en_GB\n"
@@ -79,8 +79,8 @@ msgid "Successfully deleted"
 msgstr "删除成功"
 
 #: apps/core/auth/rest_token_auth.py:113 apps/modules/audit/process/rules.py:85
-#: apps/modules/category/process/category.py:159
-#: apps/modules/category/process/theme_setting_category.py:186
+#: apps/modules/category/process/category.py:163
+#: apps/modules/category/process/theme_setting_category.py:190
 #: apps/modules/comments/process/comment.py:296
 #: apps/modules/permission/process/url_permission.py:233
 #: apps/modules/theme_setting/process/nav_setting.py:176
@@ -103,7 +103,7 @@ msgstr ""
 "令牌格式错误，应该是'SecretToken <token>' 或 'AccessToken <token>'和'ClientId "
 "<client_id>'"
 
-#: apps/core/auth/rest_token_auth.py:174 apps/core/flask/request.py:81
+#: apps/core/auth/rest_token_auth.py:174 apps/core/flask/request.py:80
 msgid ""
 "Token is miss, unconventional web browsing requests please provide \"OSR-"
 "RestToken\", otherwise provide \"X-CSRFToken\""
@@ -252,8 +252,8 @@ msgid "Add a success"
 msgstr "添加成功"
 
 #: apps/modules/audit/process/rules.py:81
-#: apps/modules/category/process/category.py:155
-#: apps/modules/category/process/theme_setting_category.py:182
+#: apps/modules/category/process/category.py:159
+#: apps/modules/category/process/theme_setting_category.py:186
 msgid "Delete the success,{}"
 msgstr "删除成功:{}"
 
@@ -298,18 +298,18 @@ msgstr "名称"
 msgid "Name already exists"
 msgstr "名称已存在"
 
-#: apps/modules/category/process/category.py:121
-#: apps/modules/category/process/theme_setting_category.py:148
+#: apps/modules/category/process/category.py:126
+#: apps/modules/category/process/theme_setting_category.py:153
 #: apps/modules/media/process/media.py:317
 #: apps/modules/permission/process/url_permission.py:194
-#: apps/modules/plug_in_manager/process/setting.py:167
-#: apps/modules/setting/process/settings.py:305
+#: apps/modules/plug_in_manager/process/setting.py:165
+#: apps/modules/setting/process/settings.py:310
 #: apps/modules/theme_setting/process/display_setting.py:373
 msgid "Modify the success"
 msgstr "修改成功"
 
-#: apps/modules/category/process/category.py:126
-#: apps/modules/category/process/theme_setting_category.py:153
+#: apps/modules/category/process/category.py:131
+#: apps/modules/category/process/theme_setting_category.py:158
 #: apps/modules/permission/process/url_permission.py:199
 msgid "No modification"
 msgstr "未修改"
@@ -402,12 +402,12 @@ msgid "Delete the success"
 msgstr "删除成功"
 
 #: apps/modules/comments/process/comment.py:333
-#: apps/modules/post/process/post.py:110
+#: apps/modules/post/process/post.py:117
 msgid "Success"
 msgstr "成功"
 
 #: apps/modules/comments/process/comment.py:335
-#: apps/modules/post/process/post.py:112
+#: apps/modules/post/process/post.py:119
 msgid "Failed"
 msgstr "失败"
 
@@ -618,7 +618,7 @@ msgid "Permission name already exists"
 msgstr "名称已经存在"
 
 #: apps/modules/permission/process/permission.py:235
-#: apps/modules/permission/process/permission.py:296
+#: apps/modules/permission/process/permission.py:295
 msgid "The role of the chain reaction is: \n"
 msgstr "连锁反应影响: \n"
 
@@ -631,15 +631,15 @@ msgstr "更新成功. {}"
 msgid "Update failed"
 msgstr "更新失败"
 
-#: apps/modules/permission/process/permission.py:309
+#: apps/modules/permission/process/permission.py:308
 msgid "Successfully deleted. {}"
 msgstr "删除成功. {}"
 
-#: apps/modules/permission/process/permission.py:315
+#: apps/modules/permission/process/permission.py:314
 msgid "No permission to delete {}. "
 msgstr "无权删除 {}"
 
-#: apps/modules/permission/process/permission.py:318
+#: apps/modules/permission/process/permission.py:317
 msgid "{}{} are permissions that must be retained."
 msgstr "{}{}是必须保留的权限"
 
@@ -703,55 +703,55 @@ msgstr "相同名称的插件已存在"
 msgid "The same name theme already exists"
 msgstr "相同名称的主题已存在"
 
-#: apps/modules/plug_in_manager/process/setting.py:47
+#: apps/modules/plug_in_manager/process/setting.py:45
 #: apps/modules/setting/process/host_setting.py:28
-#: apps/modules/setting/process/settings.py:163
+#: apps/modules/setting/process/settings.py:168
 msgid ""
 "The KEY_HIDING switch in the system configuration has been enabled. The "
 "value of the password type has been replaced."
 msgstr "参数配置system下的KEY_HIDING已开启. 当前为password类型数据的值已被替换."
 
-#: apps/modules/plug_in_manager/process/setting.py:82
-#: apps/modules/setting/process/settings.py:168
-#: apps/modules/setting/process/settings.py:193
+#: apps/modules/plug_in_manager/process/setting.py:80
+#: apps/modules/setting/process/settings.py:173
+#: apps/modules/setting/process/settings.py:198
 msgid "There is no such data"
 msgstr "没有相关数据"
 
-#: apps/modules/plug_in_manager/process/setting.py:125
-#: apps/modules/plug_in_manager/process/setting.py:135
-#: apps/modules/plug_in_manager/process/setting.py:151
-#: apps/modules/setting/process/settings.py:236
-#: apps/modules/setting/process/settings.py:244
-#: apps/modules/setting/process/settings.py:258
+#: apps/modules/plug_in_manager/process/setting.py:123
+#: apps/modules/plug_in_manager/process/setting.py:133
+#: apps/modules/plug_in_manager/process/setting.py:149
+#: apps/modules/setting/process/settings.py:241
+#: apps/modules/setting/process/settings.py:249
+#: apps/modules/setting/process/settings.py:263
 msgid "The format of the \"value\" errors, need a \"{}\" type"
 msgstr "“value”格式错误，需要一个“{}”类型"
 
-#: apps/modules/plug_in_manager/process/setting.py:144
-#: apps/modules/setting/process/settings.py:251
+#: apps/modules/plug_in_manager/process/setting.py:142
+#: apps/modules/setting/process/settings.py:256
 msgid "There is no {}"
 msgstr "没有{}"
 
-#: apps/modules/plug_in_manager/process/setting.py:191
+#: apps/modules/plug_in_manager/process/setting.py:189
 msgid "Refreshed successfully"
 msgstr "刷新成功"
 
-#: apps/modules/plug_in_manager/process/setting.py:196
+#: apps/modules/plug_in_manager/process/setting.py:194
 msgid ""
 "Failed to refresh. Please check the previous plug-in page for error "
 "messages"
 msgstr "刷新失败，请查看插件的错误信息"
 
-#: apps/modules/plug_in_manager/process/setting.py:217
+#: apps/modules/plug_in_manager/process/setting.py:215
 msgid "There is no requirement file"
 msgstr "没有需求文件"
 
-#: apps/modules/plug_in_manager/process/setting.py:284
+#: apps/modules/plug_in_manager/process/setting.py:289
 msgid ""
 "Some host connections failed. Successfully connected host has installed "
 "requirements package in the background"
 msgstr "部分服务器连接失败，连接成功的服务器已在后台安装第三方需求包"
 
-#: apps/modules/plug_in_manager/process/setting.py:290
+#: apps/modules/plug_in_manager/process/setting.py:295
 msgid "Executed related installation commands in the background"
 msgstr "在后台执行相关需求命令"
 
@@ -1088,8 +1088,8 @@ msgid "[{}] Successful registration account."
 msgstr "[{}] 注册成功"
 
 #: apps/modules/user/process/adm_user.py:150
-#: apps/modules/user/process/user_profile_process.py:35
-#: apps/modules/user/process/user_profile_process.py:67
+#: apps/modules/user/process/user_profile_process.py:34
+#: apps/modules/user/process/user_profile_process.py:66
 msgid "The specified user is not found"
 msgstr "未找到指定用户"
 
@@ -1356,11 +1356,11 @@ msgstr "注册成功"
 msgid "Data saved incorrectly, please try again"
 msgstr "数据保存不正确，请重试"
 
-#: apps/modules/user/process/user.py:66
+#: apps/modules/user/process/user.py:67
 msgid "Password is not a readable attribute"
 msgstr "密码不是可读属性"
 
-#: apps/modules/user/process/user.py:130
+#: apps/modules/user/process/user.py:129
 msgid "Unknown"
 msgstr "未知"
 
@@ -1484,5 +1484,4 @@ msgid ""
 "[{}] Your verification code is: {}. If you do not send it, please ignore "
 "it. Please do not tell the verification code to others"
 msgstr "[{}]您的验证码为：{}，如果不是你发送的，请忽略它。请不要将验证码告诉其他人！"
-
 

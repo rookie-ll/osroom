@@ -11,7 +11,7 @@ from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
 from apps.utils.format.obj_format import ConfDictToClass
 from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session, celery
 from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, SESSION_PROTECTION, \
-    SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, CSRF_ENABLED, WTF_CSRF_CHECK_DEFAULT, \
+    SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, \
     WTF_CSRF_METHODS, SESSION_USE_SIGNER, PRESERVE_CONTEXT_ON_EXCEPTION, PLUG_IN_CONFIG_CACHE_KEY
 
 """
@@ -19,13 +19,16 @@ from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTOR
 """
 
 
-def init_core_module(app, *args, **kwargs):
+def init_core_module(app, **kwargs):
     """
     初始化核心模块
     :param app:
     :return:
     """
-    is_debug = kwargs.get("is_debug")
+    csrf_enabled = kwargs.get("csrf_enabled")
+    update_config = kwargs.get("update_config")
+    push_url = kwargs.get("push_url")
+
     # app config
     web_start_log.info("Initialize the core module")
 
@@ -45,18 +48,21 @@ def init_core_module(app, *args, **kwargs):
     cache.init_app(app)
 
     # Clear CONFIG cache
-    version_info = mdbs["sys"].db.sys_config.find_one({"new_version": {"$exists": True}})
-    ago_time = time.time() - 3600 * 24
-    ago_time_30m = time.time()-1800
-    if version_info["sys_version_of_config"] >= SYS_CONFIG_VERSION \
-            and version_info["update_time"] > ago_time \
-            and version_info["update_time"]<ago_time_30m:
-        # 系统正在使用的SYS_CONFIG_VERSION版本和当前机器CONFIG的一样，或更高
-        # And: 配置24小时内已有更新
-        # So: 这次不更新
-        msg = " * [sys configs cache]  Not clean cache. The system is using the same or higher configuration version.\n" \
-              "   And it was executed within 24 hours."
-        print("\033[33m{}\033[0m".format(msg))
+    if update_config:
+        version_info = mdbs["sys"].db.sys_config.find_one({"new_version": {"$exists": True}})
+        ago_time = time.time() - 3600 * 24
+        ago_time_30m = time.time()-1800
+        if version_info["sys_version_of_config"] >= SYS_CONFIG_VERSION \
+                and version_info["update_time"] > ago_time \
+                and version_info["update_time"]<ago_time_30m:
+            # 系统正在使用的SYS_CONFIG_VERSION版本和当前机器CONFIG的一样，或更高
+            # And: 配置24小时内已有更新
+            # So: 这次不更新
+            msg = " * [sys configs cache]  Not clean cache." \
+                  " The system is using the same or higher configuration version.\n" \
+                  "   And it was executed within 24 hours."
+            print("\033[33m{}\033[0m".format(msg))
+            web_start_log.warning(msg)
     else:
         with app.app_context():
             msg = " * Clean configuration cache successfully"
@@ -103,8 +109,18 @@ def init_core_module(app, *args, **kwargs):
 
     # Csrf token
     csrf_config = {}
-    csrf_config["CSRF_ENABLED"] = CSRF_ENABLED
-    csrf_config["WTF_CSRF_CHECK_DEFAULT"] = WTF_CSRF_CHECK_DEFAULT
+    if csrf_enabled:
+        csrf_config["CLIENT_TOKEN_AUTH_ENABLED"] = True
+        print(" * Security authentication is turned on")
+
+    else:
+        csrf_config["CLIENT_TOKEN_AUTH_ENABLED"] = False
+        print("\033[31m   WARNING: security verification is turned off\033[0m")
+
+    # 这两个csrf参数这里关闭，request程序会根据CLIENT_TOKEN_AUTH_ENABLED判断处理
+    csrf_config["WTF_CSRF_CHECK_DEFAULT"] = False
+    csrf_config["CSRF_ENABLED"] = False
+
     csrf_config["WTF_CSRF_METHODS"] = WTF_CSRF_METHODS
     app.config.from_object(ConfDictToClass(csrf_config))
     csrf.init_app(app)
@@ -130,7 +146,7 @@ def init_core_module(app, *args, **kwargs):
     app.register_blueprint(theme_view)
     app.register_blueprint(static_html_view)
     app.register_blueprint(static)
-    if not is_debug:
+    if push_url:
         st = time.time()
         push_url_to_db(app)
         print(" * Routing updates saved in the database. It tasks time {} sec".format(int(time.time() - st)))

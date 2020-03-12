@@ -1,4 +1,10 @@
-# ###osroom###
+# osroom
+# .xxx
+.*
+
+# python
+__pycache__/
+*.py[cod]
 *~
 *.pyc
 *.py~
@@ -7,6 +13,7 @@ log/
 logs/
 venv/
 venv3/
+*.pid
 
 # static dir
 */static/media/
@@ -18,7 +25,7 @@ venv3/
 !*/plugins/__init__.py
 !*/plugins/README.md
 
-# pluins
+# plugins
 .qiniu_pythonsdk_hostscache.json
 upload_temp/
 

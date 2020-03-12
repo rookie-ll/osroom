@@ -21,6 +21,7 @@ class MyMongo:
         self.name = ""
         self.db_conn = None
         self.db = None
+        self.dbs = {}
         self.pymongo = None
         if app or db_config:
             self.init_app(app, config_prefix, db_config)
@@ -34,7 +35,6 @@ class MyMongo:
         )
         self.db = self.pymongo.db
         self.db_conn = self.pymongo.db_conn
-        self.dbs = {}
         if len(self.db_conn.collection_names()):
             for op in dir(self.db_conn[self.db_conn.collection_names()[0]]):
                 if op[0] == "_":

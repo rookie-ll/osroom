@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-16 20:14+0800\n"
+"POT-Creation-Date: 2020-03-12 20:39+0800\n"
 "PO-Revision-Date: 2018-01-04 20:50+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -82,7 +82,7 @@ msgstr "Popular"
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:11
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:23
 #: apps/themes/osr-style/pages/user/post/preview.html:64
-#: apps/themes/osr-theme-w/pages/_index_s3.html:48
+#: apps/themes/osr-theme-w/pages/_index_s3.html:47
 #: apps/themes/osr-theme-w/pages/content/writer.html:12
 #: apps/themes/osr-theme-w/pages/content/writer.html:15
 #: apps/themes/osr-theme-w/pages/post/_posts.html:26
@@ -110,7 +110,6 @@ msgstr "Default"
 #: apps/themes/osr-style/pages/user/follow/index.html:80
 #: apps/themes/osr-style/pages/user/post/preview.html:15
 #: apps/themes/osr-style/pages/user/post/preview.html:89
-#: apps/themes/osr-theme-w/pages/_index_s3.html:21
 #: apps/themes/osr-theme-w/pages/account/settings/_avatar.html:24
 #: apps/themes/osr-theme-w/pages/based/_header_bar_menu_user.html:91
 #: apps/themes/osr-theme-w/pages/photo/introduction.html:55
@@ -134,7 +133,7 @@ msgstr "Time"
 
 #: apps/themes/osr-style/pages/_index_s2.html:108
 #: apps/themes/osr-style/pages/post/_posts.html:76
-#: apps/themes/osr-theme-w/pages/_index_s3.html:77
+#: apps/themes/osr-theme-w/pages/_index_s3.html:76
 #: apps/themes/osr-theme-w/pages/post/_posts.html:76
 msgid "查看更多"
 msgstr "More"
@@ -1242,7 +1241,7 @@ msgstr "Uploaded"
 #: apps/themes/osr-style/pages/user/message/index.html:85
 #: apps/themes/osr-style/pages/user/post/_comment.html:155
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:86
-#: apps/themes/osr-theme-w/pages/_index_s3.html:91
+#: apps/themes/osr-theme-w/pages/_index_s3.html:90
 #: apps/themes/osr-theme-w/pages/photo/index.html:80
 #: apps/themes/osr-theme-w/pages/post/_comment.html:306
 #: apps/themes/osr-theme-w/pages/posts/_posts_weiget.html:108
@@ -1266,7 +1265,7 @@ msgstr "{{photos.current_page]}Page/Total {[photos.page_total]}Page"
 #: apps/themes/osr-style/pages/user/message/index.html:89
 #: apps/themes/osr-style/pages/user/post/_comment.html:159
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:92
-#: apps/themes/osr-theme-w/pages/_index_s3.html:97
+#: apps/themes/osr-theme-w/pages/_index_s3.html:96
 #: apps/themes/osr-theme-w/pages/photo/index.html:86
 #: apps/themes/osr-theme-w/pages/post/_comment.html:310
 #: apps/themes/osr-theme-w/pages/posts/_posts_weiget.html:114
@@ -1644,7 +1643,7 @@ msgid "预览页面, 不能点赞"
 msgstr "Preview Page, Cannot Like Like"
 
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:56
-#: apps/themes/osr-theme-w/pages/_index_s3.html:34
+#: apps/themes/osr-theme-w/pages/_index_s3.html:33
 #: apps/themes/osr-theme-w/pages/posts/_posts_weiget.html:32
 #: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:53
 msgid "更新"
@@ -1667,7 +1666,7 @@ msgid "恢复"
 msgstr "Recovery"
 
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:89
-#: apps/themes/osr-theme-w/pages/_index_s3.html:94
+#: apps/themes/osr-theme-w/pages/_index_s3.html:93
 msgid "第{[posts.current_page]}页/共{[posts.page_total]}页"
 msgstr "Page{[posts.current_page]}Pages/Total {[posts.page_total]}Pages"
 
@@ -1710,7 +1709,7 @@ msgstr "Tags"
 msgid "最新内容"
 msgstr "New contens"
 
-#: apps/themes/osr-theme-w/pages/_index_s3.html:80
+#: apps/themes/osr-theme-w/pages/_index_s3.html:79
 msgid "没有更多了哦"
 msgstr "It's at the bottom"
 

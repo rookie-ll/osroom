@@ -254,5 +254,4 @@ def compatible_processing(mdbs, stage=1):
         # 用户添加字段 alias [@HiWoo 2020-03-12]
         r = mdbs["user"].dbs["user"].update_many({"alias": {"$exists": False}}, {"$set": {"alias": ""}})
         if r.modified_count:
-            pass
-        cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)
+            cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)
