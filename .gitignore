@@ -17,7 +17,7 @@ venv3/
 
 # static dir
 */static/media/
-*/static/verifi_code/*
+*/verifi_code/*
 */static_html_pages/sitemap.xml
 
 # plugin
