@@ -9,7 +9,7 @@ osroom管理端->主题展示设置->图文里添加或修改，删除
     <div  v-for="ad in home_display_img" class="col-lg-3 col-sm-6 col-xs-12">
         <div class="osr-post-info">
             <div class="osr-image text-center">
-                <a v-if="ad" target="_blank" :href="ad.link">
+                <a target="_blank" :href="ad.link">
                     <img v-if="ad.url" class="osr-media-img" :src="ad.url+img_w_h" :alt="ad.title">
                     <img v-else class="osr-media-img" src="" :alt="ad.title">
                      <span v-if="ad.title" class="osr-img-title"  :title="ad.title">
