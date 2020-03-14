@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-12 20:39+0800\n"
+"POT-Creation-Date: 2020-03-14 16:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,10 +106,10 @@ msgstr ""
 
 #: apps/admin_pages/pages/_index_chd2.html:85
 #: apps/admin_pages/pages/_index_chd3.html:23
-#: apps/admin_pages/pages/index.html:89
 #: apps/admin_pages/pages/own/corpus/index.html:25
 #: apps/admin_pages/pages/own/user/index.html:24
 #: apps/admin_pages/pages/post/index.html:15
+#: apps/admin_pages/static/js/page_js/home.js:53
 msgid "文章"
 msgstr ""
 
@@ -123,13 +123,13 @@ msgstr ""
 #: apps/admin_pages/pages/_index_chd3.html:37
 #: apps/admin_pages/pages/comment/index.html:15
 #: apps/admin_pages/pages/comment/index.html:201
-#: apps/admin_pages/pages/index.html:89
 #: apps/admin_pages/pages/own/user/message/_comment.html:7
 #: apps/admin_pages/pages/own/user/message/index.html:21
 #: apps/admin_pages/pages/own/user/post/_comment.html:17
 #: apps/admin_pages/pages/own/user/post/preview.html:34
 #: apps/admin_pages/pages/post/index.html:51
 #: apps/admin_pages/pages/post/index.html:216
+#: apps/admin_pages/static/js/page_js/home.js:53
 msgid "评论"
 msgstr ""
 
@@ -171,7 +171,7 @@ msgid "1天"
 msgstr ""
 
 #: apps/admin_pages/pages/_index_chd3.html:16
-#: apps/admin_pages/pages/index.html:92
+#: apps/admin_pages/static/js/page_js/home.js:56
 msgid "7天"
 msgstr ""
 
@@ -186,10 +186,10 @@ msgstr ""
 
 #: apps/admin_pages/pages/_index_chd3.html:67
 #: apps/admin_pages/pages/based/sidebar.html:161
-#: apps/admin_pages/pages/index.html:89
 #: apps/admin_pages/pages/message/on-site.html:68
 #: apps/admin_pages/pages/setting/host/exec-cmd.html:32
 #: apps/admin_pages/pages/user/index.html:14
+#: apps/admin_pages/static/js/page_js/home.js:53
 msgid "用户"
 msgstr ""
 
@@ -214,27 +214,6 @@ msgstr ""
 
 #: apps/admin_pages/pages/index.html:29
 msgid "查看更多"
-msgstr ""
-
-#: apps/admin_pages/pages/index.html:65
-msgid "数据有缓存延迟"
-msgstr ""
-
-#: apps/admin_pages/pages/based/sidebar.html:60
-#: apps/admin_pages/pages/index.html:89
-msgid "多媒体"
-msgstr ""
-
-#: apps/admin_pages/pages/index.html:103
-msgid "30天"
-msgstr ""
-
-#: apps/admin_pages/pages/index.html:114
-msgid "总数"
-msgstr ""
-
-#: apps/admin_pages/pages/index.html:136
-msgid "加载中"
 msgstr ""
 
 #: apps/admin_pages/pages/recover-password.html:2
@@ -449,7 +428,7 @@ msgid "添加规则"
 msgstr ""
 
 #: apps/admin_pages/pages/audit/rule/index.html:46
-#: apps/admin_pages/pages/based/msg_box.html:44
+#: apps/admin_pages/pages/based/msg_box.html:46
 #: apps/admin_pages/pages/permission/index.html:114
 #: apps/admin_pages/pages/permission/url/edit.html:26
 #: apps/admin_pages/pages/permission/url/index.html:56
@@ -872,19 +851,19 @@ msgstr ""
 msgid "忽略"
 msgstr ""
 
-#: apps/admin_pages/pages/based/msg_box.html:48
-#: apps/admin_pages/pages/based/msg_box.html:60
+#: apps/admin_pages/pages/based/msg_box.html:50
+#: apps/admin_pages/pages/based/msg_box.html:62
 msgid "确定删除"
 msgstr ""
 
-#: apps/admin_pages/pages/based/msg_box.html:52
+#: apps/admin_pages/pages/based/msg_box.html:54
 #: apps/admin_pages/pages/own/account/settings/_basis.html:30
 #: apps/admin_pages/pages/own/user/post/_comment.html:179
 #: apps/admin_pages/pages/own/user/post/preview.html:149
 msgid "取消"
 msgstr ""
 
-#: apps/admin_pages/pages/based/msg_box.html:55
+#: apps/admin_pages/pages/based/msg_box.html:57
 msgid "确定"
 msgstr ""
 
@@ -911,6 +890,11 @@ msgstr ""
 #: apps/admin_pages/pages/based/sidebar.html:47
 #: apps/admin_pages/pages/comment/index.html:2
 msgid "评论管理"
+msgstr ""
+
+#: apps/admin_pages/pages/based/sidebar.html:60
+#: apps/admin_pages/static/js/page_js/home.js:53
+msgid "多媒体"
 msgstr ""
 
 #: apps/admin_pages/pages/based/sidebar.html:69
@@ -1209,9 +1193,9 @@ msgid "管理员删除"
 msgstr ""
 
 #: apps/admin_pages/pages/comment/index.html:112
-#: apps/admin_pages/pages/comment/index.html:251
 #: apps/admin_pages/pages/post/index.html:127
 #: apps/admin_pages/pages/post/index.html:286
+#: apps/admin_pages/static/js/page_js/comment/index.js:9
 msgid "未审核"
 msgstr ""
 
@@ -1290,24 +1274,6 @@ msgstr ""
 msgid "最后举报"
 msgstr ""
 
-#: apps/admin_pages/pages/comment/index.html:250
-#: apps/admin_pages/pages/message/email.html:188
-#: apps/admin_pages/pages/message/sms.html:141
-#: apps/admin_pages/pages/post/index.html:284
-#: apps/admin_pages/pages/user/index.html:292
-msgid "正常"
-msgstr ""
-
-#: apps/admin_pages/pages/comment/index.html:252
-#: apps/admin_pages/pages/post/index.html:287
-msgid "未通过"
-msgstr ""
-
-#: apps/admin_pages/pages/comment/index.html:253
-#: apps/admin_pages/pages/post/index.html:289
-msgid "待删除"
-msgstr ""
-
 #: apps/admin_pages/pages/media/_bar.html:8
 #: apps/admin_pages/pages/media/_bar.html:9
 #: apps/admin_pages/pages/media/text.html:27
@@ -1321,7 +1287,6 @@ msgstr ""
 
 #: apps/admin_pages/pages/media/_bar.html:11
 #: apps/admin_pages/pages/media/_bar.html:12
-#: apps/admin_pages/pages/media/_script.html:10
 #: apps/admin_pages/pages/media/audio-edit.html:37
 #: apps/admin_pages/pages/media/audio-edit.html:38
 #: apps/admin_pages/pages/media/image-edit.html:53
@@ -1352,6 +1317,7 @@ msgstr ""
 #: apps/admin_pages/pages/theme-setting/display/text.html:41
 #: apps/admin_pages/pages/theme-setting/display/video-edit.html:37
 #: apps/admin_pages/pages/theme-setting/display/video-edit.html:38
+#: apps/admin_pages/static/js/page_js/media/index.js:5
 msgid "默认"
 msgstr ""
 
@@ -1381,7 +1347,6 @@ msgstr ""
 
 #: apps/admin_pages/pages/media/_bar.html:55
 #: apps/admin_pages/pages/media/_bar.html:60
-#: apps/admin_pages/pages/media/_script.html:37
 #: apps/admin_pages/pages/media/image.html:60
 #: apps/admin_pages/pages/media/video.html:59
 #: apps/admin_pages/pages/module/editor/markdown.html:28
@@ -1392,43 +1357,22 @@ msgstr ""
 #: apps/admin_pages/pages/theme-setting/display/image.html:61
 #: apps/admin_pages/pages/theme-setting/display/video.html:60
 #: apps/admin_pages/pages/theme-setting/themes.html:24
+#: apps/admin_pages/static/js/page_js/media/index.js:32
 msgid "上传"
 msgstr ""
 
 #: apps/admin_pages/pages/media/_bar.html:64
-#: apps/admin_pages/pages/media/_script.html:124
 #: apps/admin_pages/pages/media/text.html:227
 #: apps/admin_pages/pages/theme-setting/display/_bar.html:75
 #: apps/admin_pages/pages/theme-setting/display/_script.html:155
 #: apps/admin_pages/pages/theme-setting/display/text.html:262
+#: apps/admin_pages/static/js/page_js/media/index.js:119
 msgid "全选"
 msgstr ""
 
 #: apps/admin_pages/pages/media/_inform_modal.html:7
 #: apps/admin_pages/pages/theme-setting/display/_inform_modal.html:7
 msgid "举报信息"
-msgstr ""
-
-#: apps/admin_pages/pages/media/_script.html:7
-#: apps/admin_pages/pages/theme-setting/display/_script.html:8
-msgid "批量上传"
-msgstr ""
-
-#: apps/admin_pages/pages/media/_script.html:34
-#: apps/admin_pages/pages/theme-setting/display/_script.html:38
-msgid "关闭上传"
-msgstr ""
-
-#: apps/admin_pages/pages/media/_script.html:102
-#: apps/admin_pages/pages/theme-setting/display/_script.html:127
-msgid "请选择要删除的项"
-msgstr ""
-
-#: apps/admin_pages/pages/media/_script.html:122
-#: apps/admin_pages/pages/media/text.html:225
-#: apps/admin_pages/pages/theme-setting/display/_script.html:153
-#: apps/admin_pages/pages/theme-setting/display/text.html:260
-msgid "取消全选"
 msgstr ""
 
 #: apps/admin_pages/pages/media/audio-edit.html:2
@@ -1675,6 +1619,13 @@ msgstr ""
 msgid "创建时间"
 msgstr ""
 
+#: apps/admin_pages/pages/media/text.html:225
+#: apps/admin_pages/pages/theme-setting/display/_script.html:153
+#: apps/admin_pages/pages/theme-setting/display/text.html:260
+#: apps/admin_pages/static/js/page_js/media/index.js:117
+msgid "取消全选"
+msgstr ""
+
 #: apps/admin_pages/pages/media/video-edit.html:2
 #: apps/admin_pages/pages/theme-setting/display/video-edit.html:2
 msgid "视频文本编辑"
@@ -1722,6 +1673,14 @@ msgstr ""
 
 #: apps/admin_pages/pages/message/email.html:161
 msgid "发件人"
+msgstr ""
+
+#: apps/admin_pages/pages/message/email.html:188
+#: apps/admin_pages/pages/message/sms.html:141
+#: apps/admin_pages/pages/post/index.html:284
+#: apps/admin_pages/pages/user/index.html:292
+#: apps/admin_pages/static/js/page_js/comment/index.js:8
+msgid "正常"
 msgstr ""
 
 #: apps/admin_pages/pages/message/email.html:194
@@ -2729,6 +2688,16 @@ msgstr ""
 msgid "标签"
 msgstr ""
 
+#: apps/admin_pages/pages/post/index.html:287
+#: apps/admin_pages/static/js/page_js/comment/index.js:10
+msgid "未通过"
+msgstr ""
+
+#: apps/admin_pages/pages/post/index.html:289
+#: apps/admin_pages/static/js/page_js/comment/index.js:11
+msgid "待删除"
+msgstr ""
+
 #: apps/admin_pages/pages/post/index.html:309
 msgid "最近更新: "
 msgstr ""
@@ -3085,6 +3054,21 @@ msgstr ""
 msgid "确定? 刪除前请手动清理该主题设置数据"
 msgstr ""
 
+#: apps/admin_pages/pages/theme-setting/display/_script.html:8
+#: apps/admin_pages/static/js/page_js/media/index.js:2
+msgid "批量上传"
+msgstr ""
+
+#: apps/admin_pages/pages/theme-setting/display/_script.html:38
+#: apps/admin_pages/static/js/page_js/media/index.js:29
+msgid "关闭上传"
+msgstr ""
+
+#: apps/admin_pages/pages/theme-setting/display/_script.html:127
+#: apps/admin_pages/static/js/page_js/media/index.js:97
+msgid "请选择要删除的项"
+msgstr ""
+
 #: apps/admin_pages/pages/theme-setting/display/audio-edit.html:57
 #: apps/admin_pages/pages/theme-setting/display/image-edit.html:73
 #: apps/admin_pages/pages/theme-setting/display/other-edit.html:57
@@ -3375,5 +3359,33 @@ msgstr ""
 
 #: apps/admin_pages/pages/user/index.html:294
 msgid "已移除"
+msgstr ""
+
+#: apps/admin_pages/static/js/webuploader.js:1015
+msgid "运行时错误"
+msgstr ""
+
+#: apps/admin_pages/static/js/webuploader.js:1085
+msgid "已经连接"
+msgstr ""
+
+#: apps/admin_pages/static/js/webuploader.js:1705
+msgid "按钮指定错误"
+msgstr ""
+
+#: apps/admin_pages/static/js/page_js/home.js:29
+msgid "数据有缓存延迟"
+msgstr ""
+
+#: apps/admin_pages/static/js/page_js/home.js:67
+msgid "30天"
+msgstr ""
+
+#: apps/admin_pages/static/js/page_js/home.js:78
+msgid "总数"
+msgstr ""
+
+#: apps/admin_pages/static/js/page_js/home.js:100
+msgid "加载中"
 msgstr ""
 

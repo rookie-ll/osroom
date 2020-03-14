@@ -166,7 +166,7 @@ function alert_msg(data){
             $('#msg-box').append($('#alert-success').html());
             $('#success-msg').attr('id', msg_id);
             $("#"+msg_id).find("#success-msg-content").text(data.msg);
-            var n = 3;//3s隐藏
+            var n = 1;//3s隐藏
             window.setInterval(
                 function(){
                     if(!n){
@@ -174,7 +174,7 @@ function alert_msg(data){
                         return;
                     };
                     n -= 1;
-                    $("#"+msg_id).find("#success-msg-content").text(data.msg+" ("+n+"s)");
+                    // $("#"+msg_id).find("#success-msg-content").text(data.msg+" ("+n+"s)");
                 },
             1000);
 
@@ -184,6 +184,18 @@ function alert_msg(data){
             $('#msg-box').append($('#alert-warning').html());
             $('#warning-msg').attr('id', msg_id);
             $("#"+msg_id).find("#warning-msg-content").text(data.msg);
+            var n = 5;//5s隐藏
+            window.setInterval(
+                function(){
+                    if(!n){
+                        $('#'+msg_id).remove();
+                        return;
+                    };
+                    n -= 1;
+                    // $("#"+msg_id).find("#warning-msg-content").text(data.msg+" ("+n+"s)");
+                },
+            1000);
+
 
         }else if(data.msg_type == "e"){
             var msg_id = 'error-'+rint;

@@ -23,13 +23,17 @@ def get_user_public_info(**kwargs):
     user_id = kwargs.get("user_id")
     is_basic = kwargs.get("is_basic", 0)
     determine_following = kwargs.get("determine_following", True)
-    user = mdbs["user"].db.user.find_one({"_id": ObjectId(user_id)},
-                                     {"username": 1,
-                                      "custom_domain": 1,
-                                      "homepage":1,
-                                      "avatar_url": 1,
-                                      "introduction": 1,
-                                      "gender": 1})
+    user = mdbs["user"].db.user.find_one(
+        {
+            "_id": ObjectId(user_id)},
+                                     {
+                                         "username": 1,
+                                         "custom_domain": 1,
+                                         "homepage":1,
+                                         "avatar_url": 1,
+                                         "introduction": 1,
+                                         "gender": 1
+                                     })
     if not user:
         return False, gettext("The specified user is not found")
     else:
