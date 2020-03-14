@@ -9,7 +9,6 @@ from apps.app import mdbs
 from apps.core.flask.reqparse import arg_verify
 from apps.core.utils.get_config import get_config
 from apps.utils.content_evaluation.content import content_inspection_text
-from apps.utils.format.url_format import get_domain
 
 
 def short_str_verifi(short_str, project=None, allow_special_chart=False):

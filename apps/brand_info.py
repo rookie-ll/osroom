@@ -6,6 +6,7 @@ import platform
 import os
 from PIL import Image
 from apps.configs.sys_config import STATIC_PATH, VERSION
+from apps.development_run_option import start_info_print
 
 
 def start_info():
@@ -31,19 +32,18 @@ def start_info():
                     ch = "\033[1;33m{}\033[0m".format(ch)
                 txt += ch
             txt += '\n'
-        print(txt)
+        start_info_print(txt)
 
     version = VERSION
     info = """
     Welcome to use the osroom.
     osroom v{}
-    osroom website: \033[1;34m http://osroom.com \033[0m
+    osroom website: \033[1;34m https://osroom.com \033[0m
     Project code download: \033[1;34m https://github.com/osroom/osroom \033[0m
     License: BSD3
     The operating system: {}
-    Server started...
     """.format(version, platform.system())
-    print(info)
+    start_info_print(info)
 
 
 def get_char(r, b, g, alpha=256):

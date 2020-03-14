@@ -4,7 +4,7 @@
 # @Author : Allen Woo
 import os
 try:
-    shcmd = """ps -ef | grep uwsgi.ini | awk '{print $2}' | xargs kill -9"""
+    shcmd = """ps -ef | grep uwsgi_run.ini | awk '{print $2}' | xargs kill -9"""
     r = os.system(shcmd)
     print("Kill uwsgi.")
 except Exception as e:

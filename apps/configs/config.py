@@ -879,9 +879,9 @@ CONFIG = {
         },
         "SESSION_TYPE": {
             "sort": 99,
-            "value": "mongodb",
+            "value": "redis",
             "type": "string",
-            "info": "保存Session会话的类型,可选mongodb, redis"
+            "info": "保存Session会话的类型,可选redis, mongodb. 推荐redis"
         },
         "SESSION_MONGODB_COLLECT": {
             "sort": 99,

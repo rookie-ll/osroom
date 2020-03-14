@@ -33,22 +33,26 @@ class MyMongo:
             config_prefix=config_prefix,
             db_config=db_config
         )
+        self.dbs = {}
         self.db = self.pymongo.db
-        self.db_conn = self.pymongo.db_conn
-        if len(self.db_conn.collection_names()):
-            for op in dir(self.db_conn[self.db_conn.collection_names()[0]]):
+        if len(self.pymongo.db_conn.collection_names()):
+            for op in dir(self.pymongo.db_conn[self.pymongo.db_conn.collection_names()[0]]):
                 if op[0] == "_":
                     continue
-                for collection in self.db_conn.collection_names():
+                for collection in self.pymongo.db_conn.collection_names():
                     umio = MdbOp()
                     umio.init_app(
-                        self.db_conn[collection],
+                        self.pymongo.db_conn[collection],
                         op
                     )
                     self.db.__dict__[collection].__dict__[op] = umio.db_op
 
-            for collection in self.db_conn.collection_names():
-                self.dbs[collection] = self.db.__dict__[collection]
+            for collection in self.pymongo.db_conn.collection_names():
+                self.dbs[collection] = getattr(self.db, collection)
+        for op in dir(self.pymongo.db_conn):
+            if op[0] == "_":
+                continue
+            setattr(self.db, op, getattr(self.pymongo.db_conn, op))
 
         self.connection = self.pymongo.connection
         self.name = self.pymongo.name

@@ -3,7 +3,7 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 from flask_babel import gettext
-from apps.app import csrf, rest_session
+from apps.app import csrf, rest_session, redis
 from apps.core.auth.rest_token_auth import OsrTokenError
 from apps.core.blueprint import api
 from apps.core.utils.get_config import get_config, GetConfig
@@ -99,7 +99,6 @@ class OsrRequestProcess:
                         "current": self.get_current_lang()
                     }
                 }
-
             get_conf = GetConfig()
             g.get_config = get_conf.get_config
 

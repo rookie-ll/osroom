@@ -1,6 +1,7 @@
 # osroom
 # .xxx
 .*
+!.flaskenv
 
 # python
 __pycache__/
@@ -41,7 +42,6 @@ db_config.py*
 
 # cache
 /*cache/
-*.ini
 .idea
 .git
 

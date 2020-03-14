@@ -15,7 +15,7 @@ curren_path = os.path.abspath(os.path.dirname(__file__))
 """
 Osroom版本
 """
-VERSION = "2.1"
+VERSION = "3.0 beta"
 
 """
   需要导入的模块

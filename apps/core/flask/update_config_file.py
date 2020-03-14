@@ -6,6 +6,7 @@ import time
 import regex as re
 from copy import deepcopy
 from apps.core.logger.web_logging import web_start_log
+from apps.brand_info import start_info_print
 from apps.utils.format.time_format import time_to_utcdate
 from apps.utils.host.get_info import get_host_info
 from apps.configs.config import OVERWRITE_DB, CONFIG, SYS_CONFIG_VERSION
@@ -104,7 +105,7 @@ def update_config_file(mdbs, *args, **kwargs):
                 # So: 这次不更新
                 msg = " * [sys configs] Not updated. The system is using the same or higher configuration version.\n" \
                       "   And it was executed within 24 hours.\n"
-                print("\033[33m{}\033[0m".format(msg))
+                start_info_print("\033[33m{}\033[0m".format(msg))
                 return True
 
             now_version = version_info["new_version"]
