@@ -16,3 +16,11 @@ try:
     print("Kill celery_worker.celery.")
 except Exception as e:
     print(e)
+
+
+sudo apt-get remove \
+linux-headers-4.15.0-28 \
+linux-headers-4.15.0-28-generic \
+linux-image-4.15.0-28-generic \
+linux-modules-4.15.0-28-generic \
+linux-modules-extra-4.15.0-28-generic

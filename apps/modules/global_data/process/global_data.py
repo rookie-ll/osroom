@@ -38,6 +38,10 @@ def get_global_site_data(req_type="api"):
 
     # site
     data["site_config"] = get_configs("site_config")
+    data["site_config"]["STATIC_FILE_VERSION"] = "{}_{}".format(
+        data["site_config"]["STATIC_FILE_VERSION"],
+        lang
+    )
     data["site_config"] = dict(data["site_config"], **get_configs("seo"))
     data["site_config"]["sys_version"] = VERSION
     # msg

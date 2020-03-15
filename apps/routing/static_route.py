@@ -2,13 +2,15 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
+import base64
 import os
-from flask import send_file, request
+from flask import send_file, request, render_template, g
 from werkzeug.exceptions import abort
 from apps.app import csrf
-from apps.configs.sys_config import ADMIN_STATIC_FOLDER
-from apps.core.blueprint import static, theme_view
+from apps.configs.sys_config import ADMIN_STATIC_FOLDER, TEMP_STATIC_FOLDER
+from apps.core.blueprint import static, theme_view, admin_static_file
 from apps.core.flask.permission import page_permission_required
+from apps.core.template.template import banel_translate_js_files
 from apps.core.utils.get_config import get_config
 from apps.utils.format.obj_format import str_to_num
 
@@ -80,19 +82,28 @@ def static_file(path):
 #####################################################
 
 @csrf.exempt
-@theme_view.route('/admin-pages/static/<regex(".+"):path>', methods=['GET'])
+@admin_static_file.route('/<regex(".+"):path>', methods=['GET'])
 @page_permission_required()
 def admin_static_file(path):
     """
     获取admin_pages下静态文件
     :param path:文件路径
     """
-    absolute_path = os.path.abspath("{}/{}".format(ADMIN_STATIC_FOLDER, path))
+    absolute_path = os.path.abspath("{}/{}".format(
+        ADMIN_STATIC_FOLDER,
+        path
+    ))
     if not os.path.isfile(absolute_path):
         abort(404)
+    absolute_path = banel_translate_js_files(
+        prefix="adm_static_file",
+        path=path,
+        absolute_path=absolute_path
+    )
     return send_file(filename_or_fp=absolute_path,
                      conditional=True,
                      last_modified=True)
+
 
 #####################################################
 # apps/themes/下主题静态文件路由
@@ -110,8 +121,8 @@ def theme_static_file(path, theme_name=None):
         1.对于图片,本路由只能获取目录themes/<theme name>/static下定义尺寸图片
         参数w,h可指定图片大小
     :param path:原图片路径
-    :param w:获取的宽
-    :param h:获取的高
+    :param w: 获取的宽
+    :param h: 获取的高
     :return:w和ｈ都大于0则返回相应尺寸图片; w和ｈ都等于0则返回原图; 其中一个值大于０则返回以这个值为基础等比缩放图片
     """
     if not theme_name:
@@ -120,7 +131,6 @@ def theme_static_file(path, theme_name=None):
     h = str_to_num(request.args.get("h", 0))
     if w or h:
         path_list = os.path.splitext(path.rstrip().rstrip("/"))
-
         absolute_path = os.path.abspath(
             "{}/{}/static/{}_w_{}_h_{}{}".format(
                 theme_view.template_folder,
@@ -144,11 +154,15 @@ def theme_static_file(path, theme_name=None):
                 # 等比缩放
                 imgcs.isometric(w, h)
     else:
-        absolute_path = os.path.abspath(
-            "{}/{}/static/{}".format(
-                theme_view.template_folder, theme_name, path))
+        path = "{}/static/{}".format(theme_name, path)
+        absolute_path = os.path.abspath("{}/{}".format(theme_view.template_folder, path))
         if not os.path.isfile(absolute_path):
             abort(404)
+        absolute_path = banel_translate_js_files(
+            prefix=theme_name,
+            path=path,
+            absolute_path=absolute_path
+        )
     return send_file(filename_or_fp=absolute_path,
                      conditional=True,
                      last_modified=True)

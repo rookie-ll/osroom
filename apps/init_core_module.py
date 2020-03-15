@@ -80,7 +80,7 @@ def init_core_module(app, **kwargs):
     from apps.core.utils.get_config import get_configs, get_config
     from apps.core.flask.request import OsrRequestProcess
     from apps.core.flask.errorhandler import ErrorHandler
-    from apps.core.blueprint import api, admin_view, theme_view, static_html_view, static, open_api
+    from apps.core.blueprint import api, admin_view, theme_view, static_html_view, static, open_api, admin_static_file
     from apps.core.flask.routing import RegexConverter
     from apps.core.flask.routing import push_url_to_db
 
@@ -144,6 +144,7 @@ def init_core_module(app, **kwargs):
     app.register_blueprint(theme_view)
     app.register_blueprint(static_html_view)
     app.register_blueprint(static)
+    app.register_blueprint(admin_static_file)
     if not is_debug:
         st = time.time()
         push_url_to_db(app)

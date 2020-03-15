@@ -310,11 +310,16 @@ def switch_theme():
 
         mdbs["sys"].db.sys_config.update_many(
             {
-                "project": "site_config", "key": "STATIC_FILE_VERSION"}, {
+                "project": "site_config",
+                "key": "STATIC_FILE_VERSION"
+            },
+            {
                 "$set": {
                     "value": int(
-                        time_to_utcdate(
-                            time.time(), "%Y%m%d%H%M%S")), "update_time": time.time()}}, upsert=True)
+                        time_to_utcdate(time.time(), "%Y%m%d%H%M%S")),
+                    "update_time": time.time()}},
+            upsert=True
+        )
 
         cache.delete(CONFIG_CACHE_KEY)
         init_theme_data(mdbs=mdbs)
