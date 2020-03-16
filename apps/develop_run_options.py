@@ -6,7 +6,7 @@ import os
 import sys
 import click
 from apps.app import app
-from apps.configs.sys_config import PROJECT_PATH, LOG_PATH
+from apps.configs.sys_config import PROJECT_PATH
 from asnyc_task_start import async_task_worker
 
 

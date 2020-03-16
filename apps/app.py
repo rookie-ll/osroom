@@ -7,6 +7,7 @@ from flask_oauthlib.client import OAuth
 from celery import Celery
 
 from apps.configs.celery_config import CeleryConfig
+from apps.core.db.redis_conn import Myredis
 from apps.core.flask.myflask import OsrApp
 from apps.core.flask.cache import Cache
 from apps.core.flask.rest_session import RestSession
@@ -15,7 +16,6 @@ from flask_mail import Mail
 from flask_session import Session
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager
-from redis import StrictRedis
 from apps.configs.db_config import DB_CONFIG
 
 """
@@ -36,10 +36,11 @@ sess = Session()
 rest_session = RestSession()
 mail = Mail()
 oauth = OAuth()
-redis = StrictRedis(host=DB_CONFIG["redis"]["host"][0],
-                    port=DB_CONFIG["redis"]["port"][0],
-                    password=DB_CONFIG["redis"]["password"])
-
+redis = Myredis(
+    host=DB_CONFIG["redis"]["host"][0],
+    port=DB_CONFIG["redis"]["port"][0],
+    password=DB_CONFIG["redis"]["password"]
+)
 
 # Celery 配置
 app.config.from_object(CeleryConfig)

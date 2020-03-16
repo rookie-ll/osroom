@@ -6,7 +6,7 @@ import platform
 import os
 from PIL import Image
 from apps.configs.sys_config import STATIC_PATH, VERSION
-from apps.development_run_option import start_info_print
+from apps.develop_run_options import start_info_print
 
 
 def start_info():

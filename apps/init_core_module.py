@@ -8,7 +8,7 @@ from apps.core.db.config_mdb import DatabaseConfig
 from apps.core.logger.logger_server import LogServerUDP
 from apps.core.logger.web_logging import web_start_log, WebLogger
 from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
-from apps.development_run_option import start_info_print
+from apps.develop_run_options import start_info_print
 from apps.utils.format.obj_format import ConfDictToClass
 from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session, celery
 from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, SESSION_PROTECTION, \
@@ -36,6 +36,8 @@ def init_core_module(app, **kwargs):
     app.config.from_object(ConfDictToClass(CONFIG["key"], key="value"))
 
     # 数据库
+    redis.init_app()
+
     app.config.from_object(DatabaseConfig())
     for name, mdb in mdbs.items():
         mdb.init_app(app, config_prefix=name.upper())
