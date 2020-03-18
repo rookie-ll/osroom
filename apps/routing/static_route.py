@@ -2,12 +2,11 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
-import base64
 import os
-from flask import send_file, request, render_template, g
+from flask import send_file, request
 from werkzeug.exceptions import abort
 from apps.app import csrf
-from apps.configs.sys_config import ADMIN_STATIC_FOLDER, TEMP_STATIC_FOLDER
+from apps.configs.sys_config import ADMIN_STATIC_FOLDER
 from apps.core.blueprint import static, theme_view, admin_static_file
 from apps.core.flask.permission import page_permission_required
 from apps.core.template.template import banel_translate_js_files
@@ -72,6 +71,11 @@ def static_file(path):
             "{}/{}".format(static.template_folder, path))
         if not os.path.isfile(absolute_path):
             abort(404)
+        absolute_path = banel_translate_js_files(
+            prefix="static",
+            route_relative_path=path,
+            absolute_path=absolute_path
+        )
     return send_file(filename_or_fp=absolute_path,
                      conditional=True,
                      last_modified=True)
@@ -97,7 +101,7 @@ def admin_static_file(path):
         abort(404)
     absolute_path = banel_translate_js_files(
         prefix="adm_static_file",
-        path=path,
+        route_relative_path=path,
         absolute_path=absolute_path
     )
     return send_file(filename_or_fp=absolute_path,
@@ -160,7 +164,7 @@ def theme_static_file(path, theme_name=None):
             abort(404)
         absolute_path = banel_translate_js_files(
             prefix=theme_name,
-            path=path,
+            route_relative_path=path,
             absolute_path=absolute_path
         )
     return send_file(filename_or_fp=absolute_path,

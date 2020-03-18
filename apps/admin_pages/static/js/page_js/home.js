@@ -12,6 +12,7 @@ var vue = new Vue({
   }
 })
 
+
 // 加载完页面执行
 $(document).ready(function(){
     get_datas();
@@ -27,7 +28,6 @@ function get_datas(){
     r.then(function (result) {
         vue.datas = result.data;
         //alert_msg({msg:"{{_('数据有缓存延迟')}}", msg_type:"s"});
-
 
         // chart
         var days_7 = [];
