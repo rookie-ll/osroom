@@ -35,11 +35,17 @@ def banel_translate_js_files(prefix, route_relative_path, absolute_path):
             temp_name = "{}{}".format(route_relative_path, g.site_global["language"]["current"])
             temp_file_name = "{}_{}".format(prefix, base64.b16encode(temp_name.encode()).decode())
             absolute_path = "{}/{}.js".format(TEMP_STATIC_FOLDER, temp_file_name)
-            tr_file_time = os.path.getmtime(absolute_path)
-            if tr_file_time < ori_file_time or not os.path.isfile(absolute_path):
-                # 翻译文件的最后修改时间小于原文件或者不存在翻译文件
+            if not os.path.isfile(absolute_path):
+                # 不存在翻译文件
                 with open(absolute_path, "w") as wf:
                     # flask中没找替换翻译js的Jinjia模块. 使用render_template来翻译js文件,
                     wf.write(render_template(route_relative_path))
+            else:
+                tr_file_time = os.path.getmtime(absolute_path)
+                if tr_file_time < ori_file_time:
+                    # 翻译文件的最后修改时间小于原文件
+                    with open(absolute_path, "w") as wf:
+                        # flask中没找替换翻译js的Jinjia模块. 使用render_template来翻译js文件,
+                        wf.write(render_template(route_relative_path))
             return absolute_path
     return absolute_path

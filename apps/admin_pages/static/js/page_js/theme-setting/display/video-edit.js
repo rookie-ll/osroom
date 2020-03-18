@@ -1,1 +1,1 @@
-var media_type = "video";
+    var media_type = "video";

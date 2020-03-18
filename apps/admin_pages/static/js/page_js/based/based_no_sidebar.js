@@ -1,1 +1,1 @@
-$("#sidebar-left").addClass("visible-xs")
+    $("#sidebar-left").addClass("visible-xs")
