@@ -61,8 +61,10 @@
                                     {[sms.body]}
                                   </td>
                                   <td width="100px">
-                                        <span v-if="sms.to.length>3">{{_("多用户")}}</span>
-                                        <span v-else>{[sms.to]}</span>
+                                        <span v-for="acc in sms.to" class="osr-color-secondary">
+                                            {[acc]}
+                                            <br>
+                                        </span>
                                   </td>
                                   <td width="50px">
                                       {[sms.status]}
@@ -130,7 +132,7 @@
     </div>
 </div>
 
-<script src="/admin_pages/static/js/page_js/message/sms.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/message/sms.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}
 
 

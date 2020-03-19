@@ -331,7 +331,7 @@ def update_role_and_api_per(old_per_value, new_per_value=0):
     # 更新使用了该权限的role
     # 当前所有的用户角色
     updated_rolename = []
-    roles = mdbs["user"].db.role.find()
+    roles = mdbs["user"].db.role.find({})
     for role in roles:
         if int(role["permissions"]) & int(old_per_value) and not (
                 int(role["permissions"]) & int(get_permission("ROOT"))):

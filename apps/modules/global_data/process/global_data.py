@@ -8,7 +8,7 @@ from flask_login import current_user
 from apps.configs.sys_config import VERSION
 from apps.modules.theme_setting.process.nav_setting import get_global_theme_navs
 from apps.utils.paging.paging import datas_paging
-from apps.core.utils.get_config import get_configs, get_config
+from apps.core.utils.get_config import get_configs
 from apps.utils.upload.get_filepath import get_file_url
 from flask import request, g
 from apps.app import mdbs

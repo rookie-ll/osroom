@@ -6,8 +6,8 @@ import os
 
 from apps.configs.sys_config import PROJECT_PATH, APPS_PATH
 
-path = "{}/apps/admin_pages/pages/".format(PROJECT_PATH)
-js_dir = "{}/apps/admin_pages/static/js/page_js".format(PROJECT_PATH)
+path = "{}/apps/themes/osr-style/pages/".format(PROJECT_PATH)
+js_dir = "{}/apps/themes/osr-style/static/js/page_js".format(PROJECT_PATH)
 for root, dirs, files in os.walk(path):
 
     for filename in files:
@@ -33,7 +33,7 @@ for root, dirs, files in os.walk(path):
                     wf = open(js_path, "w")
                     script_path ="""
 <script src="%s?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
-</script>"""%(js_path.replace(APPS_PATH, ""))
+</script>"""%(js_path.replace("{}/themes".format(APPS_PATH), "/theme"))
                     print(script_path)
                     html_lines.append(script_path)
                     continue

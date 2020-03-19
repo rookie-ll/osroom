@@ -23,7 +23,6 @@
                             <span class="osr-color-secondary">{{_("当前设置主题")}}: {[current_theme_name]}</span>
                         </strong>
                     </header>
-                </div>
                 <div class="panel-body">
                      <select id="lang" name="lang"  class="form-control osr-form-control input-sm"
                         @change="switch_lang($event.target.value)">
@@ -67,10 +66,10 @@
                         <button v-on:click="warning_modal(null, 'del', nav._id)" class="btn-sm osr-btn btn btn-danger" >{{_("删除")}}</button>
                     </div>
               </div>
-
+                </div>
             </div>
     </div>
 </div>
 
-<script src="/admin_pages/static/js/page_js/theme-setting/nav.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/theme-setting/nav.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}

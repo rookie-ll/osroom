@@ -21,7 +21,8 @@
                         </div>
                         <!-- //上传-->
                         <div id="galley" class="docs-pictures clearfix">
-                            <div  v-for="(media, index) in medias.datas" class="osr-img-list col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                            <div  v-for="(media, index) in medias.datas"  style="padding-left:5px;padding-right:5px"
+                                  class="osr-img-list col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <span class="osr-img-tag-media">
                                   <span  v-if="media.category" class="badge badge-info">
                                       {[media.category]}
@@ -75,7 +76,7 @@
 <link href="/admin-pages/static/css/image/viewer.min.css?v={{g.site_global.site_config.STATIC_FILE_VERSION}}" rel="stylesheet" type="text/css" />
 
 
-<script src="/admin_pages/static/js/page_js/media/image.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/media/image.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% include 'media/_script.html' %}
 
 {% endblock %}

@@ -3,14 +3,14 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import os
-from flask import send_file, request
+from flask import send_file, request, render_template, g
 from werkzeug.exceptions import abort
 from apps.app import csrf
-from apps.configs.sys_config import ADMIN_STATIC_FOLDER
+from apps.configs.sys_config import ADMIN_STATIC_FOLDER, TEMP_STATIC_FOLDER
 from apps.core.blueprint import static, theme_view, admin_static_file
 from apps.core.flask.permission import page_permission_required
-from apps.core.template.template import banel_translate_js_files
 from apps.core.utils.get_config import get_config
+from apps.modules.global_data.process.global_data import get_global_site_data
 from apps.utils.format.obj_format import str_to_num
 
 from apps.utils.image.image import ImageCompression
@@ -170,3 +170,47 @@ def theme_static_file(path, theme_name=None):
     return send_file(filename_or_fp=absolute_path,
                      conditional=True,
                      last_modified=True)
+
+
+def banel_translate_js_files(prefix, route_relative_path, absolute_path):
+    """
+    理由Jinja2翻译js
+    :param prefix:
+    :param route_relative_path:
+    :param absolute_path:
+    :return:
+    """
+    if route_relative_path.endswith(".js"):
+        # js 翻译
+        ori_file_time = os.path.getmtime(absolute_path)
+        name = os.path.split(route_relative_path)[-1]
+
+        # 主题页面js或者以osr_开头的js文件给予翻译
+        if "osr_page_js" in route_relative_path or name.startswith("osr-"):
+            # 使用翻译好的js
+            temp_name = "{}{}_{}".format(
+                prefix,
+                os.path.splitext(route_relative_path)[0].replace("/", "_"),
+                g.site_global["language"]["current"])
+
+            absolute_path = "{}/{}.js".format(TEMP_STATIC_FOLDER, temp_name)
+            if not os.path.isfile(absolute_path):
+                # 不存在翻译文件
+                g.site_global = dict(g.site_global, **get_global_site_data(req_type="view"))
+                data = dict(request.args.items())
+                tr_content = render_template(route_relative_path, data=data)
+                with open(absolute_path, "w") as wf:
+                    # flask中没找替换翻译js的Jinjia模块. 使用render_template来翻译js文件,
+                    wf.write(tr_content)
+            else:
+                tr_file_time = os.path.getmtime(absolute_path)
+                if tr_file_time < ori_file_time:
+                    # 翻译文件的最后修改时间小于原文件
+                    g.site_global = dict(g.site_global, **get_global_site_data(req_type="view"))
+                    data = dict(request.args.items())
+                    tr_content = render_template(route_relative_path, data=data)
+                    with open(absolute_path, "w") as wf:
+                        # flask中没找替换翻译js的Jinjia模块. 使用render_template来翻译js文件,
+                        wf.write(tr_content)
+            return absolute_path
+    return absolute_path

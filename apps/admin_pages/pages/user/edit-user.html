@@ -34,7 +34,8 @@
                   <div class="form-group" v-else>
                       <label>{{_("密码修改")}}</label>
                   <input name="password" id="password" class="form-control osr-input input-sm" type="password" v-model="password"
-                         minlength="8" placeholder="{{_('将会覆盖原密码')}}"
+                         minlength="8" style="max-width: 300px"
+                         placeholder="{{_('将会覆盖原密码')}}"
                          data-bv-notempty-message="{{_('至少8个字符')}}"
                          data-bv-stringLength-message="{{_('至少8个字符')}}" required/>
                  </div>
@@ -71,5 +72,5 @@
 </div>
 
 
-<script src="/admin_pages/static/js/page_js/user/edit-user.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/user/edit-user.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}

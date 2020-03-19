@@ -15,10 +15,13 @@
          <div class="col-md-12 osr-col-xs-12">
             <section class="panel">
               <header class="panel-heading">
-                <span><i class="fa fa-shield"></i> {{_("权限修改")}}</span>
+                <span>
+                    <i class="fa fa-shield"></i> {{_("权限修改")}}
+                    <i v-on:click="switch_help_alert()" class="fa fa-question-circle osr-color-success" ></i>
+                </span>
               </header>
               <div class="panel-body">
-                    <div class="alert alert-info osr-alert osr-alert-warning">
+                    <div id="osr_help_alert" class="alert alert-info osr-alert osr-alert-warning" hidden>
                          <button data-dismiss="alert" class="close close-sm" type="button">
                              <i class="fa fa-times"></i>
                          </button>
@@ -105,5 +108,5 @@
 </div>
 
 
-<script src="/admin_pages/static/js/page_js/permission/url/edit.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/permission/url/edit.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}

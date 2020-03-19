@@ -48,7 +48,7 @@
                      </div>
                     <br>
 
-                     <div class="alert alert-info osr-alert osr-alert-warning">
+                     <div id="osr_help_alert" class="alert alert-info osr-alert osr-alert-warning" hidden>
                          <button data-dismiss="alert" class="close close-sm" type="button">
                              <i class="fa fa-times"></i>
                          </button>
@@ -58,75 +58,80 @@
                         {{_('"未自定义"权限,　并且代码中指定可以使用"缺省权重"的API将自动使用缺省权限验证(只需符合其中一个缺省权限即可).')}}.<br>
                         </div>
                     </div>
-
-                    <ul class="list-group">
-                        <li class="list-group-item" v-for="url in urls.datas">
-                            <!--<div v-if="current_type != 'page'" class="task-title">-->
-                                <!--<span class="osr-color-success">{{_("Endpoint")}}: </span>-->
-                                <!--<a class="task-title-sp">-->
-                                    <!--{[url.endpoint]}-->
-                                <!--</a>-->
-                            <!--</div>-->
-                            <div>
-                                <strong class="osr-color-success">{{_("类型")}}: </strong>
-                                <a>
-                                    {[url.type]}
-                                </a>
-                            </div>
-                            <div>
-                                <strong class="osr-color-success">{{_("URL(api/路由)")}}: </strong>
-                                <a>{[url.url]}</a>
-                            </div>
-                            <div>
-                                <strong class="osr-color-success">{{_("请求方式")}}: </strong>
-                                <span v-for="md in url.methods" class="osr-color-secondary">
-                                    {[md]}&nbsp;
-                                </span>
-                            </div>
-                            <div v-if="url.type=='page'">
-                                <span class="osr-color-success">{{_("登录验证")}}: </span>
-                                <span v-if="!url.login_auth">
-                                    &nbsp;&nbsp;{{_("否")}}
-                                </span>
-                                <br v-else>
-                                <span v-for="(v,k) in url.login_auth" class="task-title-sp">
-                                    &nbsp;&nbsp;<b>{[k | uppercase]}:</b>
-
-                                    <i v-if="v" class="fa fa-check osr-color-success"></i>
-                                    <i v-else class="fa fa-close osr-color-danger"></i>
-                                    <br>
-                                </span>
-                            </div>
-                            <div>
-                                <strong class="osr-color-success">{{_("权限验证")}}: </strong>
-                                <span v-if="!url.custom_permission">
-                                    &nbsp;&nbsp;{{_("未自定义")}}
-                                </span>
-                                <br v-else>
-                                <span v-for="(v,k) in url.custom_permission" class="task-title-sp">
-                                    &nbsp;&nbsp;<b>{[k | uppercase]}:</b>
-                                    <span v-for="per in permissions" v-if="v & per[1]" class="osr-color-secondary">
-                                        {[per[0]]}&nbsp;
+                 <table class="table table-hover">
+                    <thead>
+                        <tr>
+                          <th>{{_("API/路由")}}</th>
+                          <th>{{_("类型")}}</th>
+                          <th>{{_("请求方式")}}</th>
+                            <th>{{_("登录验证")}}</th>
+                          <th>
+                              {{_("权限验证")}}
+                              <i v-on:click="switch_help_alert()" class="fa fa-question-circle osr-color-success" ></i>
+                          </th>
+                          <th>{{_("操作")}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="url in urls.datas">
+                          <td width="100px" >
+                              <a>{[url.url]}</a>
+                          </td>
+                        <td>
+                             <a>{[url.type]}</a>
+                        </td>
+                        <td>
+                             <span v-for="md in url.methods" class="osr-color-secondary">
+                                {[md]}&nbsp;
+                            </span>
+                          </td>
+                            <td>
+                                  <div v-if="url.type=='page'">
+                                    <span class="osr-color-success">{{_("登录验证")}}: </span>
+                                    <span v-if="!url.login_auth">
+                                        &nbsp;&nbsp;{{_("否")}}
                                     </span>
-                                    <span v-if="!v">
-                                        {{_("未自定义")}}
+                                    <br v-else>
+                                    <span v-for="(v,k) in url.login_auth" class="task-title-sp">
+                                        &nbsp;&nbsp;<b>{[k | uppercase]}:</b>
+
+                                        <i v-if="v" class="fa fa-check osr-color-success"></i>
+                                        <i v-else class="fa fa-close osr-color-danger"></i>
+                                        <br>
                                     </span>
-                                    <br>
-                                </span>
-                            </div>
-                            <br>
-                            <div class="btn-group-sm" >
-                                <a :href="'/osr-admin/permission/url/edit?id='+url._id+'&ft='+current_type+'&fp='+page" class="btn osr-btn btn-info">
-                                    <span class="fa fa-pencil-square-o"></span> {{_("编辑")}}
-                                </a>
-                                <button v-if="url.type=='page'" v-on:click="warning_modal(null, 'del_url', url._id)" class="btn osr-btn btn-danger osr-pointer">
-                                    <span class="fa fa-trash"></span> {{_("删除")}}
-                                </button>
-                            </div>
-                        </li>
-                    </ul>
+                                </div>
+
+                              </td>
+                            <td>
+                                  <span v-if="!url.custom_permission">
+                                &nbsp;&nbsp;{{_("未自定义")}}
+                                    </span>
+                                    <span v-for="(v,k) in url.custom_permission" class="task-title-sp">
+                                        &nbsp;&nbsp;<b>{[k | uppercase]}:</b>
+                                        <span v-for="per in permissions" v-if="v & per[1]" class="osr-color-secondary">
+                                            {[per[0]]}&nbsp;
+                                        </span>
+                                        <span v-if="!v">
+                                            {{_("未自定义")}}
+                                        </span>
+                                        <br>
+                                    </span>
+
+                             </td>
+                            <td>
+                                 <div class="btn-group-sm" >
+                                    <a :href="'/osr-admin/permission/url/edit?id='+url._id+'&ft='+current_type+'&fp='+page" class="btn osr-btn btn-info">
+                                        <span class="fa fa-pencil-square-o"></span> {{_("编辑")}}
+                                    </a>
+                                    <button v-if="url.type=='page'" v-on:click="warning_modal(null, 'del_url', url._id)" class="btn osr-btn btn-danger osr-pointer">
+                                        <span class="fa fa-trash"></span> {{_("删除")}}
+                                    </button>
+                                </div>
+                             </td>
+                        </tr>
+                    </tbody>
+                 </table>
                 </div>
-
                 <!-- 页面导航-->
                 <div class="text-center hidden-md-down">
                     <ul class="pagination">
@@ -172,13 +177,12 @@
                     </li>
                 </ul>
                 <!-- //m页面导航-->
-
             </div>
         </div>
     </div>
 </div>
 
-<script src="/admin_pages/static/js/page_js/permission/url/index.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/permission/url/index.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}
 
 

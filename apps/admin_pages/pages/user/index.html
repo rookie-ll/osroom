@@ -213,64 +213,120 @@
                     <div class="panel-body">
                         <div class="tab-content">
                             <div id="info" class="tab-pane active">
+
                                 <span>
-                                    <strong>{{_("识别ID")}}:</strong> {[user_view._id]}
+                                    {{_("ID")}}:&nbsp;{[user_view._id]}
                                 </span>
                                 <br>
                                 <span>
-                                    <strong>{{_("注册时间")}}: </strong>{[user_view.create_at | formatDate]}
+                                    {{_("注册时间")}}: &nbsp;{[user_view.create_at | formatDate]}
                                 </span>
                                 <br>
                                 <span>
-                                    <strong>{{_("编辑器")}}: </strong>{[user_view.editor]}
+                                    {{_("编辑器")}}:&nbsp;{[user_view.editor]}
                                 </span>
                                 <br>
                                 <span>
-                                    <strong>{{_("出生日期")}}: </strong>{[user_view.birthday]}
+                                    {{_("出生日期")}}: &nbsp;{[user_view.birthday]}
                                 </span>
                                 <br>
                                 <span>
-                                    <strong>{{_("常居地址")}}: </strong>{[user_view.address]}
+                                    {{_("常居地址")}}: &nbsp;{[user_view.address]}
                                 </span>
                                 <br>
                                 <span>
-                                    <strong>{{_("个人简介")}}: </strong><br>
+                                    {{_("个人简介")}}:<br>
                                     <div class="osr-text">{[user_view.introduction]}</div>
                                 </span>
 
                             </div>
                             <div id="login-log" class="tab-pane">
-                                <span v-for="log in user_view.user_login_log.login_info">
-                                    <strong>{{_("时间")}}: </strong>{[log.time | formatDate]}<br>
-                                    <strong>IP :</strong>{[log.ip]}<br>
-                                    <strong>{{_("客户端")}}: </strong>{[log.client]}<br>
-                                    <strong>{{_("地理位置")}}:</strong><br>
-                                    <strong v-for="(v, k) in log.geo">
-                                        <span class="osr-color-secondary">{[k]}:</span> {[v.name]}
-                                    </strong>
-                                    <hr>
-                                </span>
+                                 <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                      <th>{{_("时间")}}</th>
+                                      <th>{{_("IP")}}</th>
+                                       <th>{{_("客户端")}}</th>
+                                         <th>{{_("地理位置")}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="log in user_view.user_login_log.login_info">
+                                      <td>
+                                          {[log.time | formatDate]}
+                                      </td>
+                                        <td>
+                                          {[log.ip]}
+                                       </td>
+                                        <td>
+                                         {[log.client]}
+                                       </td>
+                                        <td>
+                                            <span v-for="(v, k) in log.geo">
+                                                <span class="osr-color-secondary">{[k]}:</span> {[v.name]}<br>
+                                            </span>
+
+                                       </td>
+                                    </tr>
+                                </tbody>
+                              </table>
+
                             </div>
                             <div id="op-log" class="tab-pane">
-                                <span  v-for="op_log in user_view.user_op_log.logs">
-                                    <strong>{{_("时间")}}: </strong>{[op_log.time | formatDate]}<br>
-                                    <strong>{{_("类型")}}: </strong>{[op_log.op_type]}<br>
-                                    <strong>{{_("状态")}}: </strong>{[op_log.status]}<br>
-                                    <strong>{{_("提示")}}: </strong>{[op_log.info]}<br>
-                                    <hr>
-                                </span>
+                               <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                      <th>{{_("时间")}}</th>
+                                      <th>{{_("类型")}}</th>
+                                       <th>{{_("状态")}}</th>
+                                         <th>{{_("提示")}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="op_log in user_view.user_op_log.logs">
+                                      <td>
+                                          {[op_log.time | formatDate]}
+                                      </td>
+                                        <td>
+                                          {[op_log.op_type]}
+                                       </td>
+                                        <td>
+                                         {[op_log.status]}
+                                       </td>
+                                        <td>
+                                            {[op_log.info]}
+
+                                       </td>
+                                    </tr>
+                                </tbody>
+                              </table>
+
                             </div>
                              <div id="inform" class="tab-pane">
                                  <div v-if="user_view.inform">
-                                     <strong>{{_("举报总数")}}: </strong>{[user_view.inform.total]}<br>
-                                     <strong>{{_("最后举报")}}: </strong>{[user_view.inform.update_time | formatDate]}<br>
-                                     <span  v-if="k!='total' && k!='update_time'" v-for="(v,k) in user_view.inform">
-                                        <strong>{[k]}: </strong>{[v.cnt]}<br>
-                                     </span>
-                                 </div>
-                            </div>
+                                     <strong>{{_("举报总数")}}: </strong>&nbsp;{[user_view.inform.total]}<br>
+                                     <strong>{{_("最后举报")}}: </strong>&nbsp;{[user_view.inform.update_time | formatDate]}<br>
+                                     <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                              <th>{{_("类型")}}</th>
+                                               <th>{{_("数量")}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  v-if="k!='total' && k!='update_time'" v-for="(v,k) in user_view.inform">
+                                              <td>
+                                                 {[k]}
+                                              </td>
+                                                <td>
+                                                  {[v.cnt]
+                                               </td>
+                                            </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
 
-                        </div>
+                             </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -282,7 +338,7 @@
     <!-- //详细信息模态-->
 </div>
 
-<script src="/admin_pages/static/js/page_js/user/index.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/user/index.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}
 
 

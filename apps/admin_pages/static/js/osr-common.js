@@ -57,7 +57,7 @@ function osrHttp(type, url, data, args){
               async : async,
               success : function(data, status,Thrown){
                     if(Thrown.status == 204){
-                        data = {msg:$("#js-tr-204").attr("content"), msg_type:"s"};
+                        data = {msg:"{{_('删除成功')}}", msg_type:"s"};
                     }
                     //消息弹出
                     if(!not_prompt || data.msg_type != "s"){
@@ -125,7 +125,7 @@ function osrHttpUpload(type, url, data, args){
                 contentType: false,
                 success : function(data, status,Thrown){
                     if(Thrown.status == 204){
-                        data = {msg:$("#js-tr-204").attr("content"), msg_type:"s"};
+                        data = {msg:"{{_('删除成功')}}", msg_type:"s"};
                     }
                     //消息弹出
                     if(!not_prompt || data.msg_type != "s"){
@@ -359,16 +359,16 @@ function irrformatDate (time, fmt) {
     var diff_m = now_date.getMonth() - tdate.getMonth();
     var diff_d = now_date.getDate()-tdate.getDate();
     if(diff_time<60){
-        tdate = $("#js-tr-just-now").attr("content");
+        tdate = "{{_('刚刚')}}";
     }else if(diff_time>=60 && diff_time<60*60){
         var t = diff_time/60;
-        tdate = parseInt(t)+$("#js-tr-min-ago").attr("content");
+        tdate = parseInt(t)+"{{_('分钟前')}}";
     }else if(diff_y==0 && diff_m==0 && diff_d == 0 && diff_time>=60*60){
         var t = diff_time/(60*60);
-        tdate = parseInt(t)+$("#js-tr-hour-ago").attr("content");
+        tdate = parseInt(t)+"{{_('小时前')}}";
     }else if(diff_y==0 && diff_m==0 && diff_d == 1){
         temp_date = formatDate (time, fmt);
-        tdate = $("#js-tr-yesterday").attr("content")+temp_date.slice(-5);
+        tdate = "{{_('昨天')}}"+temp_date.slice(-5);
     }else if(diff_y == 0){
         tdate = formatDate(time, fmt).slice(5);
     }else{
@@ -639,4 +639,8 @@ function content_inform(cid, ctype, category, details){
         details:details
     }
     osrHttp("PUT","/api/inform/content",d);
+}
+
+function switch_help_alert(){
+    $("#osr_help_alert").toggle();
 }

@@ -57,7 +57,13 @@
                              {[theme.theme_name]}
                          </div>
                             <p v-if="!theme.error" class="osr-text-overleft osr-color-secondary">
-                                <strong data-toggle="tooltip" :title="theme.introduce">{[theme.introduce]}</strong>
+                                 <a :href="'/osr-admin/theme-view?theme='+theme.theme_name" target="_blank"
+                                 class="osr-color-success">
+                                    [{{_("点击预览")}}]
+                              </a>
+                                <strong data-toggle="tooltip" :title="theme.introduce">
+                                    {[theme.introduce]}
+                                </strong>
                             </p>
                            <span v-if="theme.error" class="osr-color-danger">
                                {{_("致命错误")}}: {[theme.error]}<br>
@@ -70,23 +76,34 @@
                          <br><br>
                           <div class="btn-group-sm">
 
-                              <a :href="'/osr-admin/theme-view?theme='+theme.theme_name" target="_blank" class="btn osr-btn btn-success">
-                                    {{_("预览")}}
-                              </a>
-                              <a v-if="theme.current" class="btn osr-btn btn-default">
+                              <a v-if="theme.current" class="btn osr-btn btn-default"
+                                 style="margin-bottom: 5px">
                                     {{_("已启用")}}
                               </a>
-                              <a v-if="!theme.current && !theme.error" v-on:click="switch_theme(theme.theme_name)" class="btn osr-btn btn-info">
+                              <a v-if="!theme.current && !theme.error"
+                                 v-on:click="switch_theme(theme.theme_name)"
+                                 class="btn osr-btn btn-info btn-sm"
+                                 style="margin-bottom: 5px"
+                              >
                                  {{_("启用")}}
                               </a>
-                              <a :href="'/osr-admin/theme-setting/nav?lang=zh_CN&theme='+theme.theme_name" class="btn osr-btn btn-success">
+                              <a :href="'/osr-admin/theme-setting/nav?lang=zh_CN&theme='+theme.theme_name"
+                                 style="margin-bottom: 5px"
+                                 class="btn osr-btn btn-success ">
                                  {{_("菜单设置")}}
                               </a>
 
-                              <a  v-on:click="warning_modal({'msg':'{{_('确定? 只恢复已删除的默认设置')}}' }, 'restore', theme.theme_name)" class="btn osr-btn btn-default">
-                                  <i class="fa fa-refresh"></i> {{_("恢复已删默认设置")}}
+                              <a  v-on:click="warning_modal({'msg':'{{_('确定? 只恢复已删除的默认设置')}}' }, 'restore', theme.theme_name)"
+                                  class="btn osr-btn btn-default"
+                                  style="margin-bottom: 5px"
+                              >
+                                  <i class="fa fa-refresh"></i> {{_("恢复默认设置")}}
                               </a>
-                              <a v-if="!theme.current" v-on:click="warning_modal({'msg':'{{_('确定? 刪除前请手动清理该主题设置数据')}}' }, 'delete_theme', theme.theme_name)" class="btn osr-btn btn-danger">
+                              <a v-if="!theme.current"
+                                 v-on:click="warning_modal({'msg':'{{_('确定? 刪除前请手动清理该主题设置数据')}}' }, 'delete_theme', theme.theme_name)"
+                                 class="btn osr-btn btn-danger"
+                                style="margin-bottom: 5px"
+                              >
                                   <i class="fa fa-trash"></i> {{_("删除")}}
                               </a>
                           </div>
@@ -99,5 +116,5 @@
 </div>
 
 
-<script src="/admin_pages/static/js/page_js/theme-setting/themes.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+<script src="/admin-pages/static/js/osr_page_js/theme-setting/themes.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>{% endblock %}

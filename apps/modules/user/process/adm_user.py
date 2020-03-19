@@ -286,15 +286,14 @@ def user_edit():
         s, r = email_format_ver(email)
         if not s:
             data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+            return data
         elif mdbs["user"].db.user.find_one({"email": email, "_id": {"$ne": ObjectId(tid)}}):
             # 邮箱是否注册过
             data = {
                 'msg': gettext("This email has been registered in the site oh, please login directly."),
                 'msg_type': "w",
                 "custom_status": 403}
-        if data:
             return data
-
     if password:
         # 密码格式验证
         s, r = password_format_ver(password)

@@ -37,9 +37,7 @@ def get_tags():
         tlimit=tlimit,
         sort=sort)
     data = cache.get(key=cache_key, db_type="redis")
-    if data != cache.cache_none:
-        return data
-    else:
+    if data == cache.cache_none:
         # 调用生成缓存程序生成新缓存
         async_get_tags.apply_async(
             kwargs={
@@ -52,7 +50,7 @@ def get_tags():
 
         # 然后返回最后一次的长期缓存
         data = cache.get(key="LAST_POST_TAGS_CACHE", db_type="mongodb")
-        return data
+    return data
 
 
 @celery.task(base=QueueOnce, once={'graceful': True})
