@@ -5,11 +5,8 @@
 from importlib import import_module, reload
 import os
 import sys
-
 import time
-
 import shutil
-
 import re
 import yaml
 from flask_babel import gettext

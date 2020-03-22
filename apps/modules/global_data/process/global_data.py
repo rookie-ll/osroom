@@ -66,7 +66,6 @@ def get_global_site_data(req_type="api"):
         else:
             data["is_authenticated"] = False
             data["user_info"] = {}
-
     data['d_msg'] = gettext("Get the current user information successfully")
     data['d_msg_type'] = "s"
     return data

@@ -9,7 +9,7 @@ from apps.core.blueprint import theme_view, static_html_view
 from flask import render_template, request, send_file, g
 from werkzeug.exceptions import abort
 from apps.core.flask.permission import page_permission_required
-from apps.core.utils.get_config import get_config, GetConfig
+from apps.core.utils.get_config import get_config
 from apps.modules.global_data.process.global_data import get_global_site_data
 from apps.routing.static_html_page import static_html, get_post_page_nums
 from apps.utils.format.time_format import time_to_utcdate
@@ -37,29 +37,6 @@ def pages(path):
     if path.startswith(static_html_view.url_prefix.strip("/")):
         return static_html(path)
     return get_render_template(path.rstrip("/"))
-
-
-# other
-@csrf.exempt
-@theme_view.route('/theme/view/<name>/<path:path>', methods=['GET'])
-@page_permission_required()
-def view_pages(name, path):
-    """
-    GET:
-        通用视图函数,那些公共的页面将从此进入(主题预览用)
-        :param path:
-        :return:
-    """
-    fixed_value = {
-        "theme": {
-            "CURRENT_THEME_NAME": name
-        }
-    }
-    get_conf = GetConfig(fixed_value=fixed_value)
-    g.get_config = get_conf.get_config_fixed
-    if path.startswith(static_html_view.url_prefix.strip("/")):
-        return static_html(path)
-    return get_render_template_view(path.rstrip("/"), name)
 
 
 def get_render_template_view(path, theme_name):

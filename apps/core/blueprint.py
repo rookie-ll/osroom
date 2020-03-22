@@ -58,7 +58,7 @@ admin_static_file = Blueprint(
 )
 
 routing_moudel = [
-    {"from": "apps.routing", "import": ["static_route", "admin_views", "theme_views"]},
+    {"from": "apps.routing", "import": ["static_route", "admin_views", "theme_views", "static_page_route"]},
     {"from": "apps.modules.permission.apis", "import": ["url_permission", "permission"]},
     {"from": "apps.modules.user.apis", "import": ["online", "role",
                                                   "inspection_query", "adm_user",

@@ -3,15 +3,10 @@
     <!-- 头部 Navbar: header.less -->
     <nav class="navbar navbar-fixed-top" role="navigation">
         {% include 'based/_mb_header_bar.html' %}
-        <a href="/osr-admin" class="logo hidden-xs">
-            {% if g.site_global.site_config.PC_LOGO_DISPLAY == "logo" %}
-                <img class="osr-adm-logo" src="{{g.site_global.site_config.LOGO_IMG_URL}}" alt="Logo"/>
-            {% elif g.site_global.site_config.PC_LOGO_DISPLAY == "name" %}
-                {{g.site_global.site_config.APP_NAME}}
-            {% else %}
-                <img class="osr-adm-logo" src="{{g.site_global.site_config.LOGO_IMG_URL}}" alt="Logo"/>
-                {{g.site_global.site_config.APP_NAME}}
-            {% endif %}
+
+        <a href="http://osroom.com" target="_blank" class="logo hidden-xs">
+            <img class="osr-adm-logo"
+                 src="/static/sys_imgs/logo.png?h=80&v={{g.site_global.site_config.STATIC_FILE_VERSION}}"  alt="OSROOM Logo" />
         </a>
         <!-- 菜单隐藏按钮-->
         <a  class="navbar-btn sidebar-toggle hidden-xs" data-toggle="offcanvas" role="button">

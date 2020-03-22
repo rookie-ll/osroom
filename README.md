@@ -1,5 +1,5 @@
 
-<div align=center><img width="auto" height="50" src="https://raw.githubusercontent.com/osroom/osroom/dev/apps/static/sys_imgs/osroom-logo.png" alt="osroom"/></div>
+<div align=center><img width="auto" height="50" src="https://raw.githubusercontent.com/osroom/osroom/dev/apps/static/sys_imgs/logo.png" alt="osroom"/></div>
 
 > dev(开放更新中,可在Tag中可以选择以往的其他版本)
 

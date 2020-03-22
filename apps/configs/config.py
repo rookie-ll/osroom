@@ -637,7 +637,7 @@ CONFIG = {
         },
         "LOGO_IMG_URL": {
             "sort": 2,
-            "value": "/static/sys_imgs/osroom-logo.png",
+            "value": "/static/sys_imgs/logo.png",
             "type": "string",
             "info": "APP(Web)Logo的URL"
         },
@@ -677,7 +677,7 @@ CONFIG = {
             "value": """ <div>
                   {{_('欢迎使用')}}
                   <a style="color:#f1c27e" href="http://www.osroom.com" target="_blank">
-                  <img src="/static/sys_imgs/osroom-logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
+                  <img src="/static/sys_imgs/logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
                       OSROOM
                   </a>. {{_('版本')}} {{g.site_global.site_config.sys_version}}
             

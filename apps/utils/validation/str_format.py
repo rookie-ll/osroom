@@ -2,10 +2,12 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
+from flask import url_for
 from flask_login import current_user
 import regex as re
 from flask_babel import gettext
 from apps.app import mdbs
+from apps.core.blueprint import theme_view
 from apps.core.flask.reqparse import arg_verify
 from apps.core.utils.get_config import get_config
 from apps.utils.content_evaluation.content import content_inspection_text
@@ -137,13 +139,14 @@ def content_attack_defense(content):
     security = 100
     if switch:
         wlists = get_config("security", "LINK_WHITELIST")
-        r = re.findall(r".*http[s]?://([a-zA-Z0-9]+\.[a-zA-Z0-9]+\.?[a-zA-Z0-9-]{0,10})",
+        r = re.findall(r".*(http[s]?://[a-zA-Z0-9]+\.[a-zA-Z0-9]+\.?[a-zA-Z0-9-]{0,10})",
                      content)
         if r:
             for link in r:
                 if link not in wlists:
-                    new_link = link.replace(".", ". ").replace("/", "/ ").replace("&", "&amp;").replace("?", "&;")
-                    new_link = "{}[{}]".format(new_link, gettext("Unvalidated link"))
+                    new_link = url_for('theme_view.link_unaudited', url=link)
+                    # new_link = link.replace(".", ". ").replace("/", "/ ").replace("&", "&amp;").replace("?", "&;")
+                    # new_link = "{}[{}]".format(new_link, gettext("Unvalidated link"))
                     content = content.replace(link, new_link)
                     security -= 5
 

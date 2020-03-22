@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-12 20:39+0800\n"
+"POT-Creation-Date: 2020-03-22 14:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,12 +75,12 @@ msgstr ""
 #: apps/themes/osr-style/pages/_index_s2.html:58
 #: apps/themes/osr-style/pages/content/writer.html:12
 #: apps/themes/osr-style/pages/content/writer.html:15
-#: apps/themes/osr-style/pages/corpus/_script_js.html:19
 #: apps/themes/osr-style/pages/post/_posts.html:26
 #: apps/themes/osr-style/pages/post/index.html:75
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:11
 #: apps/themes/osr-style/pages/user/post/_user_posts.html:23
 #: apps/themes/osr-style/pages/user/post/preview.html:64
+#: apps/themes/osr-style/static/js/osr_page_js/corpus/_script_js.js:14
 #: apps/themes/osr-theme-w/pages/_index_s3.html:47
 #: apps/themes/osr-theme-w/pages/content/writer.html:12
 #: apps/themes/osr-theme-w/pages/content/writer.html:15
@@ -88,10 +88,10 @@ msgstr ""
 #: apps/themes/osr-theme-w/pages/post/index.html:75
 #: apps/themes/osr-theme-w/pages/posts/_posts_weiget.html:46
 #: apps/themes/osr-theme-w/pages/user/index.html:16
-#: apps/themes/osr-theme-w/pages/user/post/_script_js.html:131
 #: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:11
 #: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:22
 #: apps/themes/osr-theme-w/pages/user/post/preview.html:64
+#: apps/themes/osr-theme-w/static/js/osr_page_js/user/post/_script_js.js:125
 msgid "默认文集"
 msgstr ""
 
@@ -403,20 +403,20 @@ msgid "个人设置"
 msgstr ""
 
 #: apps/themes/osr-style/pages/account/settings.html:13
-#: apps/themes/osr-style/pages/account/settings.html:98
 #: apps/themes/osr-style/pages/account/settings/_basis.html:5
-#: apps/themes/osr-theme-w/pages/account/settings.html:13
-#: apps/themes/osr-theme-w/pages/account/settings.html:98
+#: apps/themes/osr-style/static/js/osr_page_js/account/settings.js:65
+#: apps/themes/osr-theme-w/pages/account/settings.html:14
 #: apps/themes/osr-theme-w/pages/account/settings/_basis.html:5
+#: apps/themes/osr-theme-w/static/js/osr_page_js/account/settings.js:67
 msgid "基础设置"
 msgstr ""
 
 #: apps/themes/osr-style/pages/account/settings.html:18
-#: apps/themes/osr-style/pages/account/settings.html:95
 #: apps/themes/osr-style/pages/based/_user_dropdown.html:37
-#: apps/themes/osr-theme-w/pages/account/settings.html:18
-#: apps/themes/osr-theme-w/pages/account/settings.html:95
+#: apps/themes/osr-style/static/js/osr_page_js/account/settings.js:62
+#: apps/themes/osr-theme-w/pages/account/settings.html:19
 #: apps/themes/osr-theme-w/pages/based/_user_dropdown.html:37
+#: apps/themes/osr-theme-w/static/js/osr_page_js/account/settings.js:64
 msgid "个人资料"
 msgstr ""
 
@@ -475,14 +475,14 @@ msgid "添加"
 msgstr ""
 
 #: apps/themes/osr-style/pages/account/settings/_basis.html:30
-#: apps/themes/osr-style/pages/based/msg_box.html:52
+#: apps/themes/osr-style/pages/based/msg_box.html:54
 #: apps/themes/osr-style/pages/photo/introduction.html:112
 #: apps/themes/osr-style/pages/post/_comment.html:258
 #: apps/themes/osr-style/pages/post/index.html:159
 #: apps/themes/osr-style/pages/user/post/_comment.html:107
 #: apps/themes/osr-style/pages/user/post/preview.html:148
 #: apps/themes/osr-theme-w/pages/account/settings/_basis.html:30
-#: apps/themes/osr-theme-w/pages/based/msg_box.html:52
+#: apps/themes/osr-theme-w/pages/based/msg_box.html:54
 #: apps/themes/osr-theme-w/pages/photo/introduction.html:112
 #: apps/themes/osr-theme-w/pages/post/_comment.html:258
 #: apps/themes/osr-theme-w/pages/post/index.html:159
@@ -558,11 +558,11 @@ msgstr ""
 #: apps/themes/osr-style/pages/account/settings/_basis.html:86
 #: apps/themes/osr-style/pages/account/settings/_profile.html:58
 #: apps/themes/osr-style/pages/content/category/index.html:26
-#: apps/themes/osr-style/pages/content/writer.html:122
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:9
 #: apps/themes/osr-theme-w/pages/account/settings/_basis.html:86
 #: apps/themes/osr-theme-w/pages/account/settings/_profile.html:58
 #: apps/themes/osr-theme-w/pages/content/category/index.html:26
-#: apps/themes/osr-theme-w/pages/content/writer.html:122
+#: apps/themes/osr-theme-w/pages/content/writer.html:123
 msgid "保存"
 msgstr ""
 
@@ -626,20 +626,20 @@ msgstr ""
 
 #: apps/themes/osr-style/pages/account/settings/_send_code.html:19
 #: apps/themes/osr-style/pages/account/settings/_send_code.html:35
-#: apps/themes/osr-style/pages/account/settings/_send_code.html:118
 #: apps/themes/osr-style/pages/module/_send_code.html:14
 #: apps/themes/osr-style/pages/module/_send_code.html:19
 #: apps/themes/osr-style/pages/module/_send_code.html:28
 #: apps/themes/osr-style/pages/module/_send_code.html:44
-#: apps/themes/osr-style/pages/module/_send_code.html:95
+#: apps/themes/osr-style/static/js/osr_page_js/account/settings/_send_code.js:76
+#: apps/themes/osr-style/static/js/osr_page_js/module/_send_code.js:44
 #: apps/themes/osr-theme-w/pages/account/settings/_send_code.html:19
 #: apps/themes/osr-theme-w/pages/account/settings/_send_code.html:35
-#: apps/themes/osr-theme-w/pages/account/settings/_send_code.html:118
 #: apps/themes/osr-theme-w/pages/module/_send_code.html:14
 #: apps/themes/osr-theme-w/pages/module/_send_code.html:19
 #: apps/themes/osr-theme-w/pages/module/_send_code.html:28
 #: apps/themes/osr-theme-w/pages/module/_send_code.html:44
-#: apps/themes/osr-theme-w/pages/module/_send_code.html:95
+#: apps/themes/osr-theme-w/static/js/osr_page_js/account/settings/_send_code.js:76
+#: apps/themes/osr-theme-w/static/js/osr_page_js/module/_send_code.js:44
 msgid "发送验证码"
 msgstr ""
 
@@ -650,13 +650,6 @@ msgstr ""
 #: apps/themes/osr-theme-w/pages/module/_send_code.html:43
 #: apps/themes/osr-theme-w/pages/module/editor/markdown.html:29
 msgid "关闭"
-msgstr ""
-
-#: apps/themes/osr-style/pages/account/settings/_send_code.html:121
-#: apps/themes/osr-style/pages/module/_send_code.html:98
-#: apps/themes/osr-theme-w/pages/account/settings/_send_code.html:121
-#: apps/themes/osr-theme-w/pages/module/_send_code.html:98
-msgid "后重发"
 msgstr ""
 
 #: apps/themes/osr-style/pages/account/settings/email.html:2
@@ -819,9 +812,9 @@ msgid "主题设置"
 msgstr ""
 
 #: apps/themes/osr-style/pages/based/_user_dropdown.html:20
-#: apps/themes/osr-style/pages/content/writer.html:121
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:8
 #: apps/themes/osr-theme-w/pages/based/_user_dropdown.html:20
-#: apps/themes/osr-theme-w/pages/content/writer.html:121
+#: apps/themes/osr-theme-w/pages/content/writer.html:122
 msgid "发布"
 msgstr ""
 
@@ -845,182 +838,20 @@ msgstr ""
 msgid "回到顶部"
 msgstr ""
 
-#: apps/themes/osr-style/pages/based/js_tr.html:2
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:2
-msgid "删除成功"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:3
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:3
-msgid "刚刚"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:4
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:4
-msgid "分钟前"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:5
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:5
-msgid "小时前"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:6
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:6
-msgid "昨天"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:7
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:7
-msgid "您取消了更新"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:8
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:8
-msgid "安装失败"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:9
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:9
-msgid "安装已成功，请刷新"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:10
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:10
-msgid "点击选择文件"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:11
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:11
-msgid "继续添加"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:12
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:12
-msgid "文件大小超出"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:13
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:13
-msgid "上传暂停"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:14
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:14
-msgid "上传失败，请重试"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:15
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:15
-msgid "上传成功"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:16
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:16
-msgid "文件"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:17
-#: apps/themes/osr-style/pages/module/upload.html:22
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:17
-#: apps/themes/osr-theme-w/pages/module/upload.html:22
-msgid "开始上传"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:18
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:18
-msgid "继续上传"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:19
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:19
-msgid "暂停上传"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:20
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:20
-msgid "重新上传"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:21
-#: apps/themes/osr-style/pages/content/category/index.html:27
-#: apps/themes/osr-style/pages/content/category/index.html:36
-#: apps/themes/osr-style/pages/post/_comment.html:99
-#: apps/themes/osr-style/pages/post/_comment.html:192
-#: apps/themes/osr-style/pages/user/message/_comment.html:52
-#: apps/themes/osr-style/pages/user/message/_notice.html:28
-#: apps/themes/osr-style/pages/user/post/_user_posts.html:71
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:21
-#: apps/themes/osr-theme-w/pages/content/category/index.html:27
-#: apps/themes/osr-theme-w/pages/content/category/index.html:36
-#: apps/themes/osr-theme-w/pages/post/_comment.html:99
-#: apps/themes/osr-theme-w/pages/post/_comment.html:192
-#: apps/themes/osr-theme-w/pages/user/message/_comment.html:52
-#: apps/themes/osr-theme-w/pages/user/message/_notice.html:28
-#: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:69
-#: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:87
-msgid "删除"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:22
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:22
-msgid "向左旋转"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:23
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:23
-msgid "向右旋转"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:24
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:24
-msgid "预览中"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:25
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:25
-msgid "不能预览"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:26
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:26
-msgid "选中文件个数"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:27
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:27
-msgid "共"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:28
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:28
-msgid "个文件上传失败"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:29
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:29
-msgid "或"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/js_tr.html:30
-#: apps/themes/osr-theme-w/pages/based/js_tr.html:30
-msgid "忽略"
-msgstr ""
-
-#: apps/themes/osr-style/pages/based/msg_box.html:44
-#: apps/themes/osr-theme-w/pages/based/msg_box.html:44
+#: apps/themes/osr-style/pages/based/msg_box.html:46
+#: apps/themes/osr-theme-w/pages/based/msg_box.html:46
 msgid "提示"
 msgstr ""
 
-#: apps/themes/osr-style/pages/based/msg_box.html:48
-#: apps/themes/osr-style/pages/based/msg_box.html:60
-#: apps/themes/osr-theme-w/pages/based/msg_box.html:48
-#: apps/themes/osr-theme-w/pages/based/msg_box.html:60
+#: apps/themes/osr-style/pages/based/msg_box.html:50
+#: apps/themes/osr-style/pages/based/msg_box.html:62
+#: apps/themes/osr-theme-w/pages/based/msg_box.html:50
+#: apps/themes/osr-theme-w/pages/based/msg_box.html:62
 msgid "确定删除"
 msgstr ""
 
-#: apps/themes/osr-style/pages/based/msg_box.html:55
-#: apps/themes/osr-theme-w/pages/based/msg_box.html:55
+#: apps/themes/osr-style/pages/based/msg_box.html:57
+#: apps/themes/osr-theme-w/pages/based/msg_box.html:57
 msgid "确定"
 msgstr ""
 
@@ -1035,9 +866,9 @@ msgid "写点什么"
 msgstr ""
 
 #: apps/themes/osr-style/pages/content/writer.html:24
-#: apps/themes/osr-style/pages/content/writer.html:182
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:69
 #: apps/themes/osr-theme-w/pages/content/writer.html:24
-#: apps/themes/osr-theme-w/pages/content/writer.html:182
+#: apps/themes/osr-theme-w/pages/content/writer.html:183
 msgid "存为草稿"
 msgstr ""
 
@@ -1068,26 +899,6 @@ msgstr ""
 msgid "完成"
 msgstr ""
 
-#: apps/themes/osr-style/pages/content/writer.html:174
-#: apps/themes/osr-theme-w/pages/content/writer.html:174
-msgid "抱歉!检查到文本编辑器类型错误(editor),请关闭页面重新打开"
-msgstr ""
-
-#: apps/themes/osr-style/pages/content/writer.html:181
-#: apps/themes/osr-theme-w/pages/content/writer.html:181
-msgid "更新发布"
-msgstr ""
-
-#: apps/themes/osr-style/pages/content/writer.html:184
-#: apps/themes/osr-theme-w/pages/content/writer.html:184
-msgid "更新草稿"
-msgstr ""
-
-#: apps/themes/osr-style/pages/content/writer.html:266
-#: apps/themes/osr-theme-w/pages/content/writer.html:267
-msgid "确认已保存内容后才离开哦"
-msgstr ""
-
 #: apps/themes/osr-style/pages/content/category/index.html:2
 #: apps/themes/osr-theme-w/pages/content/category/index.html:2
 msgid "内容分类管理"
@@ -1114,6 +925,26 @@ msgstr ""
 #: apps/themes/osr-theme-w/pages/content/category/index.html:24
 #: apps/themes/osr-theme-w/pages/content/category/index.html:33
 msgid "分类名称"
+msgstr ""
+
+#: apps/themes/osr-style/pages/content/category/index.html:27
+#: apps/themes/osr-style/pages/content/category/index.html:36
+#: apps/themes/osr-style/pages/post/_comment.html:99
+#: apps/themes/osr-style/pages/post/_comment.html:192
+#: apps/themes/osr-style/pages/user/message/_comment.html:52
+#: apps/themes/osr-style/pages/user/message/_notice.html:28
+#: apps/themes/osr-style/pages/user/post/_user_posts.html:71
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:234
+#: apps/themes/osr-theme-w/pages/content/category/index.html:27
+#: apps/themes/osr-theme-w/pages/content/category/index.html:36
+#: apps/themes/osr-theme-w/pages/post/_comment.html:99
+#: apps/themes/osr-theme-w/pages/post/_comment.html:192
+#: apps/themes/osr-theme-w/pages/user/message/_comment.html:52
+#: apps/themes/osr-theme-w/pages/user/message/_notice.html:28
+#: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:69
+#: apps/themes/osr-theme-w/pages/user/post/_user_posts.html:87
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:234
+msgid "删除"
 msgstr ""
 
 #: apps/themes/osr-style/pages/corpus/index.html:18
@@ -1150,6 +981,13 @@ msgstr ""
 msgid "或将文件拖到这里"
 msgstr ""
 
+#: apps/themes/osr-style/pages/module/upload.html:22
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:502
+#: apps/themes/osr-theme-w/pages/module/upload.html:22
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:502
+msgid "开始上传"
+msgstr ""
+
 #: apps/themes/osr-style/pages/module/editor/markdown.html:15
 #: apps/themes/osr-theme-w/pages/module/editor/markdown.html:15
 msgid "插入图片"
@@ -1158,16 +996,6 @@ msgstr ""
 #: apps/themes/osr-style/pages/module/editor/markdown.html:28
 #: apps/themes/osr-theme-w/pages/module/editor/markdown.html:28
 msgid "上传"
-msgstr ""
-
-#: apps/themes/osr-style/pages/module/editor/markdown.html:78
-#: apps/themes/osr-theme-w/pages/module/editor/markdown.html:78
-msgid "当前使用的是MarkDown文本编辑器"
-msgstr ""
-
-#: apps/themes/osr-style/pages/module/editor/markdown.html:88
-#: apps/themes/osr-theme-w/pages/module/editor/markdown.html:88
-msgid "每次最多上传5张图片"
 msgstr ""
 
 #: apps/themes/osr-style/pages/module/editor/richtext_atc_edit.html:57
@@ -1460,14 +1288,14 @@ msgstr ""
 #: apps/themes/osr-style/pages/user/post/_comment.html:12
 #: apps/themes/osr-theme-w/pages/post/_comment.html:43
 #: apps/themes/osr-theme-w/pages/user/post/_comment.html:12
-msgid "时间正序"
+msgid "时间升序"
 msgstr ""
 
 #: apps/themes/osr-style/pages/post/_comment.html:48
 #: apps/themes/osr-style/pages/user/post/_comment.html:17
 #: apps/themes/osr-theme-w/pages/post/_comment.html:48
 #: apps/themes/osr-theme-w/pages/user/post/_comment.html:17
-msgid "时间倒序"
+msgid "时间降序"
 msgstr ""
 
 #: apps/themes/osr-style/pages/post/_comment.html:65
@@ -1548,11 +1376,6 @@ msgstr ""
 msgid "文章举报"
 msgstr ""
 
-#: apps/themes/osr-style/pages/post/index.html:239
-#: apps/themes/osr-theme-w/pages/post/index.html:239
-msgid "当前访问的内容已不存在"
-msgstr ""
-
 #: apps/themes/osr-style/pages/search/index.html:7
 #: apps/themes/osr-style/pages/search/index.html:18
 #: apps/themes/osr-theme-w/pages/search/index.html:8
@@ -1578,8 +1401,8 @@ msgstr ""
 
 #: apps/themes/osr-style/pages/user/_self_introduction.html:20
 #: apps/themes/osr-theme-w/pages/user/index.html:10
-#: apps/themes/osr-theme-w/pages/user/post/_script_js.html:19
-#: apps/themes/osr-theme-w/pages/user/post/_script_js.html:129
+#: apps/themes/osr-theme-w/static/js/osr_page_js/user/post/_script_js.js:14
+#: apps/themes/osr-theme-w/static/js/osr_page_js/user/post/_script_js.js:123
 msgid "全部文章"
 msgstr ""
 
@@ -1684,6 +1507,175 @@ msgstr ""
 #: apps/themes/osr-theme-w/pages/user/post/preview.html:2
 #: apps/themes/osr-theme-w/pages/user/post/preview.html:10
 msgid "预览"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:60
+#: apps/themes/osr-style/static/js/osroom.js:130
+#: apps/themes/osr-theme-w/static/js/osr-common.js:60
+#: apps/themes/osr-theme-w/static/js/osr-common.js:130
+msgid "删除成功"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:111
+#: apps/themes/osr-theme-w/static/js/osr-common.js:111
+msgid "请选择要上传的文件"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:363
+#: apps/themes/osr-theme-w/static/js/osr-common.js:363
+msgid "刚刚"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:366
+#: apps/themes/osr-theme-w/static/js/osr-common.js:366
+msgid "分钟前"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:369
+#: apps/themes/osr-theme-w/static/js/osr-common.js:369
+msgid "小时前"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osroom.js:372
+#: apps/themes/osr-theme-w/static/js/osr-common.js:372
+msgid "昨天"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/account/settings/_send_code.js:79
+#: apps/themes/osr-style/static/js/osr_page_js/module/_send_code.js:47
+#: apps/themes/osr-theme-w/static/js/osr_page_js/account/settings/_send_code.js:79
+#: apps/themes/osr-theme-w/static/js/osr_page_js/module/_send_code.js:47
+msgid "后重发"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:61
+#: apps/themes/osr-theme-w/pages/content/writer.html:175
+msgid "抱歉!检查到文本编辑器类型错误(editor),请关闭页面重新打开"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:68
+#: apps/themes/osr-theme-w/pages/content/writer.html:182
+msgid "更新发布"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:71
+#: apps/themes/osr-theme-w/pages/content/writer.html:185
+msgid "更新草稿"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/content/writer.js:153
+#: apps/themes/osr-theme-w/pages/content/writer.html:268
+msgid "确认已保存内容后才离开哦"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/module/editor/markdown.js:42
+#: apps/themes/osr-theme-w/pages/module/editor/markdown.html:79
+msgid "当前使用的是MarkDown文本编辑器"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/module/editor/markdown.js:52
+#: apps/themes/osr-theme-w/pages/module/editor/markdown.html:89
+msgid "每次最多上传5张图片"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/osr_page_js/post/index.js:64
+#: apps/themes/osr-theme-w/static/js/osr_page_js/post/index.js:64
+msgid "当前访问的内容已不存在"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:95
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:95
+msgid "你取消了更新"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:99
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:99
+msgid "安装失败"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:103
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:103
+msgid "安装成功，请刷新"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:143
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:218
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:143
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:218
+msgid "点击选择文件"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:235
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:236
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:235
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:236
+msgid "向左"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:244
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:244
+msgid "文件超出大小"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:248
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:255
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:248
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:255
+msgid "上传失败"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:267
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:267
+msgid "预览中"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:272
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:272
+msgid "不能预览"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:421
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:421
+msgid "选中文件个数"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:421
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:444
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:421
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:444
+msgid "共"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:431
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:453
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:431
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:453
+msgid "个文件上传失败"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:433
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:433
+msgid "重新上传"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:435
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:435
+msgid "或"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:437
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:437
+msgid "忽略"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:491
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:491
+msgid "暂停"
+msgstr ""
+
+#: apps/themes/osr-style/static/js/upload/osr-upload.js:496
+#: apps/themes/osr-theme-w/static/js/upload/osr-upload.js:496
+msgid "继续上传"
 msgstr ""
 
 #: apps/themes/osr-theme-w/pages/500.html:2

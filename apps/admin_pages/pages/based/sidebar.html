@@ -5,11 +5,14 @@
     <section class="sidebar osr-sidebar" >
         <!-- 边栏用户面板 -->
         <div class="user-panel text-center">
-            <a href="http://osroom.com" target="_blank" class="float-md-left"
-               data-toggle="tooltip" title="{{_('访问osroom.com')}}">
-                <img class="osr-sidebar-sm-logo" src="/static/sys_imgs/osroom-logo.png?h=80&v={{g.site_global.site_config.STATIC_FILE_VERSION}}"  alt="OSROOM Logo" />
-            </a>&nbsp;
-            <b style="color: #ffffff;">{{_("管理端")}}</b>
+             <a href="/" target="_blank" class="float-md-left" data-toggle="tooltip"
+                title="{{g.site_global.site_config.APP_NAME}}">
+                {% if g.site_global.site_config.LOGO_IMG_URL%}
+                    <img class="osr-sidebar-sm-logo"src="{{g.site_global.site_config.LOGO_IMG_URL}}" alt="Logo"/>
+                {% else %}
+                    {{g.site_global.site_config.APP_NAME}}
+                {% endif %}
+            </a>
 
         </div>
         <!-- 侧边栏菜单：：样式可以在sidebar.less中找到 -->
