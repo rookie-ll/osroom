@@ -35,11 +35,12 @@ class MyMongo:
         )
         self.dbs = {}
         self.db = self.pymongo.db
-        if len(self.pymongo.db_conn.collection_names()):
-            for op in dir(self.pymongo.db_conn[self.pymongo.db_conn.collection_names()[0]]):
+        self.collection_names = self.pymongo.collection_names
+        if len(self.collection_names):
+            for op in dir(self.pymongo.db_conn[self.collection_names[0]]):
                 if op[0] == "_":
                     continue
-                for collection in self.pymongo.db_conn.collection_names():
+                for collection in self.collection_names:
                     umio = MdbOp()
                     umio.init_app(
                         self.pymongo.db_conn[collection],
@@ -47,8 +48,8 @@ class MyMongo:
                     )
                     self.db.__dict__[collection].__dict__[op] = umio.db_op
 
-        for collection in self.pymongo.db_conn.collection_names():
-            self.dbs[collection] = getattr(self.db, collection)
+            for collection in self.collection_names:
+                self.dbs[collection] = getattr(self.db, collection)
         for op in dir(self.pymongo.db_conn):
             if op[0] == "_":
                 continue
@@ -162,7 +163,11 @@ class PyMongo:
             )
         self.name = self.config['db']
         self.db_conn = self.connection[self.config['db']]
-        self.db = Conlections(self.db_conn)
+        self.collection_names = self.db_conn.collection_names()
+        self.db = Conlections(
+            self.db_conn,
+            self.collection_names
+        )
 
     def close(self):
         self.connection.close()
@@ -173,11 +178,12 @@ class PyMongo:
 
 class Conlections:
 
-    def __init__(self, conn_db=None):
+    def __init__(self, conn_db=None, collection_names=[]):
+        self.collection_names = collection_names
         if conn_db:
             self.conlection_object(conn_db)
 
     def conlection_object(self, conn_db):
 
-        for conlection in conn_db.collection_names():
+        for conlection in self.collection_names:
             self.__dict__[conlection] = conn_db[conlection]
