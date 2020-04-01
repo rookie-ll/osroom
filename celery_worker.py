@@ -12,6 +12,3 @@ Don't del 'celery' obj
 init_core_module(
     app=app
 )
-
-
-
