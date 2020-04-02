@@ -38,7 +38,7 @@ def update_mdb_collections(mdbs):
         mdb = mdbs[dbname]
         for coll in colls:
             try:
-                mdb.db.create_collection(coll)
+                mdb.dbs.create_collection(coll)
                 web_start_log.info(
                     "[DB: {}] Create collection '{}'".format(
                         mdb.name, coll))

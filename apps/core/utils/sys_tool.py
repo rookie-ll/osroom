@@ -127,12 +127,12 @@ def init_admin_user(mdbs):
             else:
                 break
         try:
-            mdbs["user"].db.create_collection("role")
+            mdbs["user"].dbs.create_collection("role")
             print(' * Created role collection')
         except BaseException:
             pass
         try:
-            mdbs["user"].db.create_collection("user")
+            mdbs["user"].dbs.create_collection("user")
             print(' * Created user collection')
         except BaseException:
             pass
