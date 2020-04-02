@@ -5,7 +5,6 @@
 from pymongo import MongoClient
 from pymongo.errors import AutoReconnect
 from retrying import retry
-
 from apps.core.utils.special_chars import SpecialChars
 
 
@@ -33,13 +32,15 @@ class MyMongo:
             config_prefix=config_prefix,
             db_config=db_config
         )
-        self.dbs = {}
         self.db = self.pymongo.db
         self.collection_names = self.pymongo.collection_names
         if len(self.collection_names):
-            for op in dir(self.pymongo.db_conn[self.collection_names[0]]):
+            coll_ops = []
+            ops = dir(self.pymongo.db_conn[self.collection_names[0]])
+            for op in ops:
                 if op[0] == "_":
                     continue
+                coll_ops.append(op)
                 for collection in self.collection_names:
                     umio = MdbOp()
                     umio.init_app(
@@ -47,9 +48,17 @@ class MyMongo:
                         op
                     )
                     self.db.__dict__[collection].__dict__[op] = umio.db_op
-
+            self.dbs = MongoCollDict(
+                self.pymongo,
+                coll_ops
+            )
             for collection in self.collection_names:
                 self.dbs[collection] = getattr(self.db, collection)
+        else:
+            self.dbs = MongoCollDict(
+                self.pymongo,
+                []
+            )
         for op in dir(self.pymongo.db_conn):
             if op[0] == "_":
                 continue
@@ -60,6 +69,41 @@ class MyMongo:
 
     def close(self):
         self.pymongo.close()
+
+
+class MongoCollDict(dict):
+
+    def __init__(self, pymongo, coll_ops, *args):
+        super().__init__(*args)
+        self.counter = 0
+        self.pymongo = pymongo
+        self.coll_ops = coll_ops
+        for op in dir(self.pymongo.db_conn):
+            if op[0] == "_":
+                continue
+            setattr(self, op, getattr(self.pymongo.db_conn, op))
+                 
+    def __getitem__(self, key):
+        self.counter += 1
+        if key not in self.keys():
+            print(key)
+            self.my_create_collection(key)
+        return super(MongoCollDict, self).__getitem__(key)
+
+    def my_create_collection(self, collection_name):
+        self.create_collection(collection_name)
+        self.__init_collection(collection_name)
+    
+    def __init_collection(self, collection_name):
+
+        self[collection_name] = self.pymongo.db_conn[collection_name]
+        for op in self.coll_ops:
+            umio = MdbOp()
+            umio.init_app(
+                self.pymongo.db_conn[collection_name],
+                op
+            )
+            self[collection_name].__dict__[op] = umio.db_op
 
 
 class MdbOp:
@@ -75,7 +119,8 @@ class MdbOp:
         self.db_coll = db_coll
         self.operation = operation
 
-    @retry(retry_on_exception=retry_if_auto_reconnect_error, stop_max_attempt_number=2, wait_fixed=2000)
+    @retry(retry_on_exception=retry_if_auto_reconnect_error,
+           stop_max_attempt_number=2, wait_fixed=2000)
     def db_op(self, *args, **kwargs):
         self.regex_find_escape(args[0], **kwargs)
         if "regular_escape" in kwargs:
@@ -164,7 +209,7 @@ class PyMongo:
         self.name = self.config['db']
         self.db_conn = self.connection[self.config['db']]
         self.collection_names = self.db_conn.collection_names()
-        self.db = Conlections(
+        self.db = MongoCollection(
             self.db_conn,
             self.collection_names
         )
@@ -176,14 +221,14 @@ class PyMongo:
         self.close()
 
 
-class Conlections:
+class MongoCollection:
 
     def __init__(self, conn_db=None, collection_names=[]):
         self.collection_names = collection_names
         if conn_db:
-            self.conlection_object(conn_db)
+            self.collection_object(conn_db)
 
-    def conlection_object(self, conn_db):
+    def collection_object(self, conn_db):
 
-        for conlection in self.collection_names:
-            self.__dict__[conlection] = conn_db[conlection]
+        for collection in self.collection_names:
+            self.__dict__[collection] = conn_db[collection]
