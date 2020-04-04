@@ -518,24 +518,24 @@ $(function(){
     });
 
     //滚动检测
-    var top_height = $("#top-nav").height();
-    var top_nav = $('#top-nav');
-    var btn_go_up = $('#go-up')
-    var added = false;
-    $(window).scroll(function(){
-        var this_scrollTop = $(this).scrollTop();
-        if(!added && this_scrollTop>=top_height ){
-            top_nav.addClass('osr-top-navbar');
-            top_nav.removeClass('navbar');
-            added = true;
-            btn_go_up.show()
-        }else if(added && this_scrollTop<top_height-5){
-            top_nav.addClass('navbar');
-            top_nav.removeClass('osr-top-navbar');
-            added = false;
-            btn_go_up.hide()
-        }
-    });
+    // var top_height = $("#top-nav").height();
+    // var top_nav = $('#top-nav');
+    // var btn_go_up = $('#go-up')
+    // var added = false;
+    // $(window).scroll(function(){
+    //     var this_scrollTop = $(this).scrollTop();
+    //     if(!added && this_scrollTop>=top_height ){
+    //         top_nav.addClass('osr-top-navbar');
+    //         top_nav.removeClass('navbar');
+    //         added = true;
+    //         btn_go_up.show()
+    //     }else if(added && this_scrollTop<top_height-5){
+    //         top_nav.addClass('navbar');
+    //         top_nav.removeClass('osr-top-navbar');
+    //         added = false;
+    //         btn_go_up.hide()
+    //     }
+    // });
 
 
 });

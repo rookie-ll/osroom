@@ -4,12 +4,11 @@
       delimiters:['{[', ']}'],
       data:{
             photos:[{}],
-            photo_nav:[],
+            category_names:[],
             current_category:[],
             sort:"t-desc",
             pages:[],
             page:1,
-            colors:[],
             img_w_h:"?w=0&h=120",
       },
       filters: {
@@ -21,11 +20,10 @@
         //每次渲染完执行
         this.$nextTick(function(){
             if(this.current_category.length < 2){
-                    var index = this.photo_nav.indexOf(this.current_category[0]);
-
-                    nav_btn_active("img-category", "head_li_"+index);
+                    var index = this.category_names.indexOf(this.current_category[0]);
+                    nav_active("head_li_"+index);
                 }else{
-                    nav_btn_active("img-category", "head_li_all");
+                    nav_active("head_li_all");
             }
         });
       }
@@ -33,8 +31,6 @@
 
     // 加载完页面执行
     $(document).ready(function(){
-
-        vue.colors =  osr_colors();
         result = get_show_category();
         result.then(function (r) {
 
@@ -45,11 +41,13 @@
             vue.page = get_obj_value(url_s, "page", vue.page)
 
             if(!vue.current_category || vue.current_category == "all"){
-                vue.current_category = vue.photo_nav;
+                vue.current_category = vue.category_names;
             }else{
                 vue.current_category = [vue.current_category]
             }
             get_global(vue.page, vue.current_category);
+
+
         });
     })
 
@@ -59,7 +57,7 @@
              {
                 type:"text",
                 names:["photo-page-nav"],
-                result_key:"photo_nav"
+                result_key:"category_names"
              }
 
         ];
@@ -70,12 +68,11 @@
 
         var result = osrHttp("GET","/api/global/theme-data/display", d, args={not_prompt:true});
         result.then(function (r) {
-
-            var photo_nav = r.data.medias.photo_nav.length===0?null:r.data.medias.photo_nav[0];
-            if(photo_nav.code && photo_nav.code_type=="html"){
-                vue.photo_nav = JSON.parse(photo_nav.code);
+            var category_names = r.data.medias.category_names.length===0?null:r.data.medias.category_names[0];
+            if(category_names  && category_names.code_type=="html"){
+                vue.category_names = JSON.parse(category_names.code);
             }else{
-                vue.photo_nav = photo_nav.code;
+                 vue.category_names = category_names.code
             }
         });
 

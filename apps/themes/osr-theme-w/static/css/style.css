@@ -2887,7 +2887,7 @@ vertical-align: top;
   background-color: #ffffff00;
 }
 .skin-black .navbar .nav a {
-  color: #fff;
+  color: #4c5967;
 }
 .skin-black .navbar .nav > li > a:hover,
 .skin-black .navbar .nav > li > a:active,
@@ -3792,10 +3792,10 @@ ul.online-users {
     border-radius:0;
 }
 .panel-heading .nav>li>a {
-    color:#898989;
+    color:#4c5967;
 }
 .panel-heading .nav>li.active>a,.panel-heading .nav>li>a:hover {
-    color:#27c24c;
+    color:#007ae2;
     background:#fff;
 }
 .panel-heading .nav>li:first-child.active>a,.panel-heading .nav>li:first-child>a:hover {

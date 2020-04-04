@@ -4,21 +4,21 @@
 <data id="category" content="{{data.category}}"></data>
 <div id="app" v-cloak>
     <div class="row osr-page">
-
-         <!--导航-->
-        <div id="img-category" class="osr-btn-nav nav text-center" style="color:#ffffff;">
-            <button  id="head_li_all" style="background-color:#74e6b2" class="btn osr-btn btn-m"
-                     v-on:click='get_global(1, photo_nav)'>
-                {{_("全部")}}
-            </button>
-            <button :id="'head_li_'+index" v-for="(ct,index) in photo_nav" :style="'background-color:'+colors[index]"
-                    class="btn osr-btn btn-m" v-on:click='get_global(1,[ct])'>
-                 {[ct]}
-            </button>
-        </div>
-
-
             <div class="col-xs-12">
+                 <header class="panel-heading tab-bg-dark-navy-blue osr-panel-heading">
+                    <ul class="nav nav-tabs">
+                        <li id="head_li_all">
+                            <a data-toggle="tab" class="osr-pointer" v-on:click='get_global(1, category_names)'>
+                                 {{_("全部")}}
+                            </a>
+                        </li>
+                        <li :id="'head_li_'+index" v-for="(ct,index) in category_names">
+                            <a data-toggle="tab" class="osr-pointer" v-on:click='get_global(1,[ct])'>
+                                 {[ct]}
+                            </a>
+                        </li>
+                    </ul>
+                </header>
                 <br>
 
                 <div id="galley" class="docs-pictures clearfix">
@@ -29,13 +29,14 @@
                              {[media.title]}
                          </div>
                         <div  v-else class="img-title">&nbsp;</div>
-                        <span class="osr-text-essay">
-                            <a class="osr-text-essay" :href="'/photo/introduction?mid='+media._id" target="_blank" > {{_("简介")}}</a> |
-                            {{_("上传于")}} {[media.time | formatDate]}
+                        <span class="osr-date">
                             <i class="fa fa-exclamation-circle"
                                data-toggle="tooltip" title="{{_('版权归原作者所有,与本站无关.如果侵权,请联系本站删除!')}}" ></i>
+                            &nbsp;
+                            <a class="fa fa-eye osr-date" :href="'/photo/introduction?mid='+media._id" target="_blank" > {{_("瞄简介")}}</a> |
+                            {{_("上传于")}} {[media.time | formatDate]}
                         </span>
-                         <hr style="border-top: 1px solid #8c939a;">
+                         <hr>
                     </div>
                 </div>
 
@@ -89,7 +90,6 @@
                 </ul>
                 <!-- //m页面导航-->
         </div>
-
     </div>
 </div>
 <script src="/theme/osr-theme-w/static/js/image/viewer.min.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}"></script>

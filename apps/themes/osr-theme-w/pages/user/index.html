@@ -3,28 +3,6 @@
 {% block content %}
 <div id="app" class="row osr-page" v-cloak>
 
-    <!--文集导航-->
-    <div id="post-category" class="nav osr-btn-nav text-center" style="color:#ffffff;">
-        <a  id="cidnull"  v-on:click="switch_category(0)" class="btn osr-btn btn-m" style="background-color:#74e6b2;color:#ffffff">
-            <span style="color:#ffffff">
-              {{_("全部文章")}}
-            </span>
-        </a>
-        <a id="ciddefault"  v-on:click="switch_category({'_id':'default', 'name':''})"
-           class="btn osr-btn btn-m"  :style="'background-color:'+colors[1]">
-            <span style="color:#ffffff">
-              {{_("默认文集")}}
-            </span>
-        </a>
-
-        <a :id="'cid'+category._id" v-for="(category,index) in post_categorys" v-on:click="switch_category(category)"
-           class="btn osr-btn btn-m"  :style="'background-color:'+colors[index+2]">
-            <span style="color:#ffffff">
-              {[category.name]}
-            </span>
-        </a>
-    </div>
-
     <section class="osr-panel">
         <div class="col-sm-9">
             <div v-if="!category_id">

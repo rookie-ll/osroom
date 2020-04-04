@@ -33,6 +33,8 @@ class MyMongo:
             db_config=db_config
         )
         self.db = self.pymongo.db
+        self.name = self.pymongo.name
+        self.db.__dict__["name"] = self.name
         self.collection_names = self.pymongo.collection_names
         if len(self.collection_names):
             coll_ops = []
@@ -65,7 +67,6 @@ class MyMongo:
             setattr(self.db, op, getattr(self.pymongo.db_conn, op))
 
         self.connection = self.pymongo.connection
-        self.name = self.pymongo.name
 
     def close(self):
         self.pymongo.close()
@@ -86,12 +87,14 @@ class MongoCollDict(dict):
     def __getitem__(self, key):
         self.counter += 1
         if key not in self.keys():
-            print(key)
             self.my_create_collection(key)
         return super(MongoCollDict, self).__getitem__(key)
 
-    def my_create_collection(self, collection_name):
-        self.create_collection(collection_name)
+    def try_create_collection(self, collection_name):
+        try:
+            self.create_collection(collection_name)
+        except Exception:
+            pass
         self.__init_collection(collection_name)
     
     def __init_collection(self, collection_name):
@@ -119,7 +122,8 @@ class MdbOp:
         self.db_coll = db_coll
         self.operation = operation
 
-    @retry(retry_on_exception=retry_if_auto_reconnect_error, stop_max_attempt_number=2, wait_fixed=2000)
+    @retry(retry_on_exception=retry_if_auto_reconnect_error,
+           stop_max_attempt_number=2, wait_fixed=2000)
     def db_op(self, *args, **kwargs):
         self.regex_find_escape(args[0], **kwargs)
         if "regular_escape" in kwargs:

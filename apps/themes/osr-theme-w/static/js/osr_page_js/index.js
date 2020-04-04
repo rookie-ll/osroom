@@ -1,8 +1,8 @@
 
-var vue = new Vue({
-    el: '#app',
-    delimiters:['{[', ']}'],
-    data:{
+    var vue = new Vue({
+      el: '#app',
+      delimiters:['{[', ']}'],
+      data:{
             carousel:[{}],
             rec_1:[{}],
             rec_2:[],
@@ -15,13 +15,13 @@ var vue = new Vue({
             tags:{},
             img_w_h:"?w=0&h=120",
             color:[],
-        display_tag:null
-    },
-    filters: {
+          display_tag:null
+      },
+      filters: {
             formatDate: function (time) {
-            return irrformatDate(time, "yyyy-MM-dd hh:mm");
+              return irrformatDate(time, "yyyy-MM-dd hh:mm");
             }
-    }
+      }
     })
 
     // 加载完页面执行
@@ -34,6 +34,37 @@ var vue = new Vue({
 
     function get_global(){
         var conditions = [
+             {
+                type:"image",
+                name_regex:"home-carousel-[0-9]+",
+                result_key:"home_carousel"
+             },
+             {
+                type:"image",
+                name_regex:"home-rec1-[0-9]+",
+                result_key:"rec_1"
+             },
+             {
+                type:"image",
+                name_regex:"home-rec2-*[0-9]*",
+                result_key:"rec_2"
+             },
+             {
+                type:"text",
+                name_regex:"home-rec3-*[0-9]*",
+                result_key:"rec_3"
+             },
+             {
+                type:"image",
+                name_regex:"home-rec4-[0-9]+",
+                result_key:"rec_4"
+             },
+            {
+                type:"text",
+                name_regex:"display_tag",
+                result_key:"display_tag"
+             }
+
         ];
         var d ={
             conditions:JSON.stringify(conditions),
@@ -42,7 +73,7 @@ var vue = new Vue({
 
         var result = osrHttp("GET","/api/global/theme-data/display", d, args={not_prompt:true});
         result.then(function (r) {
-            vue.display_tag =  r.data.medias.display_tag.length===0?null:r.data.medias.display_tag[0];
+             vue.display_tag =  r.data.medias.display_tag.length===0?null:r.data.medias.display_tag[0];
             vue.carousel = r.data.medias.home_carousel;
             vue.rec_1 = r.data.medias.rec_1;
             vue.rec_2 = r.data.medias.rec_2!=[]?r.data.medias.rec_2[0]:[];
@@ -59,7 +90,7 @@ var vue = new Vue({
         if(sort=="t-desc"){
             sort = [{"issue_time":-1},{"update_time":-1}];
         }else if(sort=="t-asc"){
-            sort = [{"issue_time":1},{"update_time":1}];
+           sort = [{"issue_time":1},{"update_time":1}];
         }else{
             sort = [{"like": -1}, {"comment_num": -1}, {"pv": -1},{"issue_time": -1}];
         }
