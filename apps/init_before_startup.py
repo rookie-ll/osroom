@@ -24,7 +24,8 @@ def init_before_startup(is_debug, csrf_enabled):
     start_info_print("\033[1;36m osroom staring...\033[0m")
 
     # 网站还未启动的时候, 临时连接数据库, 更新collections & 系统配置
-    from apps.core.utils.update_sys_data import update_mdb_collections, init_datas, compatible_processing
+    from apps.core.utils.update_sys_data import update_mdb_collections, init_datas, \
+        compatible_processing
     database = DatabaseConfig()
     mdbs = {}
 
@@ -101,7 +102,8 @@ def init_before_startup(is_debug, csrf_enabled):
     from apps.configs.sys_config import MODULES
     init_core_module(
         app,
-        csrf_enabled=csrf_enabled
+        csrf_enabled=csrf_enabled,
+        is_debug=is_debug
     )
     module_import(MODULES)
 

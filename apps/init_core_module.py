@@ -3,17 +3,19 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import time
-
+import os
 from apps.core.db.config_mdb import DatabaseConfig
 from apps.core.logger.logger_server import LogServerUDP
 from apps.core.logger.web_logging import web_start_log, WebLogger
 from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
 from apps.develop_run_options import start_info_print
 from apps.utils.format.obj_format import ConfDictToClass
-from apps.app import login_manager, redis, sess, cache, csrf, babel, mdbs, mail, oauth, rest_session, celery
-from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, SESSION_PROTECTION, \
-    SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, \
-    WTF_CSRF_METHODS, SESSION_USE_SIGNER, PRESERVE_CONTEXT_ON_EXCEPTION, PLUG_IN_CONFIG_CACHE_KEY
+from apps.app import login_manager, redis, sess, cache, csrf, babel, \
+    mdbs, mail, oauth, rest_session, celery
+from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, \
+    SESSION_PROTECTION, SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, \
+    WTF_CSRF_METHODS, SESSION_USE_SIGNER, PRESERVE_CONTEXT_ON_EXCEPTION, PLUG_IN_CONFIG_CACHE_KEY, \
+    TEMP_STATIC_FOLDER
 
 """
 初始化一些核心模块
@@ -50,7 +52,13 @@ def init_core_module(app, **kwargs):
 
     # Clear CONFIG cache
     if not is_debug:
-        version_info = mdbs["sys"].db.sys_config.find_one({"new_version": {"$exists": True}})
+        version_info = mdbs["sys"].db.sys_config.find_one(
+            {
+                "new_version": {
+                    "$exists": True
+                }
+            }
+        )
         ago_time = time.time() - 3600 * 24
         ago_time_30m = time.time()-1800
         if version_info["sys_version_of_config"] >= SYS_CONFIG_VERSION \
@@ -82,7 +90,8 @@ def init_core_module(app, **kwargs):
     from apps.core.utils.get_config import get_configs, get_config
     from apps.core.flask.request import OsrRequestProcess
     from apps.core.flask.errorhandler import ErrorHandler
-    from apps.core.blueprint import api, admin_view, theme_view, static_html_view, static, open_api, admin_static_file
+    from apps.core.blueprint import api, admin_view, theme_view, static_html_view, \
+        static, open_api, admin_static_file
     from apps.core.flask.routing import RegexConverter
     from apps.core.flask.routing import push_url_to_db
 
@@ -150,7 +159,10 @@ def init_core_module(app, **kwargs):
     if not is_debug:
         st = time.time()
         push_url_to_db(app)
-        start_info_print(" * Routing updates saved in the database. It tasks time {} sec".format(int(time.time() - st)))
+        start_info_print(" * Routing updates saved in the database. It tasks time {} sec".format(
+            int(time.time() - st)
+            )
+        )
 
     celery.conf.update(app.config)
     # 请求处理
@@ -169,3 +181,5 @@ def init_core_module(app, **kwargs):
         log_udp.log_server()
     weblog = WebLogger()
     weblog.init_app(app)
+    if not os.path.exists(TEMP_STATIC_FOLDER):
+        os.makedirs(TEMP_STATIC_FOLDER)
