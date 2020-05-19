@@ -5,6 +5,8 @@
 
 - 当前更新比较多，请及时更新新版本
 
+- 低版本更新到v2.2后，如果出现ROOT用户权限问题，[注销登录]后再次登录
+
 |   Version  |   Status  |  Other   |
 | --- | --- | --- |
 |   [dev](https://github.com/osroom/osroom)    |  开发...   |    v1.x.x更新到dev版本时需要重新配置数据库文件
