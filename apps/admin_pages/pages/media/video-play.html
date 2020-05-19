@@ -20,30 +20,7 @@
     </div>
 </div>
 
-<script>
-    var vue = new Vue({
-      el: '#app',
-      delimiters:['{[', ']}'],
-      data:{
-        media:{}
-      }
-    });
 
-    // 加载完页面执行
-    $(document).ready(function(){
-        get_media();
-    });
-
-    function get_media(){
-        var d = {
-            id:$("#id").attr("content"),
-        }
-
-        var result = osrHttp("GET","/api/admin/upload/media-file", d, args={not_prompt:true});
-        result.then(function (r) {
-            vue.media = r.data.media;
-        });
-    }
+<script src="/admin-pages/static/js/osr_page_js/media/video-play.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
 </script>
-
 {% endblock %}

@@ -46,16 +46,21 @@ def update_mdb_collections(mdbs):
                 if "already exists" in str(e):
                     web_start_log.info(e)
                 else:
-                    web_start_log.warning(e)
+                    web_start_log.error(e)
 
 
 def update_mdbcolls_json_file(mdbs):
 
-    # 将最新的数据库结构写入配置文件, 方便开发者了解结构
+    """
+    将最新的数据库结构写入配置文件, 方便开发者了解结构
+    :param mdbs:
+    :return:
+    """
+    print("Update tables to json file...")
     new_collections = OrderedDict({})
     for dbname, mdb in mdbs.items():
         new_collections[dbname] = {}
-        collnames = mdb.dbs.collection_names()
+        collnames = mdb.db.collection_names()
         for collname in collnames:
             if collname == "system.indexes" or collname.startswith("plug_"):
                 continue
@@ -67,9 +72,10 @@ def update_mdbcolls_json_file(mdbs):
     with open("{}/configs/mdb_collections.json".format(APPS_PATH), "w") as wf:
         collections = json.dumps(new_collections, indent=4, ensure_ascii=False)
         wf.write(collections)
+    print("End")
 
 
-def init_datas(mdbs):
+def init_datas(mdbs, init_theme=True):
     """
     初始web化数据
     :return:
@@ -100,11 +106,17 @@ def init_datas(mdbs):
             print("* [Initialization data] {}".format(data["coll"]))
             db.dbs[data["coll"]].insert_many(data["datas"])
 
-    # 初始化主题数据
-    init_theme_data(mdbs)
+    if init_theme:
+        # 初始化主题数据
+        init_theme_data(mdbs)
 
 
 def init_theme_data(mdbs):
+    """
+    初始化主题数据
+    :param mdbs:
+    :return:
+    """
     theme = mdbs["sys"].dbs["sys_config"].find_one({"project": "theme", "key": "CURRENT_THEME_NAME"})
     if theme:
         theme_name = theme["value"]
@@ -166,7 +178,7 @@ def compatible_processing(mdbs, stage=1):
                                                              {"$set": {"theme_name": theme_name}})
 
             # 主题设置的数据分类信息转移
-            categorys = mdbs["web"].db.category.find({"type": {"$regex": ".+_theme$"}})
+            categorys = mdbs["web"].db.category.find({"type": {"$regex": ".+_theme$"}}, regular_escape=False)
             for category in categorys:
                 category["type"] = category["type"].replace("_theme", "")
                 category["theme_name"] = theme_name
@@ -239,4 +251,9 @@ def compatible_processing(mdbs, stage=1):
         if is_updated:
             cache.delete(key=GET_DEFAULT_SYS_PER_CACHE_KEY, db_type="redis")
             cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
+            cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)
+
+        # 用户添加字段 alias [@HiWoo 2020-03-12]
+        r = mdbs["user"].dbs["user"].update_many({"alias": {"$exists": False}}, {"$set": {"alias": ""}})
+        if r.modified_count:
             cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)

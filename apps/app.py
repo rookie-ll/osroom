@@ -4,15 +4,18 @@
 # @Author : Allen Woo
 from flask_babel import Babel
 from flask_oauthlib.client import OAuth
+from celery import Celery
+
+from apps.configs.celery_config import CeleryConfig
+from apps.core.db.redis_conn import Myredis
 from apps.core.flask.myflask import OsrApp
 from apps.core.flask.cache import Cache
 from apps.core.flask.rest_session import RestSession
-from apps.core.db.mongodb import PyMongo
+from apps.core.db.mongodb import MyMongo
 from flask_mail import Mail
 from flask_session import Session
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager
-from redis import StrictRedis
 from apps.configs.db_config import DB_CONFIG
 
 """
@@ -23,7 +26,7 @@ from apps.configs.db_config import DB_CONFIG
 app = OsrApp(__name__)
 mdbs = {}
 for k, mdb_acc in DB_CONFIG["mongodb"].items():
-    mdbs[k] = PyMongo()
+    mdbs[k] = MyMongo()
 
 cache = Cache()
 babel = Babel()
@@ -33,6 +36,24 @@ sess = Session()
 rest_session = RestSession()
 mail = Mail()
 oauth = OAuth()
-redis = StrictRedis(host=DB_CONFIG["redis"]["host"][0],
-                    port=DB_CONFIG["redis"]["port"][0],
-                    password=DB_CONFIG["redis"]["password"])
+redis = Myredis(
+    host=DB_CONFIG["redis"]["host"][0],
+    port=DB_CONFIG["redis"]["port"][0],
+    password=DB_CONFIG["redis"]["password"]
+)
+
+# Celery 配置
+app.config.from_object(CeleryConfig)
+celery = Celery(
+    app.import_name,
+    backend=app.config.get('BROKER_URL'),
+    broker=app.config.get('BROKER_URL')
+)
+
+celery.conf.ONCE = {
+  'backend': 'celery_once.backends.Redis',
+  'settings': {
+    'url': app.config.get('ONCE_BROKER_URL'),
+    'default_timeout': 60 * 5
+  }
+}

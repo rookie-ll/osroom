@@ -8,10 +8,9 @@ from flask_login import current_user
 from apps.utils.upload.get_filepath import get_avatar_url
 from apps.app import mdbs, cache
 
+
 # 查询比较多, 加上缓存
-
-
-@cache.cached(key_base64=False, db_type="mongodb")
+@cache.cached(key_base64=False, db_type="redis")
 def get_user_public_info(**kwargs):
     """
     获取用户公开信息
@@ -24,13 +23,17 @@ def get_user_public_info(**kwargs):
     user_id = kwargs.get("user_id")
     is_basic = kwargs.get("is_basic", 0)
     determine_following = kwargs.get("determine_following", True)
-    user = mdbs["user"].db.user.find_one({"_id": ObjectId(user_id)},
-                                     {"username": 1,
-                                      "custom_domain": 1,
-                                      "homepage":1,
-                                      "avatar_url": 1,
-                                      "introduction": 1,
-                                      "gender": 1})
+    user = mdbs["user"].db.user.find_one(
+        {
+            "_id": ObjectId(user_id)},
+                                     {
+                                         "username": 1,
+                                         "custom_domain": 1,
+                                         "homepage":1,
+                                         "avatar_url": 1,
+                                         "introduction": 1,
+                                         "gender": 1
+                                     })
     if not user:
         return False, gettext("The specified user is not found")
     else:
@@ -46,7 +49,7 @@ def get_user_public_info(**kwargs):
 
 
 # 查询比较多, 加上缓存
-@cache.cached(key_base64=False, db_type="mongodb")
+@cache.cached(key_base64=False, db_type="redis")
 def get_user_all_info(**kwargs):
     """
     获取用户全部信息, 密码除外
@@ -117,10 +120,10 @@ def delete_user_info_cache(user_id):
     cache.delete_autokey(
         fun="get_user_public_info",
         user_id=user_id,
-        db_type="mongodb",
+        db_type="redis",
         key_regex=True)
     cache.delete_autokey(
         fun="get_user_all_info",
         user_id=user_id,
-        db_type="mongodb",
+        db_type="redis",
         key_regex=True)

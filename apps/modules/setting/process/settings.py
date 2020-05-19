@@ -108,12 +108,17 @@ def get_sys_configs():
                         {"value": keyword},
                         {"info": keyword}]
     if project_info:
-        temp_projects = mdbs["sys"].db.sys_config.find(query, {"project": 1,
-                                                           "__info__": 1,
-                                                           "__restart__": 1,
-                                                           "__sort__": 1,
-                                                           "update_time": 1,
-                                                           "_id": 0})
+        temp_projects = mdbs["sys"].db.sys_config.find(
+            query,
+            {
+                "project": 1,
+                "__info__": 1,
+                "__restart__": 1,
+                "__sort__": 1,
+                "update_time": 1,
+                "_id": 0
+            }
+        )
         data["projects"] = []
         exist_project = []
         for pr in temp_projects:

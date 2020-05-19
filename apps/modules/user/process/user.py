@@ -29,6 +29,7 @@ class User(UserMixin):
             self.id = ObjectId(user_id)
             self.str_id = str(user_id)
             self.username = user["username"]
+            self.alias = user["alias"]
             self.email = user["email"]
             self.mphone_num = user["mphone_num"]
             self.custom_domain = user["custom_domain"]
@@ -106,8 +107,6 @@ class User(UserMixin):
     def is_staff(self):
 
         role = mdbs["user"].db.role.find_one({"_id": self.role_id})
-        print(self.user_info)
-        print(self.role_id, role)
         return role and int(role['permissions']) & int(get_permission("STAFF"))
 
     @property

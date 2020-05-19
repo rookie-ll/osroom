@@ -268,7 +268,6 @@ def delete_per():
         tid = ObjectId(tid)
         # 权限检查
         old_per = mdbs["user"].db.permission.find_one({"_id": tid})
-        print(old_per)
         # 如果当前用户的权限最高位 小于 要删除角色的权限,也是不可以
         if old_per and get_num_digits(
                 old_per["value"]) >= get_num_digits(
@@ -332,7 +331,7 @@ def update_role_and_api_per(old_per_value, new_per_value=0):
     # 更新使用了该权限的role
     # 当前所有的用户角色
     updated_rolename = []
-    roles = mdbs["user"].db.role.find()
+    roles = mdbs["user"].db.role.find({})
     for role in roles:
         if int(role["permissions"]) & int(old_per_value) and not (
                 int(role["permissions"]) & int(get_permission("ROOT"))):

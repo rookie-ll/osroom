@@ -176,13 +176,16 @@ def p_retrieve_password(email, code, password, password2):
 
                     # 发送邮件
                     subject = gettext("Password reset notification")
-                    body = "Your account <a>{}</a> has reset your password. <br>Please keep it safe.".format(
-                        user["email"])
-                    data = {"title": subject,
-                            "body": body,
-                            "other_info": gettext("End"),
-                            "site_url": get_config("site_config", "SITE_URL")
-                            }
+                    body = [
+                        gettext("Your account {} has reset your password.").format(user["email"]),
+                        gettext("Please keep it safe.")
+                    ]
+                    data = {
+                        "title": subject,
+                        "username": user["username"],
+                        "body": body,
+                        "site_url": get_config("site_config", "SITE_URL")
+                    }
                     html = get_email_html(data)
 
                     msg = {

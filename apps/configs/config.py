@@ -29,6 +29,7 @@ c.两边都存在的key, 则value使用数据库的
 '''
 # Danger: If True, the database configuration data will be overwritten
 # 危险:如果为True, 则会把该文件配置覆盖掉数据库中保存的配置
+SYS_CONFIG_VERSION = 2.1
 OVERWRITE_DB = False
 CONFIG = {
     "user_model": {
@@ -586,7 +587,7 @@ CONFIG = {
         "FRIEND_LINK": {
             "sort": 11,
             "value": {
-                "": {
+                "文章地图": {
                     "level": 2,
                     "url": "/st-html/posts/1",
                     "icon_url": "",
@@ -636,7 +637,7 @@ CONFIG = {
         },
         "LOGO_IMG_URL": {
             "sort": 2,
-            "value": "/static/sys_imgs/osroom-logo.png",
+            "value": "/static/sys_imgs/logo.png",
             "type": "string",
             "info": "APP(Web)Logo的URL"
         },
@@ -676,7 +677,7 @@ CONFIG = {
             "value": """ <div>
                   {{_('欢迎使用')}}
                   <a style="color:#f1c27e" href="http://www.osroom.com" target="_blank">
-                  <img src="/static/sys_imgs/osroom-logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
+                  <img src="/static/sys_imgs/logo.png?h=40&v={{g.site_global.site_config.STATIC_FILE_VERSION}}" height="17px" width="auto" alt="OSROOM">
                       OSROOM
                   </a>. {{_('版本')}} {{g.site_global.site_config.sys_version}}
             
@@ -878,9 +879,9 @@ CONFIG = {
         },
         "SESSION_TYPE": {
             "sort": 99,
-            "value": "mongodb",
+            "value": "redis",
             "type": "string",
-            "info": "保存Session会话的类型,可选mongodb, redis"
+            "info": "保存Session会话的类型,可选redis, mongodb. 推荐redis"
         },
         "SESSION_MONGODB_COLLECT": {
             "sort": 99,

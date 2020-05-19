@@ -4,7 +4,6 @@
 # @Author : Allen Woo
 import json
 import os
-import re
 import sys
 import subprocess
 from getpass import getpass
@@ -52,95 +51,119 @@ def copy_config_to_sample():
     print("It has been updated db_config_sample.py")
 
 
-def add_user(mdbs):
+def init_admin_user(mdbs):
     """
     初始化root用户角色, 管理员, 管理员基本资料
-
     :return:
     """
     from werkzeug.security import generate_password_hash
-    from apps.utils.validation.str_format import email_format_ver, password_format_ver
     from apps.modules.user.models.user import user_model
     from apps.modules.user.process.get_or_update_user import get_one_user_mfilter, update_one_user, insert_one_user
 
-    print(' * [User] add')
-    is_continue = False
-    while True:
-        username = input("Input username:")
-        if re.search(r"[\.\*#\?]+", username):
-            print(
-                "[Warning]: The name format is not correct,You can't use '.','*','#','?'\n")
-        else:
-            break
-
-    while not is_continue:
-        email = input("Input email:")
-        s, r = email_format_ver(email)
-        if not s:
-            print("[Warning]: {}".format(r))
-        else:
-            break
-
-    while not is_continue:
-        password = getpass("Input password(Password at least 8 characters):")
-        s, r = password_format_ver(password)
-        if not s:
-            print("[Warning]: {}\n".format(r))
-        else:
-            break
-    try:
-        mdbs["user"].db.create_collection("role")
-        print(' * Created role collection')
-    except BaseException:
-        pass
-    try:
-        mdbs["user"].db.create_collection("user")
-        print(' * Created user collection')
-    except BaseException:
-        pass
-
+    print('\nInit root user')
     # 初始化角色
     root_per = SUPER_PER
     role_root = mdbs["user"].db.role.find_one({"permissions": root_per})
     if not role_root:
         print(" * Create root role...")
-        r = mdbs["user"].db.role.insert_one({"name": "Root",
-                                         "default": 0,
-                                         "permissions": root_per,
-                                         "instructions": 'Root'})
+        r = mdbs["user"].db.role.insert_one(
+            {
+                "name": "Root",
+                 "default": 0,
+                 "permissions": root_per,
+                 "instructions": 'Root'
+            }
+        )
 
         if r.inserted_id:
             print("Create root user role successfully")
         else:
-            print("[Error] Failed to create superuser role")
+            print("\033[31m[Error] Failed to create superuser role\033[0m")
             sys.exit(-1)
 
         root_id = r.inserted_id
     else:
         root_id = role_root['_id']
 
-    password_hash = generate_password_hash(password)
-    user = get_one_user_mfilter(username=username, email=email, op="or")
-    if user:
-        update_one_user(user_id=str(user["_id"]),
-                        updata={"$set": {"password": password_hash,
-                                         "role_id": str(root_id)}})
-        print(" * This user already exists, updated password.")
+    root_user = mdbs["user"].dbs["user"].find_one(
+        {"role_id": str(root_id)},
+        {
+            "username": 1,
+            "email": 1
+        }
+    )
+
+    if root_user:
+        ch = input("\033[33m\n Root user already exists, need to update its password?[Y/n]\033[0m")
+        if ch != "Y":
+            print("End")
+            sys.exit()
+        is_continue = False
+        while not is_continue:
+            password = getpass("Input password(Password at least 8 characters):")
+            if len(password) < 8:
+                print("\033[33m[Warning]: {}The password is at least 8 characters\033[0m\n")
+            else:
+                break
+        password_hash = generate_password_hash(password)
+        update_one_user(
+            user_id=str(root_user["_id"]),
+            updata={
+                "$set": {
+                    "password": password_hash
+                }
+            })
+        username = root_user["username"]
+        email = root_user["email"]
+
     else:
-        print(' * Create root user...')
-        user = user_model(
-            username=username,
-            email=email,
-            password=password,
-            custom_domain=-1,
-            role_id=str(root_id),
-            active=True)
-        r = insert_one_user(updata=user)
-        if r.inserted_id:
-            print(" * Create a root user role successfully")
+        is_continue = False
+        username = "osrRoot"
+        email = input("Input email:")
+        while not is_continue:
+            password = getpass("Input password(Password at least 8 characters):")
+            if len(password) < 8:
+                print("\033[33m[Warning]: {}The password is at least 8 characters\033[0m\n")
+            else:
+                break
+        try:
+            mdbs["user"].dbs.create_collection("role")
+            print(' * Created role collection')
+        except BaseException:
+            pass
+        try:
+            mdbs["user"].dbs.create_collection("user")
+            print(' * Created user collection')
+        except BaseException:
+            pass
+
+        password_hash = generate_password_hash(password)
+        user = get_one_user_mfilter(email=email, op="or")
+        if user:
+            update_one_user(user_id=str(user["_id"]),
+                            updata={
+                                "$set": {
+                                    "password": password_hash,
+                                    "role_id": str(root_id)
+                            }
+            })
+            username = user["username"]
+            print("\033[33m\n * This user already exists, updated password and role.\033[0m")
         else:
-            print(" * [Error] Failed to create a root user role")
-            sys.exit(-1)
+            print(' * Create root user...')
+            user = user_model(
+                username=username,
+                email=email,
+                password=password,
+                custom_domain=-1,
+                role_id=str(root_id),
+                active=True)
+            r = insert_one_user(updata=user)
+            if r.inserted_id:
+                print(" * Create a root user successfully")
+            else:
+                print("\033[31m * [Error] Failed to create a root user\033[0m")
+                sys.exit(-1)
 
     # To create the average user role
     average_user = mdbs["user"].db.role.find_one({"permissions": 1})
@@ -153,16 +176,17 @@ def add_user(mdbs):
             "instructions": 'The average user',
         })
         if r.inserted_id:
-            print(" * Create a generic user role successfully")
+            print(" * Create a generic role successfully")
         else:
-            print(" * Failed to create a generic user role")
+            print(" * Failed to create a generic role")
 
     role = mdbs["user"].db.role.find_one({"_id": root_id})
     hidden_password = "{}****{}".format(password[0:2], password[6:])
-    print('The basic information is as follows')
-    print('Username: {}\nEmail: {}\nUser role: {}\nPassword: {}'.format(
+    print('\nThe basic information is as follows')
+    print('Username: {}\nEmail: {}\nUser role: {}\nPassword: \033[33m{}\033[0m'.format(
         username, email, role["name"], hidden_password))
     print('End')
+    sys.exit()
 
 
 def update_pylib(venv_path=True, latest=False):
@@ -258,10 +282,10 @@ def update_pylib(venv_path=True, latest=False):
             uninstall_list.remove(sf)
 
     if uninstall_list:
-        msg = " * Now don't need python library:"
+        msg = "\033[33m * Now don't need python library:"
         print(msg)
         uninstall_s = " ".join(uninstall_list)
-        print("   {}".format(uninstall_s))
+        print("   {}\033[0m".format(uninstall_s))
         if not venv_path:
             pass
 

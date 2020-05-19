@@ -143,7 +143,12 @@ def category_edit(user_id=None):
         r = mdbs["web"].db.theme_category.update_one(
             {"_id": ObjectId(tid), "user_id": user_id}, {"$set": {"name": name}})
         if r.modified_count:
-            update_media_category_name(tid, name)
+            update_media_category_name.apply_async(
+                kwargs={
+                    "category_id": tid,
+                    "new_name": name
+                }
+            )
             data = {
                 "msg": gettext("Modify the success"),
                 "msg_type": "s",
@@ -161,7 +166,6 @@ def update_media_category_name(category_id, new_name):
     """
     更新主题中多媒体category的名称
     """
-    mdbs["web"].init_app(reinit=True)
     mdbs["sys"].db.theme_display_setting.update_many(
         {"category_id": category_id},
         {"$set": {"category": new_name}})

@@ -11,7 +11,7 @@
                     {[name]}
             </option>
         </select>
-
+        &nbsp;&nbsp;
         <select id="status" name="status"  class="form-control osr-form-control input-sm" @change="switch_category($event.target.value)">
            <option v-if="ct._id==curren_category" v-for="ct in media_categorys" :value="ct._id+'___'+ct.name" selected>
                     {[ct.name]}
@@ -26,6 +26,7 @@
                 {[ct.name]}
             </option>
         </select>
+
     </div>
     <div class="input-group pull-right">
         <input type="text" v-on:keypress="get_media(1,keyword)" v-model="keyword" class="form-control osr-input input-sm" style="width: 150px;" placeholder="{{_('搜索')}}">

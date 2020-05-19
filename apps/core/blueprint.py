@@ -5,18 +5,26 @@
 from importlib import import_module
 from flask import Blueprint
 from apps.configs.sys_config import ADMIN_TEMPLATE_FOLDER, THEME_TEMPLATE_FOLDER, API_URL_PREFIX, ADMIN_URL_PREFIX, \
-    STATIC_PATH, STATIC_URL_PREFIX, OPEN_API_URL_PREFIX, STATIC_HTML_TEMPLATE_FOLDER, STATIC_HTML_PAGE_PREFIX
+    STATIC_PATH, STATIC_URL_PREFIX, OPEN_API_URL_PREFIX, STATIC_HTML_TEMPLATE_FOLDER, STATIC_HTML_PAGE_PREFIX, \
+    ADMIN_STATIC_URL_PREFIX, ADMIN_STATIC_FOLDER
 from apps.core.plugins_blueprint import plugins_routing_moudel
 
 """
 蓝本:配置路由,url
 """
-api = Blueprint('api', __name__, url_prefix=API_URL_PREFIX)
+# api
+api = Blueprint(
+    'api',
+    __name__,
+    url_prefix=API_URL_PREFIX
+)
 open_api = Blueprint(
     'open_api',
     __name__,
     url_prefix=OPEN_API_URL_PREFIX
 )
+
+# html
 admin_view = Blueprint(
     'admin_view',
     __name__,
@@ -36,14 +44,21 @@ static_html_view = Blueprint(
     url_prefix=STATIC_HTML_PAGE_PREFIX,
     template_folder=STATIC_HTML_TEMPLATE_FOLDER)
 
-
+# static
 static = Blueprint(
     'static', __name__,
     url_prefix=STATIC_URL_PREFIX,
-    template_folder=STATIC_PATH)
+    template_folder=STATIC_PATH
+)
+
+admin_static_file = Blueprint(
+    'static_file', __name__,
+    url_prefix=ADMIN_STATIC_URL_PREFIX,
+    template_folder=ADMIN_STATIC_FOLDER
+)
 
 routing_moudel = [
-    {"from": "apps.routing", "import": ["static_route", "admin_views", "theme_views"]},
+    {"from": "apps.routing", "import": ["static_route", "admin_views", "theme_views", "static_page_route"]},
     {"from": "apps.modules.permission.apis", "import": ["url_permission", "permission"]},
     {"from": "apps.modules.user.apis", "import": ["online", "role",
                                                   "inspection_query", "adm_user",

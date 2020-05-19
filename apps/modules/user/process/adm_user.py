@@ -110,13 +110,16 @@ def add_user():
             if email:
                 # 发送邮件
                 subject = gettext("Registration success notification")
-                body = gettext("""Welcome to register <b>{}</b>.<br><a>{}</a> registered the account successfully.""").format(
-                    get_config("site_config", "APP_NAME"), email)
-                data = {"title": subject,
-                        "body": body,
-                        "other_info": gettext("End"),
-                        "site_url": get_config("site_config", "SITE_URL")
-                        }
+                body = [
+                    gettext("Welcome to register {}.").format( get_config("site_config", "APP_NAME")),
+                    gettext("{} registered the account successfully.").format(email)
+                ]
+                data = {
+                    "title": subject,
+                    "body": body,
+                    "username": username,
+                    "site_url": get_config("site_config", "SITE_URL")
+                }
                 html = get_email_html(data)
 
                 msg = {
@@ -283,15 +286,14 @@ def user_edit():
         s, r = email_format_ver(email)
         if not s:
             data = {'msg': r, 'msg_type': "e", "custom_status": 422}
+            return data
         elif mdbs["user"].db.user.find_one({"email": email, "_id": {"$ne": ObjectId(tid)}}):
             # 邮箱是否注册过
             data = {
                 'msg': gettext("This email has been registered in the site oh, please login directly."),
                 'msg_type': "w",
                 "custom_status": 403}
-        if data:
             return data
-
     if password:
         # 密码格式验证
         s, r = password_format_ver(password)

@@ -3,7 +3,7 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 from flask_babel import gettext
-from apps.app import csrf, rest_session
+from apps.app import csrf, rest_session, redis
 from apps.core.auth.rest_token_auth import OsrTokenError
 from apps.core.blueprint import api
 from apps.core.utils.get_config import get_config, GetConfig
@@ -66,9 +66,8 @@ class OsrRequestProcess:
             :return:
             """
             request.c_method = request.method
-            if request.path.startswith(api.url_prefix):
-                # 只要是api请求都需要token验证
-
+            if app.config["CLIENT_TOKEN_AUTH_ENABLED"] and request.path.startswith(api.url_prefix):
+                # 如果已开启客户端验证, 那只要是api请求都需要token验证
                 auth_header = request.headers.get('OSR-RestToken')
                 csrf_header = request.headers.get('X-CSRFToken')
                 if csrf_header:
@@ -83,9 +82,7 @@ class OsrRequestProcess:
                             ' otherwise provide "X-CSRFToken"'))
 
                     raise OsrTokenError(
-                        response.get_data(
-                            as_text=True),
-                        response=response)
+                        response.get_data(as_text=True), response=response)
 
             request.argget = Request()
 
@@ -102,7 +99,6 @@ class OsrRequestProcess:
                         "current": self.get_current_lang()
                     }
                 }
-
             get_conf = GetConfig()
             g.get_config = get_conf.get_config
 

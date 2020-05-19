@@ -3,10 +3,11 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import time
+
+from celery_once import QueueOnce
 from flask import request
-from apps.app import mdbs, cache
+from apps.app import mdbs, cache, celery
 from apps.core.utils.get_config import get_config
-from apps.utils.osr_async.osr_async import async_process
 from apps.utils.format.obj_format import json_to_pyseq, str_to_num
 
 
@@ -36,18 +37,23 @@ def get_tags():
         tlimit=tlimit,
         sort=sort)
     data = cache.get(key=cache_key, db_type="redis")
-    if data != cache.cache_none:
-        return data
-    else:
+    if data == cache.cache_none:
         # 调用生成缓存程序生成新缓存
-        async_get_tags(user_id, last_days, tlimit, sort)
+        async_get_tags.apply_async(
+            kwargs={
+                "user_id": user_id,
+                "last_days": last_days,
+                "tlimit": tlimit,
+                "sort": sort
+            }
+        )
 
         # 然后返回最后一次的长期缓存
         data = cache.get(key="LAST_POST_TAGS_CACHE", db_type="mongodb")
-        return data
+    return data
 
 
-# @async_process()
+@celery.task(base=QueueOnce, once={'graceful': True})
 def async_get_tags(user_id, last_days, tlimit, sort):
     """
     开子进程统计tag结果
@@ -56,7 +62,6 @@ def async_get_tags(user_id, last_days, tlimit, sort):
     :param sort:
     :return:
     """
-    # mdbs["web"].init_app(reinit=True)
     _get_tags(user_id=user_id, last_days=last_days, tlimit=tlimit, sort=sort)
 
 

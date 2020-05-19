@@ -8,7 +8,7 @@ from flask_login import current_user
 from apps.configs.sys_config import VERSION
 from apps.modules.theme_setting.process.nav_setting import get_global_theme_navs
 from apps.utils.paging.paging import datas_paging
-from apps.core.utils.get_config import get_configs, get_config
+from apps.core.utils.get_config import get_configs
 from apps.utils.upload.get_filepath import get_file_url
 from flask import request, g
 from apps.app import mdbs
@@ -38,14 +38,23 @@ def get_global_site_data(req_type="api"):
 
     # site
     data["site_config"] = get_configs("site_config")
+    data["site_config"]["STATIC_FILE_VERSION"] = "{}_{}".format(
+        data["site_config"]["STATIC_FILE_VERSION"],
+        lang
+    )
     data["site_config"] = dict(data["site_config"], **get_configs("seo"))
     data["site_config"]["sys_version"] = VERSION
     # msg
     if current_user.is_authenticated:
-        msgs = mdbs["user"].db.message.find({"user_id": current_user.str_id,
-                                         "$or": [{"status": "not_noticed"},
-                                                 {"status": {"$exists": False}}]},
-                                        {"_id": 0, "content": 0})
+        msgs = mdbs["user"].db.message.find(
+            {
+                "user_id": current_user.str_id,
+                "$or": [
+                    {"status": "not_noticed"},
+                    {"status": {"$exists": False}}
+                ]},
+                {"_id": 0, "content": 0}
+        )
         msg_cnt = msgs.count(True)
         data["user_msg"] = {"msg_count": msg_cnt,
                             "msgs": list(msgs.sort([("time", -1)]))}
@@ -57,7 +66,6 @@ def get_global_site_data(req_type="api"):
         else:
             data["is_authenticated"] = False
             data["user_info"] = {}
-
     data['d_msg'] = gettext("Get the current user information successfully")
     data['d_msg_type'] = "s"
     return data
@@ -91,7 +99,8 @@ def get_global_media(dbname, collname):
     r = list(mdbs["web"].db.theme_category.find(
         {
             "user_id": 0,
-            "theme_name": theme_name}
+            "theme_name": theme_name
+        }
     ))
     categories = {}
     for cate in r:
@@ -118,8 +127,11 @@ def get_global_media(dbname, collname):
         categorys = mdbs["web"].db.category.find(
             {
                 "type": category_type, "user_id": category_user_id, "name": {
-                    "$in": category_name}}, {
-                "_id": 1}
+                    "$in": category_name}
+            },
+            {
+                "_id": 1
+            }
         )
 
         category_ids = []
@@ -149,7 +161,7 @@ def get_global_media(dbname, collname):
             if "name_regex" in condition and condition["name_regex"]:
                 q["type"] = condition["type"]
                 q["name"] = {"$regex": condition["name_regex"], "$options": "$i"}
-                temp_media = list(mdb.dbs[collname].find(q).sort([("name", 1)]))
+                temp_media = list(mdb.dbs[collname].find(q,  regular_escape=False).sort([("name", 1)]))
             else:
                 q["type"] = condition["type"]
                 q["name"] = {"$in": condition["names"]}

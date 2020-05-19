@@ -6,17 +6,15 @@ import json
 import re
 
 import time
-
 import os
+from celery_once import QueueOnce
 from flask import request
 from flask_babel import gettext
-
-from apps.app import mdbs
+from apps.app import mdbs, celery
 from apps.configs.sys_config import PLUG_IN_CONFIG_CACHE_KEY, PLUG_IN_FOLDER
 from apps.core.flask.reqparse import arg_verify
 from apps.core.plug_in.manager import plugin_manager
 from apps.core.utils.get_config import get_config
-from apps.utils.osr_async.osr_async import async_process
 from apps.utils.pyssh.pyssh import audit_host_info, MySSH
 
 
@@ -246,6 +244,13 @@ def install_require_package():
                 continue
         ssh.close()
         install_process(plugin_name, host_info, new_reqs)
+        install_process.apply_async(
+            kwargs={
+                "plugin_name": plugin_name,
+                "host_info": host_info,
+                "packages": new_reqs
+            }
+        )
 
     if connection_failed:
         # 更新插件需求包安装状态
@@ -293,7 +298,7 @@ def install_require_package():
     return data
 
 
-@async_process()
+@celery.task(base=QueueOnce, once={'graceful': True})
 def install_process(plugin_name, host_info, packages):
     """
     子进程执行安装
@@ -316,7 +321,6 @@ def install_process(plugin_name, host_info, packages):
 
         ssh.close()
         packages = " ".join(packages)
-        mdbs["sys"].init_app(reinit=True)
         plugin = mdbs["sys"].db.plugin.find_one({"plugin_name": plugin_name}, {
                                             "require_package_install_result": 1})
         if "require_package_install_result" in plugin and plugin["require_package_install_result"]:

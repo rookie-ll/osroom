@@ -4,15 +4,15 @@
 # @Author : Allen Woo
 import json
 from bson import ObjectId
+from celery_once import QueueOnce
 from flask import request
 from flask_babel import gettext
 from flask_login import current_user
 
 from apps.core.flask.reqparse import arg_verify
-from apps.utils.osr_async.osr_async import async_thread
 from apps.utils.format.obj_format import objid_to_str, json_to_pyseq
 from apps.utils.validation.str_format import short_str_verifi
-from apps.app import mdbs
+from apps.app import mdbs, celery
 from apps.core.utils.get_config import get_config
 
 
@@ -116,7 +116,12 @@ def category_edit(user_id=None):
         r = mdbs["web"].db.category.update_one(
             {"_id": ObjectId(tid), "user_id": user_id}, {"$set": {"name": name}})
         if r.modified_count:
-            update_media_category_name(tid, name)
+            update_media_category_name.apply_async(
+                kwargs={
+                    "category_id": tid,
+                    "new_name": name
+                }
+            )
             data = {
                 "msg": gettext("Modify the success"),
                 "msg_type": "s",
@@ -129,12 +134,11 @@ def category_edit(user_id=None):
     return data
 
 
-@async_thread()
+@celery.task(base=QueueOnce, once={'graceful': True})
 def update_media_category_name(category_id, new_name):
     """
     更新多媒体与文章category的名称
     """
-    mdbs["web"].init_app(reinit=True)
     mdbs["web"].db.media.update_many({"category_id": category_id}, {
                                  "$set": {"category": new_name}})
 

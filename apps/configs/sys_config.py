@@ -15,7 +15,7 @@ curren_path = os.path.abspath(os.path.dirname(__file__))
 """
 Osroom版本
 """
-VERSION = "2.1"
+VERSION = "3.0 beta"
 
 """
   需要导入的模块
@@ -52,6 +52,8 @@ ADMIN_TEMPLATE_FOLDER = "{}/admin_pages/pages".format(APPS_PATH)
 THEME_TEMPLATE_FOLDER = "{}/themes".format(APPS_PATH)
 STATIC_HTML_TEMPLATE_FOLDER = "{}/static_html_pages".format(APPS_PATH)
 ADMIN_STATIC_FOLDER = "{}/admin_pages/static".format(APPS_PATH)
+TEMP_STATIC_FOLDER = "{}/static/.temp".format(APPS_PATH)
+
 # 主题包配置文件conf.yaml必须需要的参数
 THEME_REQUIRED_CONF = [
     "theme_name",
@@ -65,10 +67,14 @@ THEME_REQUIRED_CONF = [
 """
 API_URL_PREFIX = "/api"
 OPEN_API_URL_PREFIX = "/open-api"
+
 ADMIN_URL_PREFIX = "/osr-admin"
 STATIC_HTML_PAGE_PREFIX = "/st-html"
-STATIC_URL_PREFIX = "/static"
 DEFAULT_ADMIN_LOGIN_PAGE = "/osr-admin/sign-in"
+
+STATIC_URL_PREFIX = "/static"
+ADMIN_STATIC_URL_PREFIX = "/admin-pages/static"
+
 
 """
  权限permission
@@ -145,8 +151,6 @@ SESSION_USE_SIGNER = True
 """
 # CSRF配置, 只对普通浏览器请求验证有效, 对使用RestToken验证的请求无效
 WTF_CSRF_TIME_LIMIT = 3600 * 2
-CSRF_ENABLED = False  # 这里关闭, 再@app.before_request再选择性开启需要验证token的请求
-WTF_CSRF_CHECK_DEFAULT = False  # 这里关闭, 再@app.before_request再选择性开启需要验证token的请求
 WTF_CSRF_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
 """

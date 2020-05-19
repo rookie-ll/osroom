@@ -172,17 +172,20 @@ def login_log(user, client):
         except BaseException:
             location = None
         if location:
-            body = gettext(
-                "<b>Abnormal login</b><br> Your account <a>{}</a>, is logined in "
-                "<span style='color:#483D8B'>{}</span> "
-                "on {} [UTC Time].<br>").format(
-                user.email, location, time_to_utcdate(
-                    tformat="%Y-%m-%d %H:%M:%S"))
-            data = {"title": subject,
-                    "body": body,
-                    "other_info": gettext("End"),
-                    "site_url": get_config("site_config", "SITE_URL")
-                    }
+            body = [
+                gettext("Abnormal login"),
+                gettext("Your account {} , is logined in {} on {} [UTC Time].").format(
+                    user.email,
+                    location,
+                    time_to_utcdate(tformat="%Y-%m-%d %H:%M:%S")
+                )
+            ]
+            data = {
+                "title": subject,
+                "username": user["username"],
+                "body": body,
+                "site_url": get_config("site_config", "SITE_URL")
+            }
             html = get_email_html(data)
 
             msg = {

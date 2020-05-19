@@ -19,10 +19,10 @@
                     <div class="box-tools form-inline">
                         <div class="input-group pull-left">
                             <select id="status" name="status"  class="form-control osr-form-control input-sm m-b-10" @change="switch_type($event.target.value)">
-                                <option  v-for="t,k in type_list" v-if="is_sys_msg==t" selected = "selected" :value ="t" >
-                                    {[k]}
+                                <option  v-for="t,k in type_list" v-if="type==t" selected = "selected" :value ="t" >
+                                   {[k]}
                                 </option>
-                                 <option  v-for="t,k in type_list" v-if="is_sys_msg!=t"  :value ="t" >
+                                 <option  v-for="t,k in type_list" v-if="type!=t"  :value ="t" >
                                     {[k]}
                                 </option>
                             </select>
@@ -62,7 +62,22 @@
                                       </div>
 
                                   </td>
-                                  <td width="100px" v-if="!is_sys_msg">{[msg.type | capitalize]}</td>
+                                  <td width="100px" v-if="!is_sys_msg">
+
+                                      <span v-if="msg.type == 'notice'">
+                                          {{_("通知")}}
+                                      </span>
+                                      <span v-else-if="msg.type == 'audit'">
+                                          {{_("审核")}}
+                                      </span>
+                                      <span v-else-if="msg.type == 'msg'">
+                                          {{_("消息")}}
+                                      </span>
+                                      <span v-else>
+                                          {[msg.type | capitalize]}
+                                      </span>
+
+                                  </td>
                                 <td width="100px" v-else>{{_("系统通知")}}</td>
                                 <td width="100px">
                                     {{_("用户")}}
@@ -78,7 +93,7 @@
                                         </a>
                                     </span>
                                     <span v-else >
-                                        {[msg.content]}
+                                        {[msg.content.text]}
                                     </span>
                                 </td>
                                 <td  v-else-if="msg.type=='comment' || msg.type=='audit'">
@@ -185,111 +200,8 @@
     <!-- //模态-->
 </div>
 
-<script>
 
-    var vue = new Vue({
-      el: '#app',
-      delimiters:['{[', ']}'],
-      data:{
-           msgs:{},
-           msg_view:{},
-           is_sys_msg:1,
-           page:1,
-           type:"notice",
-           type_list:{
-                '{{_("系统通知")}}':"sys",
-                '{{_("其他")}}':"other"
-               },
-           pages:[],
-           keyword:"",
-           checkAll:false,
-           set:false
-      },
-      filters: {
-            formatDate: function (time) {
-              return formatDate(time, "yyyy-MM-dd hh:mm");
-            }
-      }
-
-    })
-    // 加载完页面执行
-    $(document).ready(function(){
-        var type = $("#type").attr("content");
-        vue.type = type?type:vue.type;
-        var page = $("#page").attr("content");
-        vue.page = page?page:vue.page;
-        var sys = $("#sys").attr("content");
-        vue.is_sys_msg = sys?parseInt(sys):vue.is_sys_msg;
-        var keyword = $("#keyword").attr("content");
-        vue.keyword = keyword?keyword:vue.keyword
-
-        get_msgs(vue.page);
-    });
-
-    function get_msgs(page){
-       vue.page = page;
-       if(vue.type=="other"){
-           var type = ["notice", "msg", "audit"];
-       }else{
-           var type = [vue.type];
-       }
-       var d = {
-            is_sys_msg:vue.is_sys_msg,
-            pre:10,
-            type:JSON.stringify(type),
-            page:vue.page,
-            keyword:vue.keyword
-       }
-
-       var result = osrHttp("GET","/api/admin/message/on-site", d, args={not_prompt:true});
-        result.then(function (r) {
-            vue.msgs = r.data.msgs;
-            vue.checkAll = false;
-            osr_check_all(vue.msgs.datas, vue.checkAll, vue.set);
-            vue.pages = paging(page_total=vue.msgs.page_total,
-                                current_page=vue.msgs.current_page);
-        });
-        var url = window.location.pathname+"?type="+vue.type+"&page="+page+"&sys="+vue.is_sys_msg;
-        if(vue.keyword){
-            url = url + "&keyword="+vue.keyword;
-        }
-        history_state(title=null,url=url);
-
-
-    }
-
-    function del_msgs(){
-       var ids = JSON.stringify(osr_get_checked_id());
-       var d = {
-            ids:ids
-       }
-
-       var result = osrHttp("DELETE","/api/admin/message/on-site", d);
-        result.then(function (r) {
-            if(r.data.msg_type == "s"){
-                get_msgs(vue.page);
-           }
-        });
-
-    }
-
-    function switch_type(type){
-        if(type=="other"){
-            vue.type = type;
-            vue.is_sys_msg = 0;
-        }else{
-            vue.type = "notice";
-            vue.is_sys_msg = 1;
-        }
-        vue.keyword = "";
-        get_msgs(1);
-    }
-
-    function put_msg_view(index){
-        vue.msg_view = vue.msgs.datas[index];
-    }
-
-</script>
-{% endblock %}
+<script src="/admin-pages/static/js/osr_page_js/message/on-site.js?v={{g.site_global.site_config.STATIC_FILE_VERSION}}">
+</script>{% endblock %}
 
 

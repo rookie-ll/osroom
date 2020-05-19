@@ -10,10 +10,13 @@ from uuid import uuid1
 import time
 from PIL import Image
 import os
+
+from celery_once import QueueOnce
+
+from apps.app import celery
 from apps.configs.sys_config import STATIC_PATH, VIOLATION_IMG_PATH
 from apps.core.plug_in.manager import plugin_manager
 from apps.core.utils.get_config import get_config
-from apps.utils.osr_async.osr_async import async_process
 from apps.utils.content_evaluation.content import content_inspection_image
 from apps.utils.format.time_format import time_to_utcdate
 from apps.utils.upload.get_filepath import get_file_url, get_localfile_path
@@ -45,7 +48,11 @@ def file_up(uploaded_files, prefix="", file_name=None, tailoring=None):
                     tailoring=tailoring,
                     prefix=prefix)
             keys.append(key)
-    call_file_detection(keys)
+    call_file_detection.apply_async(
+        kwargs={
+            "files_file_url_obj": keys
+        }
+    )
     return keys
 
 
@@ -112,7 +119,11 @@ def fileup_base_64(uploaded_files, file_name=None, prefix=""):
             key = None
 
         keys.append(key)
-    call_file_detection(keys)
+    call_file_detection.apply_async(
+        kwargs={
+            "files_file_url_obj": keys
+        }
+    )
     return keys
 
 
@@ -382,8 +393,7 @@ def file_rename(file_url_obj, new_filename):
         return data
 
 
-# 之后需要改成celery异步
-@async_process()
+@celery.task(base=QueueOnce, once={'graceful': True})
 def call_file_detection(files_file_url_obj):
     """
     调用文件检查

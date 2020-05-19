@@ -3,11 +3,12 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import time
+
+from celery_once import QueueOnce
 from flask_mail import Message
 from apps.core.plug_in.manager import plugin_manager
 from apps.routing.theme_views import get_render_template_email
-from apps.utils.osr_async.osr_async import async_process
-from apps.app import mail, app, mdbs
+from apps.app import mail, app, mdbs, celery
 
 __author__ = 'woo'
 
@@ -22,12 +23,14 @@ def send_email(msg="", tp_path=None, tp_data=None, send_independently=True, ctyp
     else:
         html = get_render_template_email(path=tp_path, params=tp_data)
     if html:
-        send_async_email(
-            msg=msg,
-            html=html,
-            text="",
-            send_independently=send_independently,
-            ctype=ctype
+        send_async_email.apply_async(
+            kwargs={
+                "msg": msg,
+                "html": html,
+                "text": "",
+                "send_independently": send_independently,
+                "ctype": ctype
+            }
         )
     else:
         status = "failed"
@@ -40,8 +43,7 @@ def send_email(msg="", tp_path=None, tp_data=None, send_independently=True, ctyp
         mdbs["site"].db.sys_email_log.insert_one(log)
 
 
-# 之后需要改成celery异步
-@async_process()
+@celery.task(base=QueueOnce, once={'graceful': True})
 def send_async_email(msg, html, text, attach=None, send_independently=True, ctype="other"):
     """
     发送email
@@ -57,14 +59,15 @@ def send_async_email(msg, html, text, attach=None, send_independently=True, ctyp
     """
 
     # 检测插件
-    data = plugin_manager.call_plug(hook_name="send_email",
-                                    send_independently=send_independently,
-                                    msg=msg,
-                                    html=html,
-                                    text=text,
-                                    attach=attach)
+    data = plugin_manager.call_plug(
+        hook_name="send_email",
+        send_independently=send_independently,
+        msg=msg,
+        html=html,
+        text=text,
+        attach=attach
+    )
     if data == "__no_plugin__":
-
         with app.app_context():
             msg_obj = Message(
                 subject=msg["subject"],

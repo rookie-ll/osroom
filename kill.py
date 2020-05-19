@@ -4,8 +4,23 @@
 # @Author : Allen Woo
 import os
 try:
-    shcmd = """ps -ef | grep uwsgi.ini | awk '{print $2}' | xargs kill -9"""
+    shcmd = """ps -ef | grep uwsgi_run.ini | awk '{print $2}' | xargs kill -9"""
     r = os.system(shcmd)
     print("Kill uwsgi.")
 except Exception as e:
     print(e)
+
+try:
+    shcmd = """ps -ef | grep celery_worker.celery | grep -v color=auto | awk '{print $2}' | xargs kill -9"""
+    r = os.system(shcmd)
+    print("Kill celery_worker.celery.")
+except Exception as e:
+    print(e)
+
+
+sudo apt-get remove \
+linux-headers-4.15.0-28 \
+linux-headers-4.15.0-28-generic \
+linux-image-4.15.0-28-generic \
+linux-modules-4.15.0-28-generic \
+linux-modules-extra-4.15.0-28-generic

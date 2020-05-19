@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2019 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-12-16 17:30+0800\n"
+"POT-Creation-Date: 2020-03-12 20:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,8 +78,8 @@ msgid "Successfully deleted"
 msgstr ""
 
 #: apps/core/auth/rest_token_auth.py:113 apps/modules/audit/process/rules.py:85
-#: apps/modules/category/process/category.py:159
-#: apps/modules/category/process/theme_setting_category.py:186
+#: apps/modules/category/process/category.py:163
+#: apps/modules/category/process/theme_setting_category.py:190
 #: apps/modules/comments/process/comment.py:296
 #: apps/modules/permission/process/url_permission.py:233
 #: apps/modules/theme_setting/process/nav_setting.py:176
@@ -100,7 +100,7 @@ msgid ""
 " and 'ClientId <client_id>'"
 msgstr ""
 
-#: apps/core/auth/rest_token_auth.py:174 apps/core/flask/request.py:81
+#: apps/core/auth/rest_token_auth.py:174 apps/core/flask/request.py:80
 msgid ""
 "Token is miss, unconventional web browsing requests please provide \"OSR-"
 "RestToken\", otherwise provide \"X-CSRFToken\""
@@ -242,13 +242,13 @@ msgstr ""
 #: apps/modules/category/process/category.py:86
 #: apps/modules/category/process/theme_setting_category.py:107
 #: apps/modules/permission/process/permission.py:94
-#: apps/modules/user/process/role.py:56
+#: apps/modules/user/process/role.py:63
 msgid "Add a success"
 msgstr ""
 
 #: apps/modules/audit/process/rules.py:81
-#: apps/modules/category/process/category.py:155
-#: apps/modules/category/process/theme_setting_category.py:182
+#: apps/modules/category/process/category.py:159
+#: apps/modules/category/process/theme_setting_category.py:186
 msgid "Delete the success,{}"
 msgstr ""
 
@@ -281,8 +281,8 @@ msgstr ""
 #: apps/modules/plug_in_manager/process/manager.py:143
 #: apps/modules/theme_setting/process/display_setting.py:63
 #: apps/modules/theme_setting/process/display_setting.py:263
-#: apps/modules/user/process/role.py:64 apps/modules/user/process/role.py:67
-#: apps/modules/user/process/role.py:120 apps/utils/validation/str_format.py:24
+#: apps/modules/user/process/role.py:71 apps/modules/user/process/role.py:74
+#: apps/modules/user/process/role.py:127 apps/utils/validation/str_format.py:24
 msgid "name"
 msgstr ""
 
@@ -293,18 +293,18 @@ msgstr ""
 msgid "Name already exists"
 msgstr ""
 
-#: apps/modules/category/process/category.py:121
-#: apps/modules/category/process/theme_setting_category.py:148
+#: apps/modules/category/process/category.py:126
+#: apps/modules/category/process/theme_setting_category.py:153
 #: apps/modules/media/process/media.py:317
 #: apps/modules/permission/process/url_permission.py:194
-#: apps/modules/plug_in_manager/process/setting.py:167
-#: apps/modules/setting/process/settings.py:305
+#: apps/modules/plug_in_manager/process/setting.py:165
+#: apps/modules/setting/process/settings.py:310
 #: apps/modules/theme_setting/process/display_setting.py:373
 msgid "Modify the success"
 msgstr ""
 
-#: apps/modules/category/process/category.py:126
-#: apps/modules/category/process/theme_setting_category.py:153
+#: apps/modules/category/process/category.py:131
+#: apps/modules/category/process/theme_setting_category.py:158
 #: apps/modules/permission/process/url_permission.py:199
 msgid "No modification"
 msgstr ""
@@ -397,12 +397,12 @@ msgid "Delete the success"
 msgstr ""
 
 #: apps/modules/comments/process/comment.py:333
-#: apps/modules/post/process/post.py:110
+#: apps/modules/post/process/post.py:117
 msgid "Success"
 msgstr ""
 
 #: apps/modules/comments/process/comment.py:335
-#: apps/modules/post/process/post.py:112
+#: apps/modules/post/process/post.py:119
 msgid "Failed"
 msgstr ""
 
@@ -470,6 +470,7 @@ msgstr ""
 #: apps/modules/permission/process/url_permission.py:118
 #: apps/modules/theme_setting/process/display_setting.py:126
 #: apps/modules/theme_setting/process/page.py:79
+#: apps/modules/user/process/adm_user.py:139
 msgid "Added successfully"
 msgstr ""
 
@@ -551,12 +552,14 @@ msgid "Update succeed"
 msgstr ""
 
 #: apps/modules/message/process/user_message.py:186
-#: apps/modules/permission/process/permission.py:204
+#: apps/modules/permission/process/permission.py:193
+#: apps/modules/permission/process/permission.py:229
 #: apps/modules/setting/process/host_setting.py:64
-#: apps/modules/user/process/adm_user.py:154
+#: apps/modules/user/process/adm_user.py:311
 #: apps/modules/user/process/profile.py:138
 #: apps/modules/user/process/profile.py:210
-#: apps/modules/user/process/role.py:162 apps/modules/user/process/role.py:175
+#: apps/modules/user/process/role.py:151 apps/modules/user/process/role.py:177
+#: apps/modules/user/process/role.py:209 apps/modules/user/process/role.py:222
 msgid "No changes"
 msgstr ""
 
@@ -579,12 +582,12 @@ msgid "Permission name or valready exists"
 msgstr ""
 
 #: apps/modules/permission/process/permission.py:119
-#: apps/modules/permission/process/permission.py:193
+#: apps/modules/permission/process/permission.py:213
 msgid "Location has been used"
 msgstr ""
 
 #: apps/modules/permission/process/permission.py:127
-#: apps/modules/user/process/role.py:75
+#: apps/modules/user/process/role.py:82
 msgid ""
 "The current user permissions are lower than the permissions that you want"
 " to add, without permission to add"
@@ -592,39 +595,46 @@ msgstr ""
 
 #: apps/modules/permission/process/permission.py:168
 #: apps/modules/permission/process/url_permission.py:161
-#: apps/modules/user/process/role.py:125
+#: apps/modules/user/process/role.py:132
 msgid ""
 "The current user permissions are lower than the permissions you want to "
 "modify, without permission to modify"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:188
+#: apps/modules/permission/process/permission.py:186
+msgid ""
+"The highest permission of the current user is equal to the highest "
+"permission to be modified, and only the name and introduction can be "
+"modified"
+msgstr ""
+
+#: apps/modules/permission/process/permission.py:207
 msgid "Permission name already exists"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:210
-#: apps/modules/permission/process/permission.py:271
+#: apps/modules/permission/process/permission.py:235
+#: apps/modules/permission/process/permission.py:295
 msgid "The role of the chain reaction is: \n"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:221
+#: apps/modules/permission/process/permission.py:245
 msgid "The update is successful. {}"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:226
+#: apps/modules/permission/process/permission.py:250
 #: apps/modules/theme_setting/process/nav_setting.py:141
 msgid "Update failed"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:284
+#: apps/modules/permission/process/permission.py:308
 msgid "Successfully deleted. {}"
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:290
+#: apps/modules/permission/process/permission.py:314
 msgid "No permission to delete {}. "
 msgstr ""
 
-#: apps/modules/permission/process/permission.py:293
+#: apps/modules/permission/process/permission.py:317
 msgid "{}{} are permissions that must be retained."
 msgstr ""
 
@@ -688,55 +698,55 @@ msgstr ""
 msgid "The same name theme already exists"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:47
+#: apps/modules/plug_in_manager/process/setting.py:45
 #: apps/modules/setting/process/host_setting.py:28
-#: apps/modules/setting/process/settings.py:163
+#: apps/modules/setting/process/settings.py:168
 msgid ""
 "The KEY_HIDING switch in the system configuration has been enabled. The "
 "value of the password type has been replaced."
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:82
-#: apps/modules/setting/process/settings.py:168
-#: apps/modules/setting/process/settings.py:193
+#: apps/modules/plug_in_manager/process/setting.py:80
+#: apps/modules/setting/process/settings.py:173
+#: apps/modules/setting/process/settings.py:198
 msgid "There is no such data"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:125
-#: apps/modules/plug_in_manager/process/setting.py:135
-#: apps/modules/plug_in_manager/process/setting.py:151
-#: apps/modules/setting/process/settings.py:236
-#: apps/modules/setting/process/settings.py:244
-#: apps/modules/setting/process/settings.py:258
+#: apps/modules/plug_in_manager/process/setting.py:123
+#: apps/modules/plug_in_manager/process/setting.py:133
+#: apps/modules/plug_in_manager/process/setting.py:149
+#: apps/modules/setting/process/settings.py:241
+#: apps/modules/setting/process/settings.py:249
+#: apps/modules/setting/process/settings.py:263
 msgid "The format of the \"value\" errors, need a \"{}\" type"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:144
-#: apps/modules/setting/process/settings.py:251
+#: apps/modules/plug_in_manager/process/setting.py:142
+#: apps/modules/setting/process/settings.py:256
 msgid "There is no {}"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:191
+#: apps/modules/plug_in_manager/process/setting.py:189
 msgid "Refreshed successfully"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:196
+#: apps/modules/plug_in_manager/process/setting.py:194
 msgid ""
 "Failed to refresh. Please check the previous plug-in page for error "
 "messages"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:217
+#: apps/modules/plug_in_manager/process/setting.py:215
 msgid "There is no requirement file"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:284
+#: apps/modules/plug_in_manager/process/setting.py:289
 msgid ""
 "Some host connections failed. Successfully connected host has installed "
 "requirements package in the background"
 msgstr ""
 
-#: apps/modules/plug_in_manager/process/setting.py:290
+#: apps/modules/plug_in_manager/process/setting.py:295
 msgid "Executed related installation commands in the background"
 msgstr ""
 
@@ -761,7 +771,7 @@ msgid "Issue success"
 msgstr ""
 
 #: apps/modules/post/process/user_post.py:206
-#: apps/modules/user/process/role.py:150
+#: apps/modules/user/process/role.py:198
 msgid "Save success"
 msgstr ""
 
@@ -1030,50 +1040,92 @@ msgstr ""
 msgid "Successfully logged out"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:24
-#: apps/modules/user/process/user_profile_process.py:35
-#: apps/modules/user/process/user_profile_process.py:67
+#: apps/modules/user/process/adm_user.py:47
+#: apps/modules/user/process/profile.py:190
+#: apps/modules/user/process/sign_up.py:49
+msgid "Name has been used"
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:56
+#: apps/modules/user/process/sign_up.py:58
+msgid "The two passwords don't match"
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:71
+#: apps/modules/user/process/adm_user.py:292
+#: apps/modules/user/process/sign_up.py:73
+msgid "This email has been registered in the site oh, please login directly."
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:85
+#: apps/modules/user/process/sign_up.py:96
+msgid "This number has been registered in the site oh, please login directly."
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:112
+#: apps/modules/user/process/sign_up.py:127
+msgid "Registration success notification"
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:114
+#: apps/modules/user/process/sign_up.py:129
+msgid "Welcome to register {}."
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:115
+#: apps/modules/user/process/sign_up.py:130
+msgid "{} registered the account successfully."
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:134
+#: apps/modules/user/process/sign_up.py:149
+msgid "[{}] Successful registration account."
+msgstr ""
+
+#: apps/modules/user/process/adm_user.py:150
+#: apps/modules/user/process/user_profile_process.py:34
+#: apps/modules/user/process/user_profile_process.py:66
 msgid "The specified user is not found"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:127
+#: apps/modules/user/process/adm_user.py:255
 #: apps/modules/user/process/profile.py:216
 msgid "Update success"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:147
+#: apps/modules/user/process/adm_user.py:279
 msgid "No permission modification"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:191
+#: apps/modules/user/process/adm_user.py:348
 msgid "Has recovered {} users, {} users can not operate"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:198
+#: apps/modules/user/process/adm_user.py:355
 msgid "Recycle user failed.May not have permission"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:208
+#: apps/modules/user/process/adm_user.py:365
 msgid "{} users have been deleted and {} users can not be deleted"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:215
+#: apps/modules/user/process/adm_user.py:372
 msgid "Failed to delete.May not have permission"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:253
+#: apps/modules/user/process/adm_user.py:410
 msgid "Restore the {} users,The other {} users have no power control"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:260
+#: apps/modules/user/process/adm_user.py:417
 msgid "Restore the failure.May not have permission"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:298
+#: apps/modules/user/process/adm_user.py:455
 msgid "{} user activation is successful, {} no permission to operate"
 msgstr ""
 
-#: apps/modules/user/process/adm_user.py:305
+#: apps/modules/user/process/adm_user.py:462
 msgid "Activation failed.May not have permission"
 msgstr ""
 
@@ -1161,17 +1213,19 @@ msgstr ""
 msgid "Password reset notification"
 msgstr ""
 
-#: apps/modules/user/process/password.py:183
-#: apps/modules/user/process/sign_in.py:183
-#: apps/modules/user/process/sign_up.py:132
-msgid "End"
+#: apps/modules/user/process/password.py:180
+msgid "Your account {} has reset your password."
 msgstr ""
 
-#: apps/modules/user/process/password.py:195
+#: apps/modules/user/process/password.py:181
+msgid "Please keep it safe."
+msgstr ""
+
+#: apps/modules/user/process/password.py:199
 msgid "Password reset successfully.Please return to login page to login"
 msgstr ""
 
-#: apps/modules/user/process/password.py:202
+#: apps/modules/user/process/password.py:206
 msgid "Reset password failed(unknown error)"
 msgstr ""
 
@@ -1188,7 +1242,7 @@ msgid "The date of birth requires an 8-digit date,Such as '{}'"
 msgstr ""
 
 #: apps/modules/user/process/profile.py:94
-#: apps/modules/user/process/sign_in.py:257
+#: apps/modules/user/process/sign_in.py:261
 msgid "gender"
 msgstr ""
 
@@ -1204,11 +1258,6 @@ msgstr ""
 msgid "The editor saves failure"
 msgstr ""
 
-#: apps/modules/user/process/profile.py:190
-#: apps/modules/user/process/sign_up.py:49
-msgid "Name has been used"
-msgstr ""
-
 #: apps/modules/user/process/profile.py:196
 msgid "Domain has been used"
 msgstr ""
@@ -1217,23 +1266,35 @@ msgstr ""
 msgid "Personality custom domain cannot be modified"
 msgstr ""
 
-#: apps/modules/user/process/role.py:24
+#: apps/modules/user/process/role.py:25
 msgid "The specified role is not found"
 msgstr ""
 
-#: apps/modules/user/process/role.py:90 apps/modules/user/process/role.py:167
+#: apps/modules/user/process/role.py:97 apps/modules/user/process/role.py:214
 msgid "Existing default role"
 msgstr ""
 
-#: apps/modules/user/process/role.py:101 apps/modules/user/process/role.py:181
+#: apps/modules/user/process/role.py:108 apps/modules/user/process/role.py:228
 msgid "Role name already exists"
 msgstr ""
 
-#: apps/modules/user/process/role.py:213
+#: apps/modules/user/process/role.py:156
+msgid ""
+"The highest permission of the current user is equal to that of the "
+"selected permission. You can only modify the name and profile."
+msgstr ""
+
+#: apps/modules/user/process/role.py:182
+msgid ""
+"The highest permission of the current user is equal to that of the role "
+"to be modified.Only the name and introduction can be modified."
+msgstr ""
+
+#: apps/modules/user/process/role.py:260
 msgid "Delete the success, {} of the roles have users and cannot be deleted"
 msgstr ""
 
-#: apps/modules/user/process/role.py:217
+#: apps/modules/user/process/role.py:264
 msgid ""
 "{} role do not have permission to delete, {} of the roles have users and "
 "cannot be deleted"
@@ -1256,68 +1317,41 @@ msgid "Verification code error"
 msgstr ""
 
 #: apps/modules/user/process/sign_in.py:98
-#: apps/modules/user/process/sign_in.py:227
+#: apps/modules/user/process/sign_in.py:231
 msgid "Sign in success"
 msgstr ""
 
 #: apps/modules/user/process/sign_in.py:106
-#: apps/modules/user/process/sign_in.py:234
+#: apps/modules/user/process/sign_in.py:238
 msgid "Account is inactive or frozen"
 msgstr ""
 
 #: apps/modules/user/process/sign_in.py:165
+#: apps/modules/user/process/sign_in.py:176
 msgid "Abnormal login"
 msgstr ""
 
-#: apps/modules/user/process/sign_in.py:175
-msgid ""
-"<b>Abnormal login</b><br> Your account <a>{}</a>, is logined in <span "
-"style='color:#483D8B'>{}</span> on {} [UTC Time].<br>"
+#: apps/modules/user/process/sign_in.py:177
+msgid "Your account {} , is logined in {} on {} [UTC Time]."
 msgstr ""
 
-#: apps/modules/user/process/sign_in.py:207
+#: apps/modules/user/process/sign_in.py:211
 msgid ""
 "No login processing plugin for this platform, please install the relevant"
 " plugin first"
 msgstr ""
 
-#: apps/modules/user/process/sign_in.py:281
-#: apps/modules/user/process/sign_up.py:150
+#: apps/modules/user/process/sign_in.py:285
+#: apps/modules/user/process/sign_up.py:154
 msgid "Registered successfully"
 msgstr ""
 
-#: apps/modules/user/process/sign_in.py:285
-#: apps/modules/user/process/sign_up.py:154
+#: apps/modules/user/process/sign_in.py:289
+#: apps/modules/user/process/sign_up.py:158
 msgid "Data saved incorrectly, please try again"
 msgstr ""
 
-#: apps/modules/user/process/sign_up.py:58
-msgid "The two passwords don't match"
-msgstr ""
-
-#: apps/modules/user/process/sign_up.py:73
-msgid "This email has been registered in the site oh, please login directly."
-msgstr ""
-
-#: apps/modules/user/process/sign_up.py:96
-msgid "This number has been registered in the site oh, please login directly."
-msgstr ""
-
-#: apps/modules/user/process/sign_up.py:127
-msgid "Registration success notification"
-msgstr ""
-
-#: apps/modules/user/process/sign_up.py:128
-msgid ""
-"Welcome to register <b>{}</b>.<br><a>{}</a> registered the account "
-"successfully."
-msgstr ""
-
-#: apps/modules/user/process/sign_up.py:145
-msgid "[{}] Successful registration account."
-msgstr ""
-
-#: apps/modules/user/process/user.py:66
+#: apps/modules/user/process/user.py:67
 msgid "Password is not a readable attribute"
 msgstr ""
 
@@ -1329,29 +1363,38 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: apps/modules/verification_code/process/send_code.py:50
-#: apps/modules/verification_code/process/send_code.py:78
+#: apps/modules/verification_code/process/send_code.py:51
+#: apps/modules/verification_code/process/send_code.py:84
 msgid "This account is not registered on this platform"
 msgstr ""
 
-#: apps/modules/verification_code/process/send_code.py:64
+#: apps/modules/verification_code/process/send_code.py:69
 msgid "Telephone number"
 msgstr ""
 
-#: apps/modules/verification_code/process/send_code.py:122
+#: apps/modules/verification_code/process/send_code.py:129
 msgid ""
 "The system detects that your network is sending verification codes "
 "frequently. Please try again later!"
 msgstr ""
 
-#: apps/modules/verification_code/process/send_code.py:135
+#: apps/modules/verification_code/process/send_code.py:142
 msgid "Image verification code error, email not sent"
 msgstr ""
 
-#: apps/modules/verification_code/process/send_code.py:146
+#: apps/modules/verification_code/process/send_code.py:153
 msgid ""
 "The system detected that your operation is too frequent and you need to "
 "verify the picture verification code"
+msgstr ""
+
+#: apps/plugins/aliyun_oss_plugin/upfile_cloud.py:104
+#: apps/plugins/qiniu_cloud_plugin/upfile_cloud.py:113
+msgid "Please configure the third-party file storage domain name"
+msgstr ""
+
+#: apps/plugins/geoip_plugin/main.py:27
+msgid "Local"
 msgstr ""
 
 #: apps/utils/pyssh/pyssh.py:58
@@ -1415,27 +1458,25 @@ msgstr ""
 msgid "Unvalidated link"
 msgstr ""
 
-#: apps/utils/verify/msg_verify_code.py:72
+#: apps/utils/verify/msg_verify_code.py:73
 msgid "Verification code"
 msgstr ""
 
-#: apps/utils/verify/msg_verify_code.py:86
+#: apps/utils/verify/msg_verify_code.py:75
+msgid "This is the temporary security code you applied for."
+msgstr ""
+
+#: apps/utils/verify/msg_verify_code.py:76
+msgid "If you didn't operate it, please ignore it."
+msgstr ""
+
+#: apps/utils/verify/msg_verify_code.py:94
 msgid "Has been sent. If not, please check spam"
 msgstr ""
 
-#: apps/utils/verify/msg_verify_code.py:97
+#: apps/utils/verify/msg_verify_code.py:105
 msgid ""
 "[{}] Your verification code is: {}. If you do not send it, please ignore "
 "it. Please do not tell the verification code to others"
-msgstr ""
-
-#: apps/utils/verify/msg_verify_code.py:125
-msgid "Your verification code is"
-msgstr ""
-
-#: apps/utils/verify/msg_verify_code.py:125
-msgid ""
-"If you do not send it, please ignore it.Please do not tell the "
-"verification code to others"
 msgstr ""
 

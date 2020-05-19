@@ -223,6 +223,8 @@ def get_posts_query(query_conditions, field, sort, pre, page, get_userinfo):
                 current_user_isauth=current_user.is_authenticated)
             if s:
                 post["user"] = r
+            else:
+                post['user'] = {}
         # category
         if "category" in post and post["category"]:
             post["category"] = str(post["category"])

@@ -1,11 +1,13 @@
 
-<div align=center><img width="auto" height="50" src="https://raw.githubusercontent.com/osroom/osroom/dev/apps/static/sys_imgs/osroom-logo.png" alt="osroom"/></div>
+<div align=center><img width="auto" height="50" src="https://raw.githubusercontent.com/osroom/osroom/dev/apps/static/sys_imgs/logo.png" alt="osroom"/></div>
 
 > dev(开放更新中,可在Tag中可以选择以往的其他版本)
 
 - 当前更新比较多，请及时更新新版本
 
 - 低版本更新到v2.2后，如果出现ROOT用户权限问题，[注销登录]后再次登录
+
+** 注意：更新到v2.2的童鞋请先看[这篇文章](https://demo.osroom.com/post?id=5e1c27773f677efbf48e40ab) **
 
 |   Version  |   Status  |  Other   |
 | --- | --- | --- |
@@ -15,6 +17,7 @@
 |   [v2.0](https://github.com/osroom/osroom/tree/v2.0)    |     | v1.x.x更新到v2.0版本时需要重新配置数据库文件
 |   [v2.0 Beta](https://github.com/osroom/osroom/tree/v2.0beta)    |     | v1.x.x更新到v2.0beta版本时需要重新配置数据库文件
 |   [v1.1.1](https://github.com/osroom/osroom/tree/v1.1.1)    |  不建议使用 |  v1.x.x更新到dev版本时需要重新配置数据库文件   |
+
 
 OSROOM是使用Python3(>=3.4) 语言,基于Flask微型框架 + Mongodb(>=3.4)+ Redis开发的一个Web系统（CMF , Rest Api）.
 

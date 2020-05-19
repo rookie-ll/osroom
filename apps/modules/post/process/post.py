@@ -17,7 +17,14 @@ def get_post(post_id=None):
 
     if not post_id:
         post_id = request.argget.all('post_id')
-    post_pv(post_id)
+
+    sid = request.cookies["session"]
+    post_pv.apply_async(
+        kwargs={
+            "post_id": post_id,
+            "sid": sid
+        }
+    )
     data = get_post_pr(post_id=post_id)
     return data
 
