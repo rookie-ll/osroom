@@ -1,6 +1,8 @@
 
 <div align=center><img width="auto" height="50" src="https://raw.githubusercontent.com/osroom/osroom/dev/apps/static/sys_imgs/logo.png" alt="osroom"/></div>
 
+> 估计再忙段时间准备更新下osroom - 2020-09-01
+
 > dev(开放更新中,可在Tag中可以选择以往的其他版本)
 
 - 当前更新比较多，请及时更新新版本
