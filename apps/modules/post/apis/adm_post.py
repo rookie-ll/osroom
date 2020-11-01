@@ -4,12 +4,12 @@
 # @Author : Allen Woo
 from flask import request
 from apps.core.flask.login_manager import osr_login_required
-
 from apps.configs.sys_config import METHOD_WARNING
 from apps.core.blueprint import api
 from apps.core.flask.permission import permission_required
 from apps.core.flask.response import response_format
-from apps.modules.post.process.adm_post import adm_get_post, adm_get_posts, adm_post_audit, adm_post_restore, \
+from apps.modules.post.process.adm_post import adm_get_post, \
+    adm_get_posts, adm_post_audit, adm_post_restore, \
     adm_post_delete
 
 

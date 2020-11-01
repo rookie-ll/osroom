@@ -4,18 +4,31 @@
 <div id="app" v-cloak>
     <div class="row osr-page" style="padding-top:30px">
         <section class="osr-panel">
-            <div class="input-group text-center" style="max-width: 500px;margin-right: auto;margin-left: auto;">
-                <input type="text" name="q" class="form-control osr-input input-lg" v-model="keyword" placeholder="{{_('文章 用户')}}">
+            <div class="input-group text-center dropdown" style="max-width: 500px;margin-right: auto;margin-left: auto;">
+                <input type="text" name="q" 
+                class="form-control osr-input input-lg dropdown-toggle"
+                aria-haspopup="true" aria-expanded="false" data-toggle="dropdown"
+                v-model="keyword" placeholder="{{_('文章 用户')}}">
                 <span class="input-group-btn">
                     <button  class="btn btn-md btn-flat osr-btn-blue btn-lg" style="color:#ffffff"
                              v-on:click="global_search(keyword, target, 1)">
                         {{_("搜索")}}
                     </button>
                 </span>
+                <div v-if="search_logs && search_logs.length>0" class="dropdown-menu" aria-labelledby="search-input"
+                    style="padding: 4px 13px;margin: 0px;border-radius: 0px;border:0px;min-width: 100%;">
+                    <span class="dropdown-item osr-text" v-for="log in search_logs" >
+                        <a v-on:click="global_search(log.search, target, 1)" class="osr-pointer">
+                            {[log.search]}
+                        </a>
+                        <br>
+                    </span>
+                    <hr class="osr-hr">
+                    <span class="dropdown-item osr-text osr-pointer" v-on:click="clear_logs()">
+                        {{_('清除历史')}}
+                    </span>
+                  </div>
                 <div>
-                    <!-- <span v-for="log in search_logs">
-                        {[log.search]}
-                    </span> -->
                 </div>
             </div>
             

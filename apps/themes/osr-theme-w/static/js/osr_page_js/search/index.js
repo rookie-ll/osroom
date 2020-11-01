@@ -9,7 +9,7 @@
             page:1,
             keyword:"",
             target:"",
-            search_logs: []
+            search_logs: null
       },
       filters: {
             formatDate: function (time) {
@@ -36,11 +36,25 @@
             vue.search_logs = r.data.logs;
         });
     }
+    function clear_logs(){
+        var result = osrHttp("DELETE","/api/search/logs", args={not_prompt:true});
+        result.then(function (r) {
+            vue.search_logs = [];
+        });
+    }
     function global_search(keyword, target, page){
 
         vue.keyword = keyword;
         vue.target = target;
         vue.page = page;
+        
+        var url = window.location.pathname
+                    +"?s="+keyword
+                    +"&page="+page
+        if(vue.target){
+            url = url+'&t='+vue.target;
+        }
+        history_state(null, url);
         if(!vue.keyword){
             return 0;
         };
@@ -73,13 +87,8 @@
                 vue.pages = paging(page_total=r.data.users.items.page_total,
                                     current_page=r.data.users.items.current_page);
             }
+            get_search_logs();
         });
 
-        var url = window.location.pathname
-                    +"?s="+keyword
-                    +"&page="+page
-        if(vue.target){
-            url = url+'&t='+vue.target;
-        }
-        history_state(null, url);
+        
     }

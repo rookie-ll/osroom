@@ -5,7 +5,10 @@
 from apps.core.blueprint import api
 from apps.core.flask.permission import permission_required
 from apps.core.flask.response import response_format
-from apps.modules.search.process.search import get_search_logs, search_process
+from flask import request
+from apps.configs.sys_config import METHOD_WARNING
+from apps.modules.search.process.search import clear_search_logs, \
+    get_search_logs, search_process
 
 
 @api.route('/search', methods=['GET'])
@@ -25,7 +28,7 @@ def api_search():
     return response_format(data)
 
 
-@api.route('/search/logs', methods=['GET'])
+@api.route('/search/logs', methods=['GET', "DELETE"])
 @permission_required(use_default=False)
 def api_search_logs():
     """
@@ -34,6 +37,10 @@ def api_search_logs():
         number:<int>, 获取最后的多少条历史， 默认10， 最大20
 
     """
-
-    data = get_search_logs()
+    if request.c_method == "GET":
+        data = get_search_logs()
+    elif request.c_method == "DELETE":
+        data = clear_search_logs()
+    else:
+        data = {"msg_type": "w", "msg": METHOD_WARNING, "custom_status": 405}
     return response_format(data)

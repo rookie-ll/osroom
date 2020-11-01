@@ -97,6 +97,7 @@ def search_process():
 def search_logs(user_id, keyword):
     ut = time.time()
     month = time_to_utcdate(ut, "%Y%m")
+    day = time_to_utcdate(ut, "%Y%m%d")
     mdbs["web"].dbs["search_logs"].update_one(
         {
             "user_id": user_id,
@@ -104,8 +105,11 @@ def search_logs(user_id, keyword):
         },
         {
             "$inc": {"num_of_search": 1},
-            "$addToSet": {"times": ut, "months": month},
-            "$set": {"lasted_time": ut}
+            "$addToSet": {"days": day, "months": month},
+            "$set": {
+                "lasted_time": ut,
+                "status": "normal"
+            }
         },
         upsert=True
     )
@@ -122,12 +126,33 @@ def get_search_logs():
         user_id = current_user.str_id
         user_logs = mdbs["web"].dbs["search_logs"].find(
             {
-                "user_id": user_id
+                "user_id": user_id,
+                "status": "normal"
             },
             {
                 "_id": 0
             }
-        ).sort([("time", -1)]).limit(number)
+        ).sort([("lasted_time", -1)]).limit(number)
+        user_logs = list(user_logs)
+        user_logs = sorted(user_logs, key=lambda x: -x["lasted_time"])
     return {
-        "logs": list(user_logs)
+        "logs": user_logs
+    }
+
+
+def clear_search_logs():
+    if current_user.is_authenticated:
+        user_id = current_user.str_id
+        mdbs["web"].dbs["search_logs"].update_many(
+            {
+                "user_id": user_id
+            },
+            {
+                "$set": {"status": "deleted"}
+            }
+        )
+    return {
+        "msg": gettext("Cleaned"),
+        "msg_type": "s",
+        "custom_status": 204
     }
