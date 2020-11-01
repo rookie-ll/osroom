@@ -12,8 +12,9 @@ import sys
 from bson import ObjectId
 from flask import current_app, request
 from werkzeug.exceptions import Unauthorized
-from apps.app import mdbs, cache, rest_session
-from apps.configs.sys_config import REST_SECRET_TOKEN_CACHE_KEY, REST_SECRET_TOKEN_CACHE_TIMEOUT
+from apps.app import app, mdbs, cache, rest_session, csrf
+from apps.configs.sys_config import REST_SECRET_TOKEN_CACHE_KEY, \
+    REST_SECRET_TOKEN_CACHE_TIMEOUT
 from apps.core.utils.get_config import get_config
 from apps.utils.format.obj_format import objid_to_str
 
@@ -23,6 +24,17 @@ class RestTokenAuth:
     """
     客户端验证
     """
+    def is_exempt(self):
+        view = app.view_functions.get(request.endpoint)
+        if not view:
+            return True
+        if request.blueprint in csrf._exempt_blueprints:
+            return True
+        dest = '%s.%s' % (view.__module__, view.__name__)
+        if dest in csrf._exempt_views:
+            return True
+
+        return False
 
     @staticmethod
     def encode_auth_token():

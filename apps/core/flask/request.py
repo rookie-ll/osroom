@@ -66,23 +66,34 @@ class OsrRequestProcess:
             :return:
             """
             request.c_method = request.method
-            if app.config["CLIENT_TOKEN_AUTH_ENABLED"] and request.path.startswith(api.url_prefix):
-                # 如果已开启客户端验证, 那只要是api请求都需要token验证
+            if app.config["CLIENT_TOKEN_AUTH_ENABLED"] and \
+                    request.path.startswith(api.url_prefix):
+                # 如果已开启客户端验证CLIENT_TOKEN_AUTH_ENABLED,
+                # 那只要是api请求都需要token验证
                 auth_header = request.headers.get('OSR-RestToken')
                 csrf_header = request.headers.get('X-CSRFToken')
                 if csrf_header:
+                    g.site_global["language"]["current"] = session.get(
+                        "language",
+                        request.accept_languages.best_match(
+                            list(get_config('babel', 'LANGUAGES').keys())
+                        )
+                    )
                     # 使用CSRF验证
                     csrf.protect()
-                elif auth_header:
-                    rest_token_auth.auth_rest_token()
                 else:
-                    response = current_app.make_response(
-                        gettext(
-                            'Token is miss, unconventional web browsing requests please provide "OSR-RestToken",'
-                            ' otherwise provide "X-CSRFToken"'))
+                    if not rest_token_auth.is_exempt():
+                        # 没有免除验证, 使用安全Rest Token验证
+                        if auth_header:
+                            rest_token_auth.auth_rest_token()
+                        else:
+                            response = current_app.make_response(
+                                gettext(
+                                    'Token is miss, unconventional web browsing requests please provide "OSR-RestToken",'
+                                    ' otherwise provide "X-CSRFToken"'))
 
-                    raise OsrTokenError(
-                        response.get_data(as_text=True), response=response)
+                            raise OsrTokenError(
+                                response.get_data(as_text=True), response=response)
 
             request.argget = Request()
 

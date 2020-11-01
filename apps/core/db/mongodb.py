@@ -32,7 +32,10 @@ class MyMongo:
             config_prefix=config_prefix,
             db_config=db_config
         )
+        # DB
+        self.dbs = {}
         self.db = self.pymongo.db
+        self.db.__dict__["name"] = self.pymongo.name
         self.name = self.pymongo.name
         self.db.__dict__["name"] = self.name
         self.collection_names = self.pymongo.collection_names
@@ -46,6 +49,8 @@ class MyMongo:
                 for collection in self.collection_names:
                     umio = MdbOp()
                     umio.init_app(
+                        self.pymongo.name,
+                        collection,
                         self.pymongo.db_conn[collection],
                         op
                     )
@@ -54,18 +59,17 @@ class MyMongo:
                 self.pymongo,
                 coll_ops
             )
-            for collection in self.collection_names:
-                self.dbs[collection] = getattr(self.db, collection)
         else:
             self.dbs = MongoCollDict(
                 self.pymongo,
                 []
             )
+        for collection in self.collection_names:
+            self.dbs[collection] = getattr(self.db, collection)
         for op in dir(self.pymongo.db_conn):
             if op[0] == "_":
                 continue
             setattr(self.db, op, getattr(self.pymongo.db_conn, op))
-
         self.connection = self.pymongo.connection
 
     def close(self):
@@ -83,7 +87,7 @@ class MongoCollDict(dict):
             if op[0] == "_":
                 continue
             setattr(self, op, getattr(self.pymongo.db_conn, op))
-      
+
     def __getitem__(self, key):
         self.counter += 1
         if key not in self.keys():
@@ -91,18 +95,17 @@ class MongoCollDict(dict):
         return super(MongoCollDict, self).__getitem__(key)
 
     def try_create_collection(self, collection_name):
-        try:
-            self.create_collection(collection_name)
-        except Exception:
-            pass
+        self.create_collection(collection_name)
         self.__init_collection(collection_name)
-    
+
     def __init_collection(self, collection_name):
 
         self[collection_name] = self.pymongo.db_conn[collection_name]
         for op in self.coll_ops:
             umio = MdbOp()
             umio.init_app(
+                self.pymongo.name,
+                collection_name,
                 self.pymongo.db_conn[collection_name],
                 op
             )
@@ -111,16 +114,26 @@ class MongoCollDict(dict):
 
 class MdbOp:
 
-    def __init__(self):
-
+    def __init__(self, **kargs):
+        self.dbname = None
+        self.collection_name = None
         self.db_coll = None
         self.operation = None
         special_chars = SpecialChars()
         self.regex_special_chars = special_chars.db_regex_special_chars()
 
-    def init_app(self, db_coll, operation):
+    def init_app(self, db_name, collection_name, db_coll, operation):
+        self.dbname = db_name
+        self.collection_name = collection_name
         self.db_coll = db_coll
         self.operation = operation
+
+    def retry_if_auto_reconnect_error(exception):
+        """
+        Return True if we should retry (in this case when it's an AutoReconnect),
+         False otherwise
+        """
+        return isinstance(exception, AutoReconnect)
 
     @retry(retry_on_exception=retry_if_auto_reconnect_error,
            stop_max_attempt_number=2, wait_fixed=2000)

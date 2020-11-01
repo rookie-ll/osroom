@@ -2,15 +2,19 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
-import time
 import logging
 import logging.config
 import os
+import time
+import traceback
 from uuid import uuid1
-from flask import request, g
+
+from flask import g, request
 from flask_login import current_user
-from apps.configs.sys_config import LOG_PATH, WEBLOG_NORMAL_FILENAME, WEBLOG_EXCEP_FILENAME, LOG_FORMATTER, \
-    WEBLOG_EXCEP_LEVEL, WEBLOG_NORMAL_LEVEL, WEBLOG_START_FILENAME
+
+from apps.configs.sys_config import LOG_FORMATTER, LOG_PATH, \
+    WEBLOG_EXCEP_FILENAME, WEBLOG_EXCEP_LEVEL, WEBLOG_NORMAL_FILENAME, \
+    WEBLOG_NORMAL_LEVEL, WEBLOG_START_FILENAME
 from apps.core.logger.logger_server import LoggerClientUDP
 
 
@@ -69,8 +73,11 @@ class WebLogger:
                 if exception:
                     error_log.error(_weblog_g["log"])
                     error_log.exception(exception)
-            except Exception as e:
-                _weblogger_error = {"type": "weblogger error", "exceptione": e}
+            except Exception:
+                _weblogger_error = {
+                    "type": "weblogger error",
+                    "exceptione": traceback.format_exc()
+                }
                 error_log.error(_weblogger_error)
 
     def start_log(self):
