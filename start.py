@@ -35,7 +35,7 @@ if not len(set(sys_argv) & set(no_need_to_init_ops)):
 def temp_init_mdb():
     mdbs = {}
     database = DatabaseConfig()
-    for k, mdb_acc in DB_CONFIG["mongodb"].items():
+    for k in DB_CONFIG["mongodb"].keys():
         mdbs[k] = MyMongo()
         mdbs[k].init_app(
             config_prefix=k.upper(),
