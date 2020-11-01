@@ -26,27 +26,36 @@ def import_plugin_config(plugin_name, config):
             v["info"] = ""
 
         # 查找相同的配置
-        r = mdbs["sys"].db.plugin_config.find_one({"plugin_name": plugin_name,
-                                               "key": k,
-                                               "value_type": v["value_type"]})
+        r = mdbs["sys"].db.plugin_config.find_one(
+            {
+                "plugin_name": plugin_name,
+                "key": k,
+                "value_type": v["value_type"]
+            })
         if not r:
             # 如果不存在
-            mdbs["sys"].db.plugin_config.insert_one({"plugin_name": plugin_name,
-                                                 "key": k,
-                                                 "value_type": v["value_type"],
-                                                 "value": v["value"],
-                                                 "reactivate": v["reactivate"],
-                                                 "info": v["info"],
-                                                 "update_time": time.time()
-                                                 }
-                                                )
+            mdbs["sys"].db.plugin_config.insert_one(
+                {
+                    "plugin_name": plugin_name,
+                    "key": k,
+                    "value_type": v["value_type"],
+                    "value": v["value"],
+                    "reactivate": v["reactivate"],
+                    "info": v["info"],
+                    "update_time": time.time()
+                })
         elif r and r["update_time"] < current_time:
             # 存在, 而且比当前时间前的(防止同时启动多个进程时错乱，导致下面程序当旧数据清理)
-            mdbs["sys"].db.plugin_config.update_one({"_id": r["_id"], "update_time": {"$lt": current_time}},
-                                                {"$set": {"update_time": current_time,
-                                                          "reactivate": v["reactivate"],
-                                                          "info": v["info"]}
-                                                 })
+            mdbs["sys"].db.plugin_config.update_one(
+                {
+                    "_id": r["_id"],
+                    "update_time": {"$lt": current_time}},
+                {
+                    "$set": {
+                        "update_time": current_time,
+                        "reactivate": v["reactivate"],
+                        "info": v["info"]}
+                    })
 
     # 删除已不需要的配置
     mdbs["sys"].db.plugin_config.delete_many(

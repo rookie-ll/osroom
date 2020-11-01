@@ -108,7 +108,7 @@ def adm_post_audit():
 def adm_post_delete():
 
     ids = json_to_pyseq(request.argget.all('ids', []))
-    pending_delete= int(request.argget.all("pending_delete", 1))
+    pending_delete = int(request.argget.all("pending_delete", 1))
     for i, tid in enumerate(ids):
         ids[i] = ObjectId(tid)
     if pending_delete:

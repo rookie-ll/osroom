@@ -10,7 +10,8 @@ from collections import OrderedDict
 from copy import deepcopy
 
 from apps.app import cache
-from apps.configs.sys_config import APPS_PATH, SUPER_PER, GET_DEFAULT_SYS_PER_CACHE_KEY, GET_ALL_PERS_CACHE_KEY
+from apps.configs.sys_config import APPS_PATH, SUPER_PER, \
+    GET_DEFAULT_SYS_PER_CACHE_KEY, GET_ALL_PERS_CACHE_KEY
 from apps.core.logger.web_logging import web_start_log
 from init_datas import INIT_DATAS
 
@@ -117,7 +118,9 @@ def init_theme_data(mdbs):
     :param mdbs:
     :return:
     """
-    theme = mdbs["sys"].dbs["sys_config"].find_one({"project": "theme", "key": "CURRENT_THEME_NAME"})
+    theme = mdbs["sys"].dbs["sys_config"].find_one(
+        {"project": "theme", "key": "CURRENT_THEME_NAME"}
+    )
     if theme:
         theme_name = theme["value"]
     else:
@@ -171,14 +174,20 @@ def compatible_processing(mdbs, stage=1):
 
     if stage == 1:
         # 当前主题设置加上主题名称
-        theme = mdbs["sys"].dbs["sys_config"].find_one({"project": "theme", "key": "CURRENT_THEME_NAME"})
+        theme = mdbs["sys"].dbs["sys_config"].find_one(
+            {"project": "theme", "key": "CURRENT_THEME_NAME"}
+        )
         if theme:
             theme_name = theme["value"]
-            mdbs["sys"].dbs["theme_display_setting"].update_many({"theme_name": {"$exists": False}},
-                                                             {"$set": {"theme_name": theme_name}})
+            mdbs["sys"].dbs["theme_display_setting"].update_many(
+                {"theme_name": {"$exists": False}},
+                {"$set": {"theme_name": theme_name}})
 
             # 主题设置的数据分类信息转移
-            categorys = mdbs["web"].db.category.find({"type": {"$regex": ".+_theme$"}}, regular_escape=False)
+            categorys = mdbs["web"].db.category.find(
+                {"type": {"$regex": ".+_theme$"}},
+                regular_escape=False
+            )
             for category in categorys:
                 category["type"] = category["type"].replace("_theme", "")
                 category["theme_name"] = theme_name
@@ -197,7 +206,7 @@ def compatible_processing(mdbs, stage=1):
                     {"project": "theme_global_conf", "key": "TOP_NAV"}
                 ).sort([("update_time", -1)]).limit(1)
                 if r.count(True):
-                    for i, v in r[0]["value"].items():
+                    for v in r[0]["value"].values():
                         display_name = v["nav"]
                         updata = {
                             "order": 1,
@@ -254,6 +263,13 @@ def compatible_processing(mdbs, stage=1):
             cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)
 
         # 用户添加字段 alias [@HiWoo 2020-03-12]
-        r = mdbs["user"].dbs["user"].update_many({"alias": {"$exists": False}}, {"$set": {"alias": ""}})
+        r = mdbs["user"].dbs["user"].update_many(
+            {
+                "alias": {"$exists": False}
+            },
+            {
+                "$set": {"alias": ""}
+            }
+        )
         if r.modified_count:
             cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)

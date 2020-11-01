@@ -57,7 +57,11 @@ def update_config_file(mdbs, *args, **kwargs):
 
     if version_info and not overwrite_db:
         # 查询当前主机web的的配置版本
-        cur_h_version_info = mdbs["sys"].db.sys_host.find_one({"type": "web", "host_info.local_ip": host_info["local_ip"]})
+        cur_h_version_info = mdbs["sys"].db.sys_host.find_one(
+            {
+                "type": "web",
+                "host_info.local_ip": host_info["local_ip"]
+            })
         if not cur_h_version_info:
             cur_h_version_info = {"type": "web", "host_info": host_info,
                                   "conf_version": version_info["new_version"],
@@ -207,8 +211,16 @@ def push_to_db(mdbs, local_config=None, now_version=None):
                         
                     if "__sort__" in v:
                         conf["__sort__"] = v["__sort__"]
-                    r = mdbs["sys"].db.sys_config.update_one({"project": k, "key": k1, "conf_version": now_version},
-                                                         {"$set": conf}, upsert=True)
+                    r = mdbs["sys"].db.sys_config.update_one(
+                        {
+                            "project": k,
+                            "key": k1,
+                            "conf_version": now_version
+                        },
+                        {
+                            "$set": conf
+                        },
+                        upsert=True)
                     if r.modified_count or r.upserted_id:
                         web_start_log.info("Config updates: [file to db] {} {}".format(k, k1))
                     elif r.matched_count:

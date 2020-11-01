@@ -284,8 +284,11 @@ def comment_delete():
             for k, v in target_ids.items():
                 # 更新文章中的评论数
                 if k[1] == "post":
-                    mdbs["web"].db.post.update_many({"_id": ObjectId(k[0])}, {
-                                                "$inc": {"comment_num": -1 * v}})
+                    mdbs["web"].db.post.update_many(
+                        {"_id": ObjectId(k[0])},
+                        {
+                            "$inc": {"comment_num": -1 * v}
+                        })
 
         data = {
             "msg": gettext("Delete the success"),

@@ -348,8 +348,7 @@ def update_role_and_api_per(old_per_value, new_per_value=0):
         for method, v in url["custom_permission"].items():
             if v & old_per_value:
                 # 修改
-                url["custom_permission"][method] = (
-                    v - old_per_value) | new_per_value
+                url["custom_permission"][method] = (v - old_per_value) | new_per_value
 
         # 更新
         mdbs["sys"].db.sys_urls.update_one(

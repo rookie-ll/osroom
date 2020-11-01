@@ -21,7 +21,7 @@ def copy_config_to_sample():
 
     # 复制db_config.py 到　db_config_sample.py
     local_config = deepcopy(DB_CONFIG)
-    for k, v in local_config.items():
+    for v in local_config.values():
         if isinstance(v, dict):
             for k1, v1 in v.items():
                 if k1 == "password":

@@ -100,20 +100,3 @@ class ConfDictToClass(object):
         else:
             for k, v in config.items():
                 self.__dict__[k] = v
-
-    # def __setattr__(self, name, value):
-    #     if name == 'map':
-    #          object.__setattr__(self, name, value)
-    #          return;
-    #     print('set attr called ',name,value)
-    #     self.map[name] = value
-    #
-    # def __getattr__(self,name):
-    #     v = self.map[name]
-    #     if isinstance(v,(dict)):
-    #         return v["value"]
-    #     else:
-    #         return self.map[name];
-    #
-    # def __getitem__(self,name):
-    #     return self.map[name]

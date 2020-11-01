@@ -25,7 +25,7 @@ from apps.configs.db_config import DB_CONFIG
 # 主程序
 app = OsrApp(__name__)
 mdbs = {}
-for k, mdb_acc in DB_CONFIG["mongodb"].items():
+for k in DB_CONFIG["mongodb"].keys():
     mdbs[k] = MyMongo()
 
 cache = Cache()

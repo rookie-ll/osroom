@@ -42,14 +42,20 @@ class PluginManager:
         s, r = verify_plugin(plug_path)
         if not s:
             # 标记插件为出错插件
-            mdbs["sys"].dbs["plugin"].update_one({"plugin_name": plugin_name,
-                                              "update_time": {"$lt": self.current_time}},
-                                             {"$set": {"error": r,
-                                                       "installed_time": self.current_time,
-                                                       "update_time": self.current_time,
-                                                       "active": 0,
-                                                       "require_package_install_result": []}},
-                                             upsert=True)
+            mdbs["sys"].dbs["plugin"].update_one(
+                {
+                    "plugin_name": plugin_name,
+                    "update_time": {"$lt": self.current_time}},
+                {
+                    "$set": {
+                        "error": r,
+                        "installed_time": self.current_time,
+                        "update_time": self.current_time,
+                        "active": 0,
+                        "require_package_install_result": []
+                    }
+                },
+                upsert=True)
             return s, r
 
         # 查看是否有需求文件
@@ -130,9 +136,13 @@ class PluginManager:
                     self.unregister_plugin(plugin_name)
 
                 # 更新插件信息到数据库
-                mdbs["sys"].dbs["plugin"].update_one({"plugin_name": plugin_name,
-                                                  "update_time": {"$lt": self.current_time}},
-                                                 {"$set": plug_conf})
+                mdbs["sys"].dbs["plugin"].update_one(
+                    {
+                        "plugin_name": plugin_name,
+                        "update_time": {
+                            "$lt": self.current_time}
+                    },
+                    {"$set": plug_conf})
 
             else:
                 # 插件不存在
@@ -257,7 +267,8 @@ def verify_plugin(plugin_path):
             return False, data
 
     else:
-        data = "The plugin of the upload is incorrect, the configuration file(conf.yaml) does not exist"
+        data = "The plugin of the upload is incorrect," \
+            "the configuration file(conf.yaml) does not exist"
         return False, data
 
 
@@ -269,7 +280,12 @@ def get_plugin_info(hook_name):
     :return:
     """
     value = mdbs["sys"].dbs["plugin"].find_one(
-        {"hook_name": hook_name, "active": {"$in": [1, True]}}, {"_id": 0})
+        {
+            "hook_name": hook_name,
+            "active": {"$in": [1, True]}},
+        {
+            "_id": 0
+        })
     return value
 
 

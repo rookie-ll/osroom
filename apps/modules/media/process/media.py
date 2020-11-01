@@ -71,8 +71,10 @@ def add_media(user_id=None):
             if v == ctype:
                 type_alias = k
                 break
-        data = {"msg": gettext('The type "{}" exists in the name "{}"').format(
-            type_alias, name), "msg_type": "w", "custom_status": 403}
+        data = {
+            "msg": gettext('The type "{}" exists in the name "{}"').format(type_alias, name),
+            "msg_type": "w",
+            "custom_status": 403}
     else:
         # 获取text_html使用的图片
         text_imgs = []
@@ -242,8 +244,12 @@ def edit_media(user_id=None):
                 for key in data["keys"]:
                     temp_url = key
                 if temp_url:
-                    mdbs["web"].db.media.update_one({"_id": ObjectId(media_id), "user_id": user_id},
-                                                {"$set": {"url": temp_url}})
+                    mdbs["web"].db.media.update_one(
+                        {
+                            "_id": ObjectId(media_id),
+                            "user_id": user_id},
+                            {"$set": {"url": temp_url}}
+                        )
                     data = {
                         "msg": gettext("Update picture successfully"),
                         "msg_type": "s",
@@ -282,8 +288,11 @@ def edit_media(user_id=None):
             if v == old_media["type"]:
                 type_alias = k
                 break
-        data = {"msg": gettext('The type "{}" exists in the name "{}"').format(
-            type_alias, name), "msg_type": "w", "custom_status": 403}
+        data = {
+            "msg": gettext('The type "{}" exists in the name "{}"').format(type_alias, name),
+            "msg_type": "w",
+            "custom_status": 403
+        }
     else:
         # 获取text_html使用的图片
         old_imgs = old_media.get("text_imgs", [])

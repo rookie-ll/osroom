@@ -40,11 +40,11 @@ def roles():
     roles = list(rs.skip(pre * (page - 1)).limit(pre))
     roles = sorted(roles, key=lambda x: x["permissions"])
     pers = permissions()
-    for i, role in enumerate(roles):
-        roles[i]["permission_names"] = []
+    for role in roles:
+        role["permission_names"] = []
         for per in pers["permissions"]:
             if int(role["permissions"]) & int(per[1]):
-                roles[i]["permission_names"].append(per[0])
+                role["permission_names"].append(per[0])
     data["roles"] = datas_paging(
         pre=pre,
         page_num=page,
