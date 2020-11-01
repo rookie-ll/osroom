@@ -8,7 +8,8 @@ from apps.configs.db_config import DB_CONFIG
 from apps.core.db.config_mdb import DatabaseConfig
 from apps.core.db.mongodb import MyMongo
 from apps.core.utils.sys_tool import init_admin_user
-from apps.core.utils.update_sys_data import update_mdb_collections, init_datas, update_mdbcolls_json_file
+from apps.core.utils.update_sys_data import update_mdb_collections, \
+    init_datas, update_mdbcolls_json_file
 from apps.develop_run_options import parameter_processing
 from apps.app import app
 from apps.init_before_startup import init_before_startup

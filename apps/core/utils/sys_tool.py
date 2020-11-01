@@ -58,7 +58,8 @@ def init_admin_user(mdbs):
     """
     from werkzeug.security import generate_password_hash
     from apps.modules.user.models.user import user_model
-    from apps.modules.user.process.get_or_update_user import get_one_user_mfilter, update_one_user, insert_one_user
+    from apps.modules.user.process.get_or_update_user import \
+        get_one_user_mfilter, update_one_user, insert_one_user
 
     print('\nInit root user')
     # 初始化角色
@@ -69,9 +70,9 @@ def init_admin_user(mdbs):
         r = mdbs["user"].db.role.insert_one(
             {
                 "name": "Root",
-                 "default": 0,
-                 "permissions": root_per,
-                 "instructions": 'Root'
+                "default": 0,
+                "permissions": root_per,
+                "instructions": 'Root'
             }
         )
 
@@ -140,13 +141,15 @@ def init_admin_user(mdbs):
         password_hash = generate_password_hash(password)
         user = get_one_user_mfilter(email=email, op="or")
         if user:
-            update_one_user(user_id=str(user["_id"]),
-                            updata={
-                                "$set": {
-                                    "password": password_hash,
-                                    "role_id": str(root_id)
-                            }
-            })
+            update_one_user(
+                user_id=str(user["_id"]),
+                updata={
+                    "$set": {
+                        "password": password_hash,
+                        "role_id": str(root_id)
+                    }
+                }
+            )
             username = user["username"]
             print("\033[33m\n * This user already exists, updated password and role.\033[0m")
         else:
@@ -235,7 +238,7 @@ def update_pylib(venv_path=True, latest=False):
 
     # 查找需要安装的包
     if latest:
-        install_list = req_file_libs
+        install_list = req_file_libs[:]
     else:
         install_list = list(set(req_file_libs).difference(set(venv_libs)))
 
@@ -281,12 +284,10 @@ def update_pylib(venv_path=True, latest=False):
         if "==" not in sf:
             uninstall_list.remove(sf)
 
-    if uninstall_list:
-        msg = "\033[33m * Now don't need python library:"
-        print(msg)
-        uninstall_s = " ".join(uninstall_list)
-        print("   {}\033[0m".format(uninstall_s))
-        if not venv_path:
-            pass
-
-
+    # if uninstall_list:
+    #     msg = "\033[33m * Now don't need python library:"
+    #     print(msg)
+    #     uninstall_s = " ".join(uninstall_list)
+    #     print("   {}\033[0m".format(uninstall_s))
+    #     if not venv_path:
+    #         pass

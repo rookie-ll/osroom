@@ -2,13 +2,18 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
+import time
+
+from celery_once import QueueOnce
 from flask import request
 from flask_babel import gettext
+from flask_login import current_user
 
-from apps.app import mdbs
+from apps.app import celery, mdbs
 from apps.core.flask.reqparse import arg_verify
 from apps.modules.post.process.post_process import get_posts_pr
 from apps.utils.format.obj_format import str_to_num
+from apps.utils.format.time_format import time_to_utcdate
 from apps.utils.paging.paging import datas_paging
 from apps.utils.upload.get_filepath import get_avatar_url
 
@@ -28,7 +33,16 @@ def search_process():
     s, r = arg_verify(reqargs=[(gettext("keyword"), keyword)], required=True)
     if not s:
         return r
-
+    if current_user.is_authenticated:
+        user_id = current_user.str_id
+    else:
+        user_id = ""
+    search_logs.apply_async(
+        kwargs={
+            "user_id": user_id,
+            "keyword": keyword
+        }
+    )
     data = {"posts": {}, "users": {}}
     # post
     if not target or target == "post":
@@ -76,5 +90,44 @@ def search_process():
 
         data["users"]["items"] = datas_paging(
             pre=pre, page_num=page, data_cnt=data_cnt, datas=users)
-
     return data
+
+
+@celery.task(base=QueueOnce, once={'graceful': True})
+def search_logs(user_id, keyword):
+    ut = time.time()
+    month = time_to_utcdate(ut, "%Y%m")
+    mdbs["web"].dbs["search_logs"].update_one(
+        {
+            "user_id": user_id,
+            "search": keyword
+        },
+        {
+            "$inc": {"num_of_search": 1},
+            "$addToSet": {"times": ut, "months": month},
+            "$set": {"lasted_time": ut}
+        },
+        upsert=True
+    )
+
+
+def get_search_logs():
+    number = str_to_num(request.argget.all('number', 10))
+    if not number:
+        number = 10
+    if number > 20:
+        number = 20
+    user_logs = []
+    if current_user.is_authenticated:
+        user_id = current_user.str_id
+        user_logs = mdbs["web"].dbs["search_logs"].find(
+            {
+                "user_id": user_id
+            },
+            {
+                "_id": 0
+            }
+        ).sort([("time", -1)]).limit(number)
+    return {
+        "logs": list(user_logs)
+    }

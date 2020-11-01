@@ -8,7 +8,8 @@
             pages:[],
             page:1,
             keyword:"",
-            target:""
+            target:"",
+            search_logs: []
       },
       filters: {
             formatDate: function (time) {
@@ -20,6 +21,7 @@
     // 加载完页面执行
     $(document).ready(function(){
         var url_s = get_url_parameter();
+        get_search_logs();
         vue.keyword = get_obj_value(url_s, "s");
         vue.target = get_obj_value(url_s, "t", "post");
         vue.page = get_obj_value(url_s, "page", 1);
@@ -28,7 +30,12 @@
 
     })
 
-
+    function get_search_logs(){
+        var result = osrHttp("GET","/api/search/logs", args={not_prompt:true});
+        result.then(function (r) {
+            vue.search_logs = r.data.logs;
+        });
+    }
     function global_search(keyword, target, page){
 
         vue.keyword = keyword;
@@ -62,7 +69,6 @@
                                     current_page=r.data.posts.items.current_page);
             }
             if(!$.isEmptyObject(r.data.users)){
-                console.log(r.data.users);
                 vue.users = r.data.users;
                 vue.pages = paging(page_total=r.data.users.items.page_total,
                                     current_page=r.data.users.items.current_page);

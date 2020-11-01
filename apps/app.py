@@ -3,7 +3,7 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 from flask_babel import Babel
-from flask_oauthlib.client import OAuth
+# from flask_oauthlib.client import OAuth
 from celery import Celery
 
 from apps.configs.celery_config import CeleryConfig
@@ -35,7 +35,7 @@ login_manager = LoginManager()
 sess = Session()
 rest_session = RestSession()
 mail = Mail()
-oauth = OAuth()
+# oauth = OAuth()
 redis = Myredis(
     host=DB_CONFIG["redis"]["host"][0],
     port=DB_CONFIG["redis"]["port"][0],

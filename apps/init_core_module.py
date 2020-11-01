@@ -11,7 +11,7 @@ from apps.configs.config import CONFIG, SYS_CONFIG_VERSION
 from apps.develop_run_options import start_info_print
 from apps.utils.format.obj_format import ConfDictToClass
 from apps.app import login_manager, redis, sess, cache, csrf, babel, \
-    mdbs, mail, oauth, rest_session, celery
+    mdbs, mail, rest_session, celery
 from apps.configs.sys_config import CONFIG_CACHE_KEY, BABEL_TRANSLATION_DIRECTORIES, \
     SESSION_PROTECTION, SESSION_COOKIE_PATH, SESSION_COOKIE_HTTPONLY, SESSION_COOKIE_SECURE, \
     WTF_CSRF_METHODS, SESSION_USE_SIGNER, PRESERVE_CONTEXT_ON_EXCEPTION, PLUG_IN_CONFIG_CACHE_KEY, \
@@ -143,7 +143,7 @@ def init_core_module(app, **kwargs):
     login_manager.init_app(app)
     # login_manager.anonymous_user = AnonymousUser()
     login_manager.session_protection = SESSION_PROTECTION
-    oauth.init_app(app)
+    # oauth.init_app(app)
     # 让路由支持正则
     app.url_map.converters['regex'] = RegexConverter
 

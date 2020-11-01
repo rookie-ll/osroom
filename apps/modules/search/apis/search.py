@@ -5,7 +5,7 @@
 from apps.core.blueprint import api
 from apps.core.flask.permission import permission_required
 from apps.core.flask.response import response_format
-from apps.modules.search.process.search import search_process
+from apps.modules.search.process.search import get_search_logs, search_process
 
 
 @api.route('/search', methods=['GET'])
@@ -22,4 +22,18 @@ def api_search():
     """
 
     data = search_process()
+    return response_format(data)
+
+
+@api.route('/search/logs', methods=['GET'])
+@permission_required(use_default=False)
+def api_search_logs():
+    """
+    GET:
+        获取用户的搜索历史
+        number:<int>, 获取最后的多少条历史， 默认10， 最大20
+
+    """
+
+    data = get_search_logs()
     return response_format(data)

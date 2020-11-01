@@ -3,9 +3,7 @@
 # @Time : 2020/1/7
 # @Author : Allen Woo
 from urllib.parse import quote
-
 from celery.schedules import crontab
-
 from apps.configs.db_config import DB_CONFIG
 
 
@@ -47,11 +45,15 @@ class CeleryConfig:
     RESULT_BACKEND = BROKER_URL
     TASK_TIME_LIMIT = 60 * 7
     TASK_SOFT_TIME_LIMIT = 60 * 5
+
+    CELERY_IGNORE_RESULT = False
     RESULT_EXPIRES = 3600 * 12
+    CELERYD_MAX_TASKS_PER_CHILD = 100
+    CELERY_EVENT_QUEUE_TTL = 10
     # BROKER_CONNECTION_TIMEOUT = 4
     WORKER_CONCURRENCY = 1
     WORKER_PREFETCH_MULTIPLIER = 1
+    RESULT_EXPIRES = 3600 * 12
 
     # 定时任务
     # CELERYBEAT_SCHEDULE = {}
-

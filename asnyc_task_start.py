@@ -15,16 +15,16 @@ def async_task_worker():
     except Exception as e:
         print(e)
 
+    log_path = "{}/celery.log".format(LOG_PATH)
     # 异步任务定时器
-    celery_beat = "celery -A celery_worker.celery beat -l info --loglevel=debug " \
-                  "--logfile={logfile} >{logfile} 2>&1 &".format(
-        logfile="{}/celery.log".format(LOG_PATH)
-    )
-    os.system(celery_beat)
+    # celery_beat = "celery -A celery_worker.celery beat -l info --loglevel=debug " \
+    #               "--logfile={logfile} >{logfile} 2>&1 &".format(
+    #             logfile="{}/celery.log".format(LOG_PATH)
+    # )
+    # os.system(celery_beat)
     # 异步任务
-    celery_worker = "celery worker -A celery_worker.celery --loglevel=debug" \
-                    " --logfile={logfile} >{logfile} 2>&1 &".format(
-        logfile="{}/celery.log".format(LOG_PATH)
+    celery_worker = "celery -A celery_worker.celery worker --loglevel=debug --logfile={logfile} >{logfile} 2>&1 &".format(
+        logfile=log_path
     )
     os.system(celery_worker)
 

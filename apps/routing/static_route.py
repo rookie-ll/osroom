@@ -174,7 +174,7 @@ def theme_static_file(path, theme_name=None):
 
 def banel_translate_js_files(prefix, route_relative_path, absolute_path):
     """
-    理由Jinja2翻译js
+    Jinja2翻译js
     :param prefix:
     :param route_relative_path:
     :param absolute_path:

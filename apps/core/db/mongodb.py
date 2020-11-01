@@ -91,7 +91,7 @@ class MongoCollDict(dict):
     def __getitem__(self, key):
         self.counter += 1
         if key not in self.keys():
-            self.my_create_collection(key)
+            self.try_create_collection(key)
         return super(MongoCollDict, self).__getitem__(key)
 
     def try_create_collection(self, collection_name):
