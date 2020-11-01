@@ -251,7 +251,6 @@ def compatible_processing(mdbs, stage=1):
         if is_updated:
             cache.delete(key=GET_DEFAULT_SYS_PER_CACHE_KEY, db_type="redis")
             cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
-            cache.delete(key=GET_ALL_PERS_CACHE_KEY, db_type="redis")
             cache.delete_autokey(fun=".*get_one_user.*", db_type="redis", key_regex=True)
 
         # 用户添加字段 alias [@HiWoo 2020-03-12]
