@@ -13,15 +13,19 @@ def main():
     :return:
     """
     from tools.usage import usage_help
-    s_ops = "h"
-    s_opexplain = ["help"]
+    s_ops = "hy"
+    s_opexplain = [
+        "help",
+        "Yes, Valid only when using --up-pylib"
+    ]
     l_ops = ["up-pylib", "venv-path=", "latest", "up-conf-sample", "add-user"]
     l_opexplain = [
         "<value>, Update python package (dependent package)",
         "<value>, up-pylib input venv path: <venv-path> or null",
         "up-pylib Update to the latest version",
         "Update to the latest package",
-        "Update the system configuration sample file. Automatically remove sensitive data (eg passwords)\n"
+        "Update the system configuration sample file."
+        "Automatically remove sensitive data (eg passwords)\n"
         "Mainly the following configuration files:\n"
         " {}/apps/config_sample.py;\n"
         " {}/apps/db_config_sample.py".format(
@@ -38,6 +42,7 @@ def main():
 
     opts, args = getopt.getopt(sys.argv[1:], s_ops, l_ops)
     is_up_pylib = False
+    is_yes = False
     venv_path = "default"
     latest = False
     for op, value in opts:
@@ -56,13 +61,14 @@ def main():
             from start import mdbs
             from apps.core.utils.sys_tool import add_user
             add_user(mdbs=mdbs)
-
+        elif op == "-y":
+            is_yes = True
         elif op == "-h" or op == "--help":
             usage_help(s_ops, s_opexplain, l_ops, l_opexplain, action=action)
 
     if is_up_pylib:
         from apps.core.utils.sys_tool import update_pylib
-        update_pylib(venv_path=venv_path, latest=latest)
+        update_pylib(venv_path=venv_path, latest=latest, is_yes=is_yes)
     if not opts:
         usage_help(s_ops, s_opexplain, l_ops, l_opexplain, action=action)
 

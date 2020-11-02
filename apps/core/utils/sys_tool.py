@@ -3,13 +3,15 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import json
+import time
 import os
 import sys
 import subprocess
 from getpass import getpass
 from copy import deepcopy
 import requests
-from apps.configs.sys_config import PROJECT_PATH, SUPER_PER
+from apps.configs.sys_config import PROJECT_PATH, SUPER_PER, LOG_PATH
+from apps.utils.format.time_format import time_to_utcdate
 
 
 def copy_config_to_sample():
@@ -93,7 +95,7 @@ def init_admin_user(mdbs):
             "email": 1
         }
     )
-
+    password = "12345678"
     if root_user:
         ch = input("\033[33m\n Root user already exists, need to update its password?[Y/n]\033[0m")
         if ch != "Y":
@@ -192,13 +194,13 @@ def init_admin_user(mdbs):
     sys.exit()
 
 
-def update_pylib(venv_path=True, latest=False):
+def update_pylib(venv_path=True, latest=False, is_yes=False):
     """
     更新python环境库
     :param input_venv_path:
     :return:
     """
-    if venv_path == "default":
+    if venv_path == "default" and not is_yes:
         input_str = input(
             "Already running this script in your project python virtual environment?(yes/no):\n"
         )
@@ -229,34 +231,31 @@ def update_pylib(venv_path=True, latest=False):
         s, r = subprocess.getstatusoutput("{}pip3 install -U pip".format(venv))
         print("   {}".format(r))
     else:
-        print(" ** Connection to external network timeout")
+        print(" \033[31m ** Timeout for connecting to external network\033[0m")
     s, r = subprocess.getstatusoutput("{}pip3 freeze".format(venv))
-    venv_libs = r.split()
-    with open("{}/requirements.txt".format(PROJECT_PATH)) as rf:
+    venv_exist_libs = r.split()
+    req_txt_filepath = "{}/requirements.txt".format(PROJECT_PATH)
+    with open(req_txt_filepath) as rf:
         # req_file_libs
         req_file_libs = rf.read().split()
 
     # 查找需要安装的包
     if latest:
-        install_list = req_file_libs[:]
+        need_install_libs = req_file_libs[:]
     else:
-        install_list = list(set(req_file_libs).difference(set(venv_libs)))
+        need_install_libs = list(set(req_file_libs).difference(set(venv_exist_libs)))
 
-    for pylib in install_list[:]:
+    for pylib in need_install_libs[:]:
         if "==" not in pylib:
-            install_list.remove(pylib)
+            need_install_libs.remove(pylib)
+    print(" * Libraries that need to be installed: {}".format(len(need_install_libs)))
+    print(" ".join(need_install_libs))
 
-    if install_list:
-        msg = " * To install the following libs"
-        print(msg)
-        install_s = " ".join(install_list)
-        print("   {}".format(install_s))
-        if not venv_path:
-            pass
-
+    # Install
     install_failed = []
+    installed = []
     if not is_time_out:
-        for sf in install_list:
+        for sf in need_install_libs:
             if latest:
                 sf = sf.split("==")[0]
             shcmd = "{}pip3 install -U {}".format(venv, sf)
@@ -264,30 +263,55 @@ def update_pylib(venv_path=True, latest=False):
             s, r = subprocess.getstatusoutput(shcmd)
             if s:
                 install_failed.append(sf)
-
+                print("\033[31m Failed\033[0m")
+            else:
+                installed.append(sf)
+                print(" Succeeded")
+        # Try again
         for sf in install_failed:
             s, r = subprocess.getstatusoutput(
                 "{}pip3 install -U {}".format(venv, sf))
             if not s:
                 install_failed.remove(sf)
+                installed.append(sf)
 
-        if install_failed:
-            msg = " * Installation failed library, please manually install"
-            print(msg)
-            print(install_failed)
-
-    # 查找需要卸载的包
+    # 查找需要卸载的软件包
     s, r = subprocess.getstatusoutput("{}pip3 freeze".format(venv))
     venv_libs = r.split()
-    uninstall_list = list(set(venv_libs).difference(set(req_file_libs)))
-    for sf in uninstall_list[:]:
+    if latest:
+        temp_venv_libs = []
+        for sf in venv_libs:
+            if "==" in sf:
+                temp_venv_libs.append(sf.split("==")[0])
+        unwanted_libs = list(set(temp_venv_libs).difference(set(installed)))
+    else:
+        unwanted_libs = list(set(venv_libs).difference(set(req_file_libs)))
+    for sf in unwanted_libs[:]:
         if "==" not in sf:
-            uninstall_list.remove(sf)
+            unwanted_libs.remove(sf)
 
-    # if uninstall_list:
-    #     msg = "\033[33m * Now don't need python library:"
-    #     print(msg)
-    #     uninstall_s = " ".join(uninstall_list)
-    #     print("   {}\033[0m".format(uninstall_s))
-    #     if not venv_path:
-    #         pass
+    print(" \n*[Succeeded] Libs: {}".format(len(installed)))
+    print(" ".join(installed))
+    print(" \033[31m* \n[Failed] Libs, please manually install: {}".format(len(install_failed)))
+    print(" ".join(install_failed))
+    print(" \n* Now don't need python library: {}".format(len(unwanted_libs)))
+    print(" ".join(unwanted_libs))
+    print("\033[0m")
+    if latest:
+        with open(req_txt_filepath, "w") as wf:
+            wf.writelines(venv_libs)
+        update_log = "{}/pylibs_update.log".format(
+            LOG_PATH
+        )
+        with open(update_log, "w") as wf:
+            lines = [
+                "Python libraries and version numbers before{}\n".format(
+                    time_to_utcdate(time.time(), "%Y/%m/%d %H:%M:%S")
+                ),
+                "\n".join(req_file_libs)
+            ]
+            wf.writelines(lines)
+        msg = " * The library that installed the latest version has been opened,\n" \
+              " and the requirement file has been rewritten.\n" \
+              " To view the previous version, please check the file:\n {}\n".format(update_log)
+        print(msg)
