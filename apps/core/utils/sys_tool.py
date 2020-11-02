@@ -299,7 +299,7 @@ def update_pylib(venv_path=True, latest=False, is_yes=False):
     print("\033[0m")
     if latest:
         with open(req_txt_filepath, "w") as wf:
-            wf.writelines(venv_libs)
+            wf.write("\n".join(venv_libs))
         update_log = "{}/pylibs_update.log".format(
             LOG_PATH
         )
