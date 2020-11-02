@@ -292,7 +292,7 @@ def update_pylib(venv_path=True, latest=False, is_yes=False):
 
     print(" \n*[Succeeded] Libs: {}".format(len(installed)))
     print(" ".join(installed))
-    print(" \033[31m* \n[Failed] Libs, please manually install: {}".format(len(install_failed)))
+    print(" \033[31m\n* [Failed] Libs, please manually install: {}".format(len(install_failed)))
     print(" ".join(install_failed))
     print(" \n* Now don't need python library: {}".format(len(unwanted_libs)))
     print(" ".join(unwanted_libs))
