@@ -278,14 +278,18 @@ def update_pylib(venv_path=True, latest=False, is_yes=False):
     # 查找需要卸载的软件包
     s, r = subprocess.getstatusoutput("{}pip3 freeze".format(venv))
     venv_libs = r.split()
+    temp_venv_libs = []
+    for sf in venv_libs:
+        if "==" in sf:
+            temp_venv_libs.append(sf.split("==")[0])
     if latest:
-        temp_venv_libs = []
-        for sf in venv_libs:
-            if "==" in sf:
-                temp_venv_libs.append(sf.split("==")[0])
         unwanted_libs = list(set(temp_venv_libs).difference(set(installed)))
     else:
-        unwanted_libs = list(set(venv_libs).difference(set(req_file_libs)))
+        temp_req_file_libs = []
+        for sf in req_file_libs:
+            if "==" in sf:
+                temp_req_file_libs.append(sf.split("==")[0])
+        unwanted_libs = list(set(temp_venv_libs).difference(set(temp_req_file_libs)))
     for sf in unwanted_libs[:]:
         if "==" not in sf:
             unwanted_libs.remove(sf)
