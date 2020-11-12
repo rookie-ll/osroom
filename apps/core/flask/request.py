@@ -73,12 +73,7 @@ class OsrRequestProcess:
                 auth_header = request.headers.get('OSR-RestToken')
                 csrf_header = request.headers.get('X-CSRFToken')
                 if csrf_header:
-                    g.site_global["language"]["current"] = session.get(
-                        "language",
-                        request.accept_languages.best_match(
-                            list(get_config('babel', 'LANGUAGES').keys())
-                        )
-                    )
+                    g.site_global["language"]["current"] = self.get_current_lang()
                     # 使用CSRF验证
                     csrf.protect()
                 else:
