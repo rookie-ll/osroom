@@ -42,7 +42,6 @@ def audit_rules():
 
 
 def audit_rule_add():
-
     project = request.argget.all('project')
     rule = request.argget.all('rule')
 
@@ -51,20 +50,27 @@ def audit_rule_add():
     if not s:
         return r
     else:
-        if mdbs["sys"].db.audit_rules.find_one({"project": project, "rule": rule}):
+        if mdbs["sys"].db.audit_rules.find_one(
+            {
+                "project": project,
+                "rule": rule
+                }):
             data = {
                 "msg": gettext("The rule already exists"),
                 "msg_type": "w",
                 "custom_status": 403}
         else:
-            mdbs["sys"].db.audit_rules.insert_one({"rule": rule,
-                                               "project": project,
-                                               "time": time.time()
-                                               })
+            mdbs["sys"].db.audit_rules.insert_one(
+                {
+                    "rule": rule,
+                    "project": project,
+                    "time": time.time()
+                })
             data = {
                 "msg": gettext("Add a success"),
                 "msg_type": "s",
-                "custom_status": 201}
+                "custom_status": 201
+            }
     return data
 
 

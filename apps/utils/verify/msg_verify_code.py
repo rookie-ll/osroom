@@ -111,9 +111,20 @@ def create_code_send(account, account_type, username=""):
 
         s, r = send_mobile_msg([account], content)
         if not s:
-            mdbs["web"].db.verify_code.update_one({"_id": ObjectId(_code['_id'])},
-                                              {"$set": {"error": r}})
-            return {"msg": r, "msg_type": "w", "custom_status": 400}
+            mdbs["web"].db.verify_code.update_one(
+                {
+                    "_id": ObjectId(_code['_id'])
+                },
+                {
+                    "$set": {
+                        "error": r
+                    }
+                })
+            return {
+                "msg": r,
+                "msg_type": "w",
+                "custom_status": 400
+            }
 
         return {"msg": r, "msg_type": "w", "custom_status": 201}
 
@@ -131,11 +142,17 @@ def verify_code(code, email="", tel_number=""):
     _code = None
     if email:
         _code = mdbs["web"].db.verify_code.find(
-            {'to_email': email, "type": "msg"}).sort([("time", -1)]).limit(1)
+            {
+                'to_email': email,
+                "type": "msg"
+            }).sort([("time", -1)]).limit(1)
 
     elif tel_number:
         _code = mdbs["web"].db.verify_code.find_one(
-            {'to_tel_number': tel_number, "type": "msg"}).sort([("time", -1)]).limit(1)
+            {
+                'to_tel_number': tel_number,
+                "type": "msg"
+            }).sort([("time", -1)]).limit(1)
 
     if _code and _code.count(True):
         _code = _code[0]

@@ -3,7 +3,6 @@
 # @Time : 2015/9/1 ~ 2019/11/6
 # @Author : Allen Woo
 # coding: utf-8
-import os
 import random
 from PIL import Image
 from PIL import ImageFilter

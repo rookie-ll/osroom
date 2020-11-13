@@ -12,7 +12,7 @@ from apps.utils.upload.get_filepath import get_file_url
 from apps.app import mdbs
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from apps.core.utils.get_config import get_config
-from apps.configs.sys_config import FONT_PATH, STATIC_PATH
+from apps.configs.sys_config import STATIC_PATH
 from apps.utils.verify.captcha import ImageCaptcha
 
 
@@ -98,8 +98,6 @@ class CreateImgCode(object):
         给图片上的文字, 干扰线条再作扭曲, 移位等
         :return:
         """
-
-        # self.img = self.img.transform(self.size, Image.PERSPECTIVE, (1,0, 0,0, 1,0 ,0,0),Image.BICUBIC)
         self.img = self.img.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
 
@@ -222,10 +220,12 @@ def create_img_code(interference=0):
     # pic.img.save(save_img, 'jpeg')
 
     # 检图床插件
-    data = plugin_manager.call_plug(hook_name="file_storage",
-                                    action="upload",
-                                    localfile_path=save_img,
-                                    filename="{}/{}".format(local_dirname, code_img))
+    data = plugin_manager.call_plug(
+        hook_name="file_storage",
+        action="upload",
+        localfile_path=save_img,
+        filename="{}/{}".format(local_dirname, code_img)
+    )
 
     if data == "__no_plugin__":
 

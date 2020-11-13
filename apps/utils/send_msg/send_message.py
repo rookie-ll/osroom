@@ -19,9 +19,12 @@ def send_mobile_msg(numbers, content):
     """
 
     # 检测插件
-    data = plugin_manager.call_plug(hook_name="send_msg",
-                                    to_numbers=numbers,
-                                    content=content)
+    data = plugin_manager.call_plug(
+        hook_name="send_msg",
+        to_numbers=numbers,
+        content=content
+    )
+    msg = None
     if data == "__no_plugin__":
         msg = gettext(
             "There is no plug-in for sending SMS messages to mobile phones,"

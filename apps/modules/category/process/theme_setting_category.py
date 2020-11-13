@@ -91,8 +91,14 @@ def category_add(user_id=None):
         data = {"msg": v, "msg_type": "w", "custom_status": 422}
     elif not s2:
         data = r2
-    elif mdbs["web"].db.theme_category.find_one({"type": ntype, "user_id": user_id,
-                                             "theme_name": theme_name, "name": name}):
+    elif mdbs["web"].db.theme_category.find_one(
+        {
+            "type": ntype,
+            "user_id": user_id,
+            "theme_name": theme_name,
+            "name": name
+        }
+        ):
         data = {
             "msg": gettext("Name already exists"),
             "msg_type": "w",
@@ -130,11 +136,17 @@ def category_edit(user_id=None):
         data = {"msg": v, "msg_type": "w", "custom_status": 422}
     elif not s2:
         data = r2
-    elif mdbs["web"].db.theme_category.find_one({"_id": {"$ne": ObjectId(tid)},
-                                             "type": ntype,
-                                             "user_id": user_id,
-                                             "theme_name": theme_name,
-                                             "name": name}):
+    elif mdbs["web"].db.theme_category.find_one(
+        {
+            "_id": {
+                "$ne": ObjectId(tid)
+            },
+            "type": ntype,
+            "user_id": user_id,
+            "theme_name": theme_name,
+            "name": name
+        }
+        ):
         data = {
             "msg": gettext("Name already exists"),
             "msg_type": "w",

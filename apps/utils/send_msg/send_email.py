@@ -73,7 +73,8 @@ def send_async_email(msg, html, text, attach=None, send_independently=True, ctyp
                 subject=msg["subject"],
                 html=html
             )
-
+            status = None
+            result_msg = None
             if send_independently:
                 # 独立发送, 先连接好邮件服务器
                 with mail.connect() as conn:

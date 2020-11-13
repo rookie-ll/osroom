@@ -82,7 +82,8 @@ def init_before_startup(is_debug, csrf_enabled):
                "   - Automatic update of website routing rights control.\n" \
                "   - Automatically update and merge system configuration.\n\n"
 
-        warning_msg = "\033[03m   If the program runs incorrectly because the above configuration \n" \
+        warning_msg = "\033[03m   " \
+                      "If the program runs incorrectly because the above configuration \n" \
                       "   is not updated, you need to remove the debugger running program \n" \
                       "   first to implement the update. After that, you can continue to run \n" \
                       "   the program under the debugger."
@@ -112,8 +113,10 @@ def init_before_startup(is_debug, csrf_enabled):
     compatible_processing(mdbs=mdbs, stage=2)
 
     if not is_debug:
-        start_info_print(" * Signal:(SIGCHLD, SIG_IGN).Prevent child processes from becoming [Defunct processes]."
-                         "(Do not need to comment out)")
+        start_info_print(
+            " * Signal:(SIGCHLD, SIG_IGN)."
+            "Prevent child processes from becoming [Defunct processes]."
+            "(Do not need to comment out)")
         signal(SIGCHLD, SIG_IGN)
         start_info_print(" * Started successfully")
     else:

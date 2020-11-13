@@ -60,28 +60,42 @@ def category_add(user_id=None):
     ntype = request.argget.all('type')
     name = request.argget.all('name', '')
 
-    s, r = arg_verify([(gettext("category type"), ntype)],
-                      only=get_config("category", "CATEGORY_TYPE").values())
+    s, r = arg_verify(
+        [(gettext("category type"), ntype)],
+        only=get_config("category", "CATEGORY_TYPE").values()
+        )
     if not s:
         return r
     s1, v = short_str_verifi(name, "class_name")
     s2, r2 = arg_verify(
         reqargs=[
-            (gettext("name"), name), ], required=True, max_len=int(
-            get_config(
-                "category", "CATEGORY_MAX_LEN")))
+            (gettext("name"), name)
+        ],
+        required=True,
+        max_len=int(get_config("category", "CATEGORY_MAX_LEN"))
+        )
     if not s1:
         data = {"msg": v, "msg_type": "w", "custom_status": 422}
     elif not s2:
         data = r2
-    elif mdbs["web"].db.category.find_one({"type": ntype, "user_id": user_id, "name": name}):
+    elif mdbs["web"].db.category.find_one(
+        {
+            "type": ntype,
+            "user_id": user_id,
+            "name": name
+        }
+    ):
         data = {
             "msg": gettext("Name already exists"),
             "msg_type": "w",
             "custom_status": 403}
     else:
         mdbs["web"].db.category.insert_one(
-            {"type": ntype, "user_id": user_id, "name": name})
+            {
+                "type": ntype,
+                "user_id": user_id,
+                "name": name
+            })
         data = {
             "msg": gettext("Add a success"),
             "msg_type": "s",
@@ -107,14 +121,28 @@ def category_edit(user_id=None):
         data = {"msg": v, "msg_type": "w", "custom_status": 422}
     elif not s2:
         data = r2
-    elif mdbs["web"].db.category.find_one({"_id": {"$ne": ObjectId(tid)}, "type": ntype, "user_id": user_id, "name": name}):
+    elif mdbs["web"].db.category.find_one(
+        {
+            "_id": {"$ne": ObjectId(tid)},
+            "type": ntype,
+            "user_id": user_id,
+            "name": name
+        }
+            ):
         data = {
             "msg": gettext("Name already exists"),
             "msg_type": "w",
-            "custom_status": 403}
+            "custom_status": 403
+            }
     else:
         r = mdbs["web"].db.category.update_one(
-            {"_id": ObjectId(tid), "user_id": user_id}, {"$set": {"name": name}})
+            {
+                "_id": ObjectId(tid),
+                "user_id": user_id
+            },
+            {
+                "$set": {"name": name}
+            })
         if r.modified_count:
             update_media_category_name.apply_async(
                 kwargs={
@@ -139,8 +167,13 @@ def update_media_category_name(category_id, new_name):
     """
     更新多媒体与文章category的名称
     """
-    mdbs["web"].db.media.update_many({"category_id": category_id}, {
-                                 "$set": {"category": new_name}})
+    mdbs["web"].db.media.update_many(
+        {
+            "category_id": category_id
+        },
+        {
+            "$set": {"category": new_name}
+        })
 
 
 def category_delete(user_id=None):
@@ -153,11 +186,17 @@ def category_delete(user_id=None):
 
     for i, tid in enumerate(ids):
         ids[i] = ObjectId(tid)
-    r = mdbs["web"].db.category.delete_many({"_id": {"$in": ids},
-                                         "user_id": user_id})
+    r = mdbs["web"].db.category.delete_many(
+        {
+            "_id": {"$in": ids},
+            "user_id": user_id
+        })
     if r.deleted_count > 0:
-        data = {"msg": gettext("Delete the success,{}").format(
-            r.deleted_count), "msg_type": "s", "custom_status": 204}
+        data = {
+            "msg": gettext("Delete the success,{}").format(r.deleted_count),
+            "msg_type": "s",
+            "custom_status": 204
+            }
     else:
         data = {
             "msg": gettext("Delete failed"),

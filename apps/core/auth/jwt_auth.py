@@ -68,7 +68,6 @@ class JwtAuth:
                 leeway=get_config(
                     "rest_auth_token",
                     "LOGIN_LIFETIME"))
-            # payload = jwt.decode(auth_token, get_config("key", "SECRET_KEY"), options={'verify_exp': True})
             if 'data' in payload and 'id' in payload['data']:
                 return payload
             else:
@@ -131,12 +130,16 @@ class JwtAuth:
                     result = (
                         None, gettext("User authentication failed, user does not exist"))
                 else:
-                    if user.jwt_login_time and payload['data']["cid"] in user.jwt_login_time and \
-                            user.jwt_login_time[payload['data']["cid"]] == payload['data']['login_time']:
+                    if user.jwt_login_time and \
+                        payload['data']["cid"] in user.jwt_login_time and \
+                            user.jwt_login_time[payload['data']["cid"]] == \
+                            payload['data']['login_time']:
                         result = (True, user)
                     else:
                         result = (None, gettext(
-                            'User authentication token expired or changed. Please log in again for access'))
+                            'User authentication token expired or changed. '
+                            'Please log in again for access')
+                            )
             else:
                 result = (None, gettext("Token is abnormal"))
         else:
@@ -161,7 +164,8 @@ class JwtAuth:
                         None, gettext("User authentication failed, user does not exist"))
                 else:
                     if payload['data']["cid"] in user["jwt_login_time"] and \
-                            user["jwt_login_time"][payload['data']["cid"]] == payload['data']['login_time']:
+                            user["jwt_login_time"][payload['data']["cid"]] == \
+                            payload['data']['login_time']:
 
                         # 清除退出当前客户端的登录时间信息
                         user = get_one_user(user_id=str(payload['data']['id']))

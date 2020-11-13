@@ -63,7 +63,7 @@ def init_core_module(app, **kwargs):
         ago_time_30m = time.time()-1800
         if version_info["sys_version_of_config"] >= SYS_CONFIG_VERSION \
                 and version_info["update_time"] > ago_time \
-                and version_info["update_time"]<ago_time_30m:
+                and version_info["update_time"] < ago_time_30m:
             # 系统正在使用的SYS_CONFIG_VERSION版本和当前机器CONFIG的一样，或更高
             # And: 配置24小时内已有更新
             # So: 这次不更新

@@ -3,13 +3,14 @@
 # @Time : 2020/1/7
 # @Author : Allen Woo
 from urllib.parse import quote
-from celery.schedules import crontab
+# from celery.schedules import crontab
 from apps.configs.db_config import DB_CONFIG
 
 
 class CeleryConfig:
 
     connection_mode = "redis"
+    redis_configs = []
     if connection_mode == "redis":
         redis_configs = [{
             "host":  DB_CONFIG["redis"]["host"][0],

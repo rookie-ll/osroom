@@ -3,9 +3,7 @@
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
 import socket
-
 import pwd
-
 import os
 
 
@@ -16,7 +14,7 @@ def get_host_info(ifname='eth0'):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('8.8.8.8', 80))
         local_ip = s.getsockname()[0]
-    except Exception as e:
+    except Exception:
         local_ip = None
     finally:
         s.close()

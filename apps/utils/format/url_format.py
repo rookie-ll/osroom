@@ -13,6 +13,6 @@ def get_domain(url):
     """
     try:
         res = get_tld(url, as_object=True)
-    except:
+    except Exception:
         return False
     return "{}.{}".format(res.subdomain, res.tld)

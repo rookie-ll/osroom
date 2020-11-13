@@ -2,19 +2,19 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
-import base64
+import hashlib
+import sys
+import time
 from gettext import gettext
 from random import randint
 from uuid import uuid1
-import time
 
-import sys
 from bson import ObjectId
 from flask import current_app, request
 from werkzeug.exceptions import Unauthorized
-from apps.app import app, mdbs, cache, rest_session, csrf
-from apps.configs.sys_config import REST_SECRET_TOKEN_CACHE_KEY, \
-    REST_SECRET_TOKEN_CACHE_TIMEOUT
+
+from apps.app import app, cache, csrf, mdbs, rest_session
+from apps.configs.sys_config import REST_SECRET_TOKEN_CACHE_KEY, REST_SECRET_TOKEN_CACHE_TIMEOUT
 from apps.core.utils.get_config import get_config
 from apps.utils.format.obj_format import objid_to_str
 
@@ -47,11 +47,12 @@ class RestTokenAuth:
         if pyver_info[0] == 3 and pyver_info[1] == 6:
             # 3.6版本以上才使用secrets
             import secrets
-            tid = "{}{}".format(str(uuid1()), secrets.token_urlsafe(32))
+            tid = secrets.token_urlsafe()
         else:
             tid = "{}{}".format(str(uuid1()), randint(0, 999999))
+            tid = hashlib.md5(tid.encode("UTF-8")).hexdigest()
 
-        return {"token": base64.b64encode(tid.encode()).decode()}
+        return {"token": tid}
 
     """
     SecretToken
@@ -83,8 +84,14 @@ class RestTokenAuth:
         :return:
         """
 
-        r = mdbs["sys"].db.sys_token.update_one({"_id": ObjectId(token_id)},
-                                            {"$set": {"is_active": 1}})
+        r = mdbs["sys"].db.sys_token.update_one(
+            {
+                "_id": ObjectId(token_id)
+            },
+            {
+                "$set": {"is_active": 1}
+            }
+        )
         if r.modified_count:
             cache.delete(REST_SECRET_TOKEN_CACHE_KEY)
             return True, gettext("Activate token successfully")
@@ -96,10 +103,21 @@ class RestTokenAuth:
         停用secret token
         :return:
         """
-        if mdbs["sys"].db.sys_token.find({"token_type": "secret_token", "is_active": {
-                                     "$in": [1, True]}}).count(True) > 1:
-            r = mdbs["sys"].db.sys_token.update_one({"_id": ObjectId(token_id)},
-                                                {"$set": {"is_active": 0}})
+        token_count = mdbs["sys"].db.sys_token.find(
+            {
+                "token_type": "secret_token",
+                "is_active": {
+                    "$in": [1, True]
+                }
+            }).count(True)
+        if token_count > 1:
+            r = mdbs["sys"].db.sys_token.update_one(
+                {
+                    "_id": ObjectId(token_id)
+                },
+                {
+                    "$set": {"is_active": 0}
+                })
 
             if r.modified_count:
                 cache.delete(REST_SECRET_TOKEN_CACHE_KEY)
@@ -116,7 +134,9 @@ class RestTokenAuth:
         """
 
         if mdbs["sys"].db.sys_token.find(
-                {"token_type": "secret_token"}).count(True) > 1:
+                {
+                    "token_type": "secret_token"
+                }).count(True) > 1:
             r = mdbs["sys"].db.sys_token.delete_one({"_id": ObjectId(token_id)})
             if r.deleted_count > 0:
                 cache.delete(REST_SECRET_TOKEN_CACHE_KEY)
@@ -184,7 +204,8 @@ class RestTokenAuth:
         else:
             response = current_app.make_response(
                 gettext(
-                    'Token is miss, unconventional web browsing requests please provide "OSR-RestToken",'
+                    'Token is miss, unconventional web browsing'
+                    ' requests please provide "OSR-RestToken",'
                     ' otherwise provide "X-CSRFToken"'))
             raise OsrTokenError(
                 response.get_data(
@@ -219,7 +240,9 @@ class RestTokenAuth:
                         "msg_type": "w", "custom_status": 400}
         else:
             data = {
-                "msg": gettext("The OSR-RestToken provided by the request header is not a SecretToken"),
+                "msg": gettext(
+                    "The OSR-RestToken provided by the request header"
+                    " is not a SecretToken"),
                 "msg_type": "w",
                 "custom_status": 400}
         return data

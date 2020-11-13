@@ -161,8 +161,12 @@ Python Tr compile:
                 self.save_path,
                 self.extract_path))
 
-        os.system('pybabel {} update -i {}/messages.pot -d {}'.format(self.quiet,
-                                                                      self.save_path, self.save_path))
+        os.system(
+            'pybabel {} update -i {}/messages.pot -d {}'.format(
+                self.quiet,
+                self.save_path,
+                self.save_path
+            ))
 
         self.print_cfg()
         print("Success")

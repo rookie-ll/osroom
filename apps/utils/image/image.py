@@ -2,7 +2,6 @@
 # -*-coding:utf-8-*-
 # @Time : 2017/11/1 ~ 2019/9/1
 # @Author : Allen Woo
-import os
 from PIL import Image
 
 

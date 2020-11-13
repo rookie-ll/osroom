@@ -26,9 +26,11 @@ def usage_help(short_ops, short_opexplain, long_ops=[], long_opexplain=[], usage
             print("\t-{}: {}".format(v, short_opexplain[i].replace("\n", "\n\t\t")))
             i += 1
     # long
-    l = len(long_ops)
-    for i in range(0, l):
-        print("\t--{}: {}".format(long_ops[i].strip("="), long_opexplain[i].replace("\n", "\n\t\t")))
+    for i in range(0, len(long_ops)):
+        print("\t--{}: {}".format(
+            long_ops[i].strip("="),
+            long_opexplain[i].replace("\n", "\n\t\t"))
+        )
 
     if action:
         print("[action]:")

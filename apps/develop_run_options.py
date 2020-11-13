@@ -15,7 +15,7 @@ from asnyc_task_start import async_task_worker
               help='The interface to bind to.')
 @click.option('-p', '--port', default=5000,
               help='The port to bind to.')
-@click.option('--debugger/--no-debugger', default=False,
+@click.option('--debug/--no-debug', default=False,
               help='Enable or disable the debugger. By default'
                    ' the debugger is active if debug is enabled.')
 @click.option('--reload/--no-reload',
@@ -57,7 +57,7 @@ def run_osroom(**kwargs):
         if del_op in sys_argv:
             sys_argv.remove(del_op)
 
-    if kwargs.get("debugger"):
+    if kwargs.get("debugger") or kwargs.get("debug"):
         os.putenv("FLASK_ENV", "development")
     else:
         os.unsetenv("FLASK_ENV")
@@ -71,6 +71,8 @@ def run_osroom(**kwargs):
     # 从Flask 0.11版本开始，官方就建议使用flask run命令来取代app.run()
     # 当时flask run的参数不能满足osroom， 所以就改成使用 run-osroom来启动
     start_info_print(" * Flask server run")
+    if "--debug" in sys_argv:
+        sys_argv[sys_argv.index("--debug")] = "--debugger"
     flask_server = "flask run {}".format(" ".join(sys_argv))
     os.system(flask_server)
 
